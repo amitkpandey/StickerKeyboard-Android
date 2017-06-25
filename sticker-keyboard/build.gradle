@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+    }
+}
+apply plugin: 'com.android.application'
+
+repositories {
+        mavenCentral()
+        jcenter()
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
+
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 25
+        versionCode 10
+        versionName "2.0.0"
+    }
+    signingConfigs {
+        release {
+            storeFile file("../emoji-keyboard.jks")
+            storePassword "notforyou"
+            keyAlias "emoji-keyboard"
+            keyPassword "notforyou"
+        }
+    }
+    buildTypes {
+        release {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            debuggable true
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+}
