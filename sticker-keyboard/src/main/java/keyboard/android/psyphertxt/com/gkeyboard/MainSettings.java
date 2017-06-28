@@ -3,7 +3,6 @@ package keyboard.android.psyphertxt.com.gkeyboard;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
-import com.klinker.android.emoji_keyboard_trial.R;
 
 public class MainSettings extends PreferenceActivity {
 

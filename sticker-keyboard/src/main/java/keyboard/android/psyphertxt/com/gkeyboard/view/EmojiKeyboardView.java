@@ -1,6 +1,7 @@
 package keyboard.android.psyphertxt.com.gkeyboard.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -17,8 +18,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import keyboard.android.psyphertxt.com.gkeyboard.EmojiKeyboardService;
+import keyboard.android.psyphertxt.com.gkeyboard.R;
 import keyboard.android.psyphertxt.com.gkeyboard.adapter.EmojiPagerAdapter;
-import com.klinker.android.emoji_keyboard_trial.R;
+import keyboard.android.psyphertxt.com.gkeyboard.stickers.StickerActivity;
+
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -70,6 +73,8 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
 
         setupDeleteButton();
 
+        setupGoToNextActivityButton();
+
         pagerSlidingTabStrip.setViewPager(viewPager);
 
         viewPager.setCurrentItem(1);
@@ -105,6 +110,21 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
                 return false;
             }
         });
+    }
+
+    private void setupGoToNextActivityButton() {
+
+        ImageView gotoNextActivity = (ImageView) layout.findViewById(R.id.openActivityButton);
+
+        gotoNextActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), StickerActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                v.getContext().startActivity(intent);
+            }
+        });
+
     }
 
 

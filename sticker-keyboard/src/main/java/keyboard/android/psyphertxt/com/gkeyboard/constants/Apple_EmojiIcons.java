@@ -1,7 +1,7 @@
 package keyboard.android.psyphertxt.com.gkeyboard.constants;
 
+import keyboard.android.psyphertxt.com.gkeyboard.R;
 import keyboard.android.psyphertxt.com.gkeyboard.Utility;
-import com.klinker.android.emoji_keyboard_trial.R;
 
 public final class Apple_EmojiIcons extends EmojiIcons {
     public Apple_EmojiIcons(){

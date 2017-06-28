@@ -8,5 +8,4 @@
         android:entries="@array/emojiKeyboardColor"
         android:entryValues="@array/emojiKeyboardColorSet"
         android:defaultValue="1" />
-
 </PreferenceScreen>
