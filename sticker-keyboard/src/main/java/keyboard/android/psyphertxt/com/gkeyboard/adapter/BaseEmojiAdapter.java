@@ -43,7 +43,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
     protected ArrayList<Integer> iconIds;
     public static EditorInfo info;
 
-    public BaseEmojiAdapter(EmojiKeyboardService emojiKeyboardService ) {
+    public BaseEmojiAdapter(EmojiKeyboardService emojiKeyboardService) {
         this.emojiKeyboardService = emojiKeyboardService;
     }
 
@@ -58,7 +58,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
         if (convertView == null) {
             imageView = new ImageView(emojiKeyboardService);
             int scale = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, emojiKeyboardService.getResources().getDisplayMetrics());
-            imageView.setPadding(scale, (int)(scale*1.2), scale, (int)(scale * 1.2));
+            imageView.setPadding(scale, (int) (scale * 1.2), scale, (int) (scale * 1.2));
             imageView.setAdjustViewBounds(true);
         } else {
             imageView = (ImageView) convertView;
@@ -69,11 +69,11 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(emojiTexts == null){
-                    if(getCurrentAppPackage(v.getContext()) != null ){
+                if (emojiTexts == null) {
+                    if (getCurrentAppPackage(v.getContext()) != null) {
                         passImage(v.getContext(), iconIds.get(position), v);
                     }
-                }else {
+                } else {
                     emojiKeyboardService.sendText(emojiTexts.get(position));
                 }
             }
@@ -93,7 +93,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
 
     public String getCurrentAppPackage(Context context) {
         info = emojiKeyboardService.getCurrentInputEditorInfo();
-        if(info != null && info.packageName != null) {
+        if (info != null && info.packageName != null) {
             return info.packageName;
         }
         final PackageManager pm = context.getPackageManager();
@@ -122,9 +122,9 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
 
     public void passImage(final Context context, int drawableId, final View v) {
         final ImageView imageView = new ImageView(v.getContext());
-        System.out.println(">>>>>>>>>>>>"+"file:///android_asset/stickers/"+context.getResources().getResourceEntryName(drawableId).replace("_", " ")+ ".png");
+        System.out.println(">>>>>>>>>>>>" + drawableId);
         Picasso.with(v.getContext())
-                .load("file:///android_asset/stickers/"+context.getResources().getResourceEntryName(drawableId).replace("_", " ")+ ".png")
+                .load(drawableId)
                 .noFade()
                 .into(imageView, new Callback() {
                     @Override
@@ -132,10 +132,15 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
 
                         //convert image to bitmap so it can be shared.
                         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                        String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(),bitmap,"title",null);
+                        String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "title", null);
                         Uri imageUri = Uri.parse(bitmapPath);
-                        EmojiKeyboardService.commitPNGImage(imageUri, "", info, emojiKeyboardService.getCurrentInputConnection());
-                        //EmojiKeyboardService.doCommitContent("", EmojiKeyboardService.MIME_TYPE_PNG, imageUri,info, v.getContext(), emojiKeyboardService.getCurrentInputConnection());
+                        Intent intent = createIntent(v.getContext(), imageUri);
+                        try {
+                            context.getApplicationContext().startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        v.getContext().startActivity(intent);
                     }
 
                     @Override
@@ -145,40 +150,34 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
                 });
     }
 
-    private static File getFileForResource(
-            @NonNull Context context, @RawRes int res, @NonNull File outputDir,
-            @NonNull String filename) {
-        final File outputFile = new File(outputDir, filename);
-        final byte[] buffer = new byte[4096];
-        InputStream resourceReader = null;
-        try {
-            try {
-                resourceReader = context.getResources().openRawResource(res);
-                OutputStream dataWriter = null;
-                try {
-                    dataWriter = new FileOutputStream(outputFile);
-                    while (true) {
-                        final int numRead = resourceReader.read(buffer);
-                        if (numRead <= 0) {
-                            break;
-                        }
-                        dataWriter.write(buffer, 0, numRead);
-                    }
-                    return outputFile;
-                } finally {
-                    if (dataWriter != null) {
-                        dataWriter.flush();
-                        dataWriter.close();
-                    }
-                }
-            } finally {
-                if (resourceReader != null) {
-                    resourceReader.close();
-                }
-            }
-        } catch (IOException e) {
-            return null;
-        }
+    public Intent createIntent(Context context, Uri uri) {
+        Intent sendIntent = new Intent("android.intent.action.MAIN");
+        sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        sendIntent.putExtra("jid", "233543951604" + "@s.whatsapp.net");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "");
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setPackage(getCurrentAppPackage(context));
+        sendIntent.setType("image/png");
+        sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return sendIntent;
+//        String packageNames = getCurrentAppPackage(context);
+//        System.out.println(">>>>>>>>>>> "+ packageNames);
+//        Uri mUri = Uri.parse("smsto:+233543951604");
+//        Intent sharingIntent = new Intent(Intent.ACTION_SENDTO, mUri);
+//        sharingIntent.setType("image/png");
+//        sharingIntent.setPackage(packageNames);
+//        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+//        sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        return sharingIntent;
     }
 
+    public static final Uri getUriToDrawable(@NonNull Context context,
+                                             @AnyRes int drawableId, View v) {
+        Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                "://" + context.getResources().getResourcePackageName(drawableId)
+                + '/' + context.getResources().getResourceTypeName(drawableId)
+                + '/' + context.getResources().getResourceEntryName(drawableId));
+        return imageUri;
+    }
 }

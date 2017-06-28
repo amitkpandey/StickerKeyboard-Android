@@ -1,6 +1,8 @@
 package keyboard.android.psyphertxt.com.gkeyboard.stickers;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,7 @@ import keyboard.android.psyphertxt.com.gkeyboard.R;
 class Sticker {
     private String name;
     private String uri;
+    private Drawable drawable;
 
     String getUri() {
         return uri;
@@ -41,15 +44,25 @@ class Sticker {
             //assign the name of the from xml
             sticker.setName(stickerName);
 
+            sticker.setDrawable(ContextCompat.getDrawable(context, context.getResources().getIdentifier(stickerName, "drawable",context.getPackageName())));
+
             //set image uri using android asset location
             //all images are in png
-            sticker.setUri("file:///android_asset/stickers/" + stickerName + ".png");
+            //sticker.setUri("file:///android_asset/stickers/" + stickerName + ".png");
 
             //add stickers to a list so they can be retrieved.
             stickers.add(sticker);
         }
 
         return stickers;
+    }
+
+    public Drawable getDrawable() {
+        return drawable;
+    }
+
+    public void setDrawable(Drawable drawable) {
+        this.drawable = drawable;
     }
 
     @Override
