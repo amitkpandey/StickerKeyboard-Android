@@ -1,13 +1,19 @@
 package keyboard.android.psyphertxt.com.gkeyboard.stickers;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import keyboard.android.psyphertxt.com.gkeyboard.MainSettings;
 import keyboard.android.psyphertxt.com.gkeyboard.R;
+import keyboard.android.psyphertxt.com.gkeyboard.constants.Apple_EmojiIcons;
+import keyboard.android.psyphertxt.com.gkeyboard.constants.EmojiIcons;
+import keyboard.android.psyphertxt.com.gkeyboard.constants.Google_EmojiIcons;
 
 class Sticker {
     private String name;
@@ -32,20 +38,22 @@ class Sticker {
 
     static List<Sticker> initStickers(Context context) {
 
+        EmojiIcons icons = getPreferedIconSet(context);
+
         List<Sticker> stickers = new ArrayList<>();
 
-        String[] stickersArray = context.getResources().getStringArray(R.array.stickers);
+        ArrayList<Integer> stickersArray = icons.getCyfaStickerIconIds();
 
-        for (String stickerName : stickersArray) {
+        for (Integer stickerName : stickersArray) {
 
             //create instance of sticker model
             Sticker sticker = new Sticker();
 
             //assign the name of the from xml
-            sticker.setName(stickerName);
+            sticker.setName("");
 
-            sticker.setDrawable(ContextCompat.getDrawable(context, context.getResources().getIdentifier(stickerName, "drawable",context.getPackageName())));
-
+            sticker.setDrawable(ContextCompat.getDrawable(context, stickerName));
+            //sticker.setDrawable(context.getDrawable(stickerName));
             //set image uri using android asset location
             //all images are in png
             //sticker.setUri("file:///android_asset/stickers/" + stickerName + ".png");
@@ -69,4 +77,22 @@ class Sticker {
     public String toString() {
         return name;
     }
+
+    private static EmojiIcons getPreferedIconSet(Context context) {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if (sharedPreferences
+                .getString(MainSettings.CHANGE_ICON_SET_KEY, MainSettings.CHANGE_ICON_SET_VALUE_DEFAULT)
+                .equals(MainSettings.CHANGE_ICON_SET_VALUE_GOOGLE)){
+            return new Google_EmojiIcons();
+        } else if (sharedPreferences
+                .getString(MainSettings.CHANGE_ICON_SET_KEY, MainSettings.CHANGE_ICON_SET_VALUE_DEFAULT)
+                .equals(MainSettings.CHANGE_ICON_SET_VALUE_APPLE)) {
+            return new Apple_EmojiIcons();
+        }
+
+        return new Google_EmojiIcons();
+    }
+
 }

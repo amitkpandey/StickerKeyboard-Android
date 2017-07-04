@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,11 +20,17 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import keyboard.android.psyphertxt.com.gkeyboard.EmojiKeyboardService;
 import keyboard.android.psyphertxt.com.gkeyboard.R;
 import keyboard.android.psyphertxt.com.gkeyboard.adapter.EmojiPagerAdapter;
 import keyboard.android.psyphertxt.com.gkeyboard.stickers.StickerActivity;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -60,6 +69,26 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
 
         viewPager = (ViewPager) layout.findViewById(R.id.emojiKeyboard);
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                final AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
+                        .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")  // My Galaxy Nexus test phone
+                        .build();
+                final NativeExpressAdView mAdView = (NativeExpressAdView) layout.findViewById(R.id.adView);
+                mAdView.setAdUnitId("ca-app-pub-1112176598912130/5415713809");
+                mAdView.setAdSize(new AdSize(320,80));
+                mAdView.loadAd(adRequest);
+                mAdView.setVisibility(View.GONE);
+                mAdView.setAdListener(new AdListener(){
+                    @Override
+                    public void onAdLoaded() {
+                        mAdView.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        }, 4000);
         pagerSlidingTabStrip = (SmartTabLayout) layout.findViewById(R.id.emojiCategorytab);
 
         pagerSlidingTabStrip.setCustomTabView(this);
@@ -154,23 +183,16 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
     @Override
     public View createTabView(ViewGroup container, int position, PagerAdapter adapter) {
         Resources res = container.getContext().getResources();
-        ImageView icon = new ImageView(container.getContext());
+        TextView icon = new TextView(container.getContext());
         LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity= Gravity.CENTER;
         layoutParams.setMargins(10,0,10,0);
         icon.setLayoutParams(layoutParams);
         icon.setPadding(20,0,20,0);
-        icon.setColorFilter(Color.parseColor("#555555"));
-        switch (position) {
-            case 0:
-                icon.setImageDrawable(res.getDrawable(R.drawable.ic_history_black_24dp));
-                break;
-            case 1:
-                icon.setImageDrawable(res.getDrawable(R.drawable.ic_sentiment_neutral_black_24dp));
-                break;
-            default:
-                throw new IllegalStateException("Invalid position: " + position);
-        }
+        icon.setTextColor(Color.parseColor("#535353"));
+        icon.setTypeface(Typeface.SANS_SERIF);
+        icon.setTextSize(14);
+        icon.setText("GhanaTok");
         return icon;
     }
 }

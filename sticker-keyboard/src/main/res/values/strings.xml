@@ -18,4 +18,10 @@
     <string name="setting_change_icon_set_key">icon_set</string>
     <string name="setting_change_icon_set_value_google">Google</string>
     <string name="setting_change_icon_set_value_apple">Apple</string>
+    <string name="say_hi_to_ama">Say hi to Ama and Kweku, they are besties. Kweku is quite silly because he sees the world from a different angle. He is constantly looking for ways to make people happy. Ama has some anger management issues. But always finds a way to keep Kweku in check so he doesn\'t go overboard being silly.</string>
+    <string name="this_application">This application includes a keyboard. you can easily install by clicking the button below.</string>
+    <string name="install_keyboard">INSTALL KEYBOARD</string>
+    <string name="install_keyboard_later">Install Keyboard Later</string>
+    <string name="view_privacy_policy">VIEW PRIVACY POLICY</string>
+    <string name="ghanatok_was_produced">GhanaTok was produced by Ghana Stickers. Follow Ghana Sticker on</string>
 </resources>

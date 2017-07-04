@@ -4,7 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -27,8 +31,6 @@ import keyboard.android.psyphertxt.com.gkeyboard.R;
 
 public class StickerActivity extends AppCompatActivity {
 
-    private static final String TAG = StickerActivity.class.getSimpleName();
-
     @Bind(R.id.sticker_grid_list)
     RecyclerView stickerGridView;
 
@@ -37,13 +39,22 @@ public class StickerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences prefs = this.getSharedPreferences(
+                "sticker_app", Context.MODE_PRIVATE);
+        if(!prefs.getBoolean("FIRST_LAUNCH", false)){
+            startActivity(new Intent(StickerActivity.this, StickerFirstTimeActivity.class));
+            finish();
+        }
         setContentView(R.layout.activity_sticker);
+
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_info);
+        //upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         MobileAds.initialize(getApplicationContext(), "pub-1112176598912130");
 
         ButterKnife.bind(this);
-
-        isStoragePermissionGranted(this);
 
         setupAdapter();
     }
@@ -64,33 +75,6 @@ public class StickerActivity extends AppCompatActivity {
         }
     }
 
-    public  static boolean isStoragePermissionGranted(Context context) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (context.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG,"Permission is granted");
-                return true;
-            } else {
-                Log.v(TAG,"Permission is revoked");
-                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted");
-            return true;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
-            //resume tasks needing this permission
-        }
-    }
-
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
@@ -103,6 +87,9 @@ public class StickerActivity extends AppCompatActivity {
             case R.id.add:
                 Intent intent=new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS);
                 startActivity(intent);
+                return true;
+            case android.R.id.home:
+                startActivity(new Intent(StickerActivity.this, StickerAboutActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

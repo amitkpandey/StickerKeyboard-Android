@@ -140,7 +140,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
                         } catch (ActivityNotFoundException e) {
                             e.printStackTrace();
                         }
-                        v.getContext().startActivity(intent);
+                        //v.getContext().startActivity(intent);
                     }
 
                     @Override
@@ -153,7 +153,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
     public Intent createIntent(Context context, Uri uri) {
         Intent sendIntent = new Intent("android.intent.action.MAIN");
         sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        sendIntent.putExtra("jid", "233543951604" + "@s.whatsapp.net");
+        sendIntent.putExtra("jid", "" + "@s.whatsapp.net");
         sendIntent.putExtra(Intent.EXTRA_TEXT, "");
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setPackage(getCurrentAppPackage(context));

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="keyboard.android.psyphertxt.com.gkeyboard.stickers.StickerActivity">
+
+    <LinearLayout
+        android:id="@+id/lin_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:fontFamily="sans-serif-medium"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:gravity="left"
+            android:textStyle="normal"
+            android:textColor="#686868"
+            android:text="@string/say_hi_to_ama"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/artwork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="15dp"
+        android:layout_below="@+id/lin_txt"
+        android:layout_above="@+id/lin_bottom"
+        android:src="@drawable/artwork"/>
+
+    <LinearLayout
+        android:id="@+id/lin_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#c3c3c3"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ghana_stickers_logo"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="8dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12.4sp"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="#686868"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:gravity="center_horizontal"
+            android:text="@string/ghanatok_was_produced"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="25dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_facebook"
+                android:layout_marginRight="20dp"
+                />
+
+            <ImageView
+                android:id="@+id/iv_twitter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_twitter"
+                android:layout_marginRight="20dp"
+                />
+
+            <ImageView
+                android:id="@+id/iv_instagram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_instagram"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_privacy_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11.5sp"
+            android:layout_marginTop="25dp"
+            android:textColor="#535353"
+            android:text="@string/view_privacy_policy"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

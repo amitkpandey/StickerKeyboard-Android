@@ -18,9 +18,7 @@ import java.util.ArrayList;
 
 public class EmojiPagerAdapter extends PagerAdapter {
 
-    private final String[] TITLES = { "recent",
-                                    "cyfa"
-    };
+    private final String[] TITLES = {"cyfa"};
 
     private ViewPager pager;
     private ArrayList<View> pages;
@@ -36,7 +34,7 @@ public class EmojiPagerAdapter extends PagerAdapter {
         this.pages = new ArrayList<View>();
 
         EmojiIcons icons = getPreferedIconSet();
-        pages.add(new KeyboardSinglePageView(context, new RecentEmojiAdapter(context)).getView());
+        //pages.add(new KeyboardSinglePageView(context, new RecentEmojiAdapter(context)).getView());
         pages.add(new KeyboardSinglePageView(context, new StaticEmojiAdapter(context, null, icons.getCyfaStickerIconIds())).getView());
     }
 

@@ -15,7 +15,6 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal"
         android:background="#ddd"
-        android:padding="6dp"
         />
 
     <keyboard.android.psyphertxt.com.gkeyboard.utilities.ExpandableGridView

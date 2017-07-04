@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.common.collect.Lists;
@@ -93,9 +94,15 @@ class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
                 .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")  // My Galaxy Nexus test phone
                 .build();
         View view = View.inflate(holder.admobFrame.getContext(), R.layout.admob_sticker_item, adCardView);
-        NativeExpressAdView mAdView = (NativeExpressAdView) view.findViewById(R.id.adView);
+        final NativeExpressAdView mAdView = (NativeExpressAdView) view.findViewById(R.id.adView);
         mAdView.loadAd(adRequest);
-
+        mAdView.setVisibility(View.GONE);
+        mAdView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                mAdView.setVisibility(View.VISIBLE);
+            }
+        });
 
         // The NativeExpressAdViewHolder recycled by the RecyclerView may be a different
         // instance than the one used previously for this position. Clear the

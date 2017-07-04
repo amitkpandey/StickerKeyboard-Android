@@ -6,9 +6,9 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
-        android:icon="@drawable/icon"
-        android:label="@string/app_name"
+        android:icon="@drawable/ic_launcher"
         android:largeHeap="true"
+        android:label="@string/app_name"
         android:hardwareAccelerated="true">
 
         <service android:name="keyboard.android.psyphertxt.com.gkeyboard.EmojiKeyboardService"
@@ -23,12 +23,33 @@
         <activity
             android:name="keyboard.android.psyphertxt.com.gkeyboard.stickers.StickerActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:label="">
+        </activity>
+
+        <activity
+            android:name="keyboard.android.psyphertxt.com.gkeyboard.stickers.StickerFirstTimeActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/app_name">
+        </activity>
+
+        <activity
+            android:name="keyboard.android.psyphertxt.com.gkeyboard.stickers.StickerLauncherActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name="keyboard.android.psyphertxt.com.gkeyboard.stickers.StickerAboutActivity"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:label="@string/app_name"
+            android:parentActivityName=".stickers.StickerActivity">
         </activity>
 
         <activity

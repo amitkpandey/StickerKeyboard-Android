@@ -46,38 +46,20 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Picasso.with(context)
-                .load(stickers.get(position).getUri())
-                .noFade()
-                .into(holder.imageStickers);
+        holder.imageStickers.setImageDrawable(stickers.get(position).getDrawable());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                if (StickerActivity.isStoragePermissionGranted(v.getContext())) {
+                if (StickerFirstTimeActivity.isStoragePermissionGranted(v.getContext())) {
                     Log.v(TAG,"Permission is granted");
                     //get current sticker by item position
                     final Sticker sticker = stickers.get(position);
 
-                    final ImageView imageView = new ImageView(v.getContext());
-                    Picasso.with(v.getContext())
-                            .load(stickers.get(position).getUri())
-                            .noFade()
-                            .into(imageView, new Callback() {
-                                @Override
-                                public void onSuccess() {
+                    //convert image to bitmap so it can be shared.
+                    Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
+                    shareStickerImage(sticker, bitmap, v.getContext());
 
-                                    //convert image to bitmap so it can be shared.
-                                    Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                                    shareStickerImage(sticker, bitmap, v.getContext());
-
-                                }
-
-                                @Override
-                                public void onError() {
-
-                                }
-                            });
                 }
             }
         });
