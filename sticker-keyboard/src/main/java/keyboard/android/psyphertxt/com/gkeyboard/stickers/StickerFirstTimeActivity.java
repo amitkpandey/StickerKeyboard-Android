@@ -27,6 +27,7 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
     Button installKeyboardBtn;
     TextView installLaterTextView, privacyPolicyTextView;
     static boolean firstOpen = false;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,9 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
         installLaterTextView = (TextView) findViewById(R.id.tv_install_later);
         privacyPolicyTextView = (TextView) findViewById(R.id.tv_privacy_policy);
 
-        SharedPreferences prefs = this.getSharedPreferences(
+        prefs = this.getSharedPreferences(
                 "sticker_app", Context.MODE_PRIVATE);
-        //prefs.edit().putBoolean("FIRST_LAUNCH", true).apply();
+        prefs.edit().putBoolean("FIRST_LAUNCH", true).apply();
         installLaterTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +55,7 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 firstOpen = true;
+                prefs.edit().putBoolean("FIRST_CLICK", firstOpen).apply();
                 Intent intent=new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS);
                 startActivityForResult(intent, INSTALL_KEYBOARD_REQUEST);
             }
@@ -63,6 +65,7 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 firstOpen = true;
+                prefs.edit().putBoolean("FIRST_CLICK", firstOpen).apply();
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse("http://www.cyfa.io/privacy-policy/"));
                 startActivityForResult(i, PRIVACY_POLICY_REQUEST);
@@ -73,7 +76,7 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(firstOpen) {
+        if(prefs.getBoolean("FIRST_CLICK", false)) {
             startActivity(new Intent(StickerFirstTimeActivity.this, StickerActivity.class));
             finish();
         }
