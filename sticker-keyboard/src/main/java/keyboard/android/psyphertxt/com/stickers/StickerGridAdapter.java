@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -114,6 +117,11 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
 
                 ImageView imageView = ButterKnife.findById(materialDialog, R.id.imageView);
                 imageView.setImageBitmap(bitmap);
+                AdRequest adRequest = new AdRequest.Builder()
+                        .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")
+                        .build();
+                final NativeExpressAdView mAdView = ButterKnife.findById(materialDialog, R.id.adView);;
+                mAdView.loadAd(adRequest);
                 return true;
             }
         });
