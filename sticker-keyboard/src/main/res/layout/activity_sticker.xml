@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="keyboard.android.psyphertxt.com.gkeyboard.stickers.StickerActivity">
+    tools:context="keyboard.android.psyphertxt.com.stickers.StickerActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/sticker_grid_list"

@@ -44,6 +44,15 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    productFlavors {
+        ghamoji {
+            applicationId "keyboard.android.psyphertxt.com.gkeyboard"
+        }
+        ghanatok {
+            applicationId "keyboard.android.psyphertxt.com.gtokkeyboard"
+        }
+    }
 }
 
 dependencies {

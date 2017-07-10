@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#fff"
-    tools:context="keyboard.android.psyphertxt.com.gkeyboard.stickers.StickerActivity">
+    tools:context="keyboard.android.psyphertxt.com.stickers.StickerActivity">
 
     <LinearLayout
         android:id="@+id/admob_frame"
@@ -17,7 +17,7 @@
         android:background="#ddd"
         />
 
-    <keyboard.android.psyphertxt.com.gkeyboard.utilities.ExpandableGridView
+    <keyboard.android.psyphertxt.com.utilities.ExpandableGridView
         android:id="@+id/sticker_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
