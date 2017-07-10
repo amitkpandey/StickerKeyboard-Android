@@ -6,15 +6,22 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
 import keyboard.android.psyphertxt.com.R;
 
 class StickerGridAdapter extends ArrayAdapter<Sticker> {
@@ -45,21 +52,9 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
 
         holder.imageStickers.setImageDrawable(stickers.get(position).getDrawable());
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (StickerFirstTimeActivity.isStoragePermissionGranted(v.getContext())) {
-                    Log.v(TAG,"Permission is granted");
-                    //get current sticker by item position
-                    final Sticker sticker = stickers.get(position);
+        stickerOnClickEvent(convertView, position);
+        stickerItemOnLongPressEvent(convertView, position);
 
-                    //convert image to bitmap so it can be shared.
-                    Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
-                    shareStickerImage(sticker, bitmap, v.getContext());
-
-                }
-            }
-        });
         return convertView;
     }
 
@@ -74,6 +69,57 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
 //        notifyDataSetChanged();
 
     }
+
+    private void stickerOnClickEvent(View view, final int position){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (StickerFirstTimeActivity.isStoragePermissionGranted(v.getContext())) {
+                    Log.v(TAG,"Permission is granted");
+                    //get current sticker by item position
+                    final Sticker sticker = stickers.get(position);
+
+                    //convert image to bitmap so it can be shared.
+                    Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
+                    shareStickerImage(sticker, bitmap, v.getContext());
+
+                }
+            }
+        });
+    }
+
+
+    private void stickerItemOnLongPressEvent(final View view, final int position) {
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(final View v) {
+                boolean wrapInScrollView = true;
+                final Sticker sticker = stickers.get(position);
+                final Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
+                MaterialDialog materialDialog =   new MaterialDialog.Builder(view.getContext())
+                        .title(R.string.app_name)
+                        .customView(R.layout.sticker_dialog_view, wrapInScrollView)
+                        .positiveText("Share")
+                        .neutralText("Close")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                shareStickerImage(sticker, bitmap, v.getContext());
+                                dialog.dismiss();
+                            }
+                        })
+                        .build();
+
+                materialDialog.show();
+
+                ImageView imageView = ButterKnife.findById(materialDialog, R.id.imageView);
+                imageView.setImageBitmap(bitmap);
+                return true;
+            }
+        });
+    }
+
+
 
     private void shareStickerImage(Sticker sticker,Bitmap bitmap, Context context) {
 
