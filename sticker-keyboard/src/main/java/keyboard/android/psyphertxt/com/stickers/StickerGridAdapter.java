@@ -3,8 +3,12 @@ package keyboard.android.psyphertxt.com.stickers;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -22,6 +26,11 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -84,7 +93,7 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
 
                     //convert image to bitmap so it can be shared.
                     Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
-                    shareStickerImage(sticker, bitmap, v.getContext());
+                    processImage(bitmap);
 
                 }
             }
@@ -107,7 +116,7 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                shareStickerImage(sticker, bitmap, v.getContext());
+                                processImage(bitmap);
                                 dialog.dismiss();
                             }
                         })
@@ -129,17 +138,38 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
 
 
 
-    private void shareStickerImage(Sticker sticker,Bitmap bitmap, Context context) {
+    private void shareStickerImage(Bitmap bitmap, Context context) {
 
         String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(),bitmap,"title",null);
         Uri imageUri = Uri.parse(bitmapPath);
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, sticker.getName());
         shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
         shareIntent.setType("image/*");
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         context.startActivity(Intent.createChooser(shareIntent, "Share Sticker"));
     }
+
+    private void processImage(Bitmap bitmap) {
+        try {
+            // Create new bitmap based on the size and config of the old
+            Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+            newBitmap.eraseColor(Color.WHITE);
+            Canvas canvas = new Canvas(newBitmap);  // create a canvas to draw on the new image
+            canvas.drawBitmap(bitmap, 0f, 0f, null); // draw old image on the background
+            //bitmap.recycle();
+            shareStickerImage(newBitmap, context);
+        } catch (Exception exception) {
+            Log.e("debug_log", exception.toString());
+        }
+    }
+
+//    public Bitmap getBitmap(Bitmap bitmap) {
+//        Bitmap bmOverlay = Bitmap.createBitmap(bitmap2.getWidth(), bitmap2.getHeight(), bitmap2.getConfig());
+//        Canvas canvas = new Canvas(bmOverlay);
+//        canvas.drawBitmap(bitmap, matrix, null);
+//        canvas.drawBitmap(bitmap2, 0, 0, null);
+//        return bmOverlay;
+//    }
 
 }
