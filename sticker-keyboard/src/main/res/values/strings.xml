@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY appname "GHAMoji">
-    ]>
 <resources>
-    <string name="app_name">&appname;</string>
-
     <string name="recentEntry">Recents</string>
     <string name="people">People</string>
     <string name="things">Objects</string>
@@ -22,5 +17,4 @@
     <string name="install_keyboard">INSTALL KEYBOARD</string>
     <string name="install_keyboard_later">Install Keyboard Later</string>
     <string name="view_privacy_policy">VIEW PRIVACY POLICY</string>
-    <string name="ghanatok_was_produced">&appname; was produced by Ghana Stickers. Follow Ghana Sticker on</string>
-</resources>
+   </resources>

@@ -8,23 +8,15 @@
     android:background="#fff"
     tools:context="keyboard.android.psyphertxt.com.stickers.StickerDetailActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_ll"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14.4sp"
-            android:fontFamily="sans-serif"
-            android:paddingTop="8dp"
-            android:paddingLeft="26dp"
-            android:paddingRight="26dp"
-            android:textStyle="normal"
-            android:textColor="#686868"
-            android:layout_marginBottom="40dp"
-            android:text="@string/say_hi_to_ama"
-            />
 
         <TextView
             android:layout_width="wrap_content"
