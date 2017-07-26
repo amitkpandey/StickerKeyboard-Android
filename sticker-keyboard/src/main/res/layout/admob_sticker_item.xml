@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_gravity="center"
-        ads:adUnitId="ca-app-pub-1112176598912130/5415713809"
+        ads:adUnitId="@string/adUnitID"
         ads:adSize="320x80">
     </com.google.android.gms.ads.NativeExpressAdView>
 </LinearLayout>

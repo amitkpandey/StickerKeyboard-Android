@@ -6,6 +6,7 @@
     <string name="app_name">&appname;</string>
     <string name="app_name_label">GhanaTok</string>
     <string name="recentEntry">Recents</string>
+    <string name="adUnitID">ca-app-pub-1253818514674553/8920697273</string>
     <string name="people">People</string>
     <string name="things">Objects</string>
     <string name="nature">Nature</string>
