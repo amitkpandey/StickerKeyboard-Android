@@ -1,17 +1,19 @@
 buildscript {
     repositories {
-        mavenCentral()
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 repositories {
-        mavenCentral()
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
 }
 
 android {
@@ -102,5 +104,11 @@ dependencies {
     compile ('com.afollestad.material-dialogs:core:0.9.4.5'){
         exclude group: 'com.google.android.gms'
         exclude group: "com.google.firebase"
+    }
+    compile('com.crashlytics.sdk.android:answers:1.3.13@aar') {
+        transitive = true;
+    }
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
     }
 }

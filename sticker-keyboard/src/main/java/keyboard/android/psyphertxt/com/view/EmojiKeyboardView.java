@@ -86,6 +86,7 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
                 });
             }
         }, 4000);
+
         pagerSlidingTabStrip = (SmartTabLayout) layout.findViewById(R.id.emojiCategorytab);
 
         pagerSlidingTabStrip.setCustomTabView(this);

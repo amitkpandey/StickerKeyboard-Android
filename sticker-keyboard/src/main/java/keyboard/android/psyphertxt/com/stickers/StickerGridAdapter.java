@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.NativeExpressAdView;
@@ -91,6 +93,11 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                     //get current sticker by item position
                     final Sticker sticker = stickers.get(position);
 
+                    Log.d(TAG, sticker.getName());
+                    //Sticker Analytics
+                    Answers.getInstance().logCustom(new CustomEvent("Sticker ClickEvent")
+                            .putCustomAttribute("Name", sticker.getName()));
+
                     //convert image to bitmap so it can be shared.
                     Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
                     processImage(bitmap);
@@ -107,6 +114,10 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
             public boolean onLongClick(final View v) {
                 boolean wrapInScrollView = true;
                 final Sticker sticker = stickers.get(position);
+                Log.d(TAG, sticker.getName());
+                //Sticker Analytics
+                Answers.getInstance().logCustom(new CustomEvent("Sticker LongPressEvent")
+                        .putCustomAttribute("Name", sticker.getName()));
                 final Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
                 MaterialDialog materialDialog =   new MaterialDialog.Builder(view.getContext())
                         .title(R.string.app_name)

@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import keyboard.android.psyphertxt.com.EmojiKeyboardService;
 import keyboard.android.psyphertxt.com.R;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +38,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
     protected ArrayList<String> emojiTexts;
     protected ArrayList<Integer> iconIds;
     public static EditorInfo info;
+    private static final String TAG = BaseEmojiAdapter.class.getSimpleName();
 
     public BaseEmojiAdapter(EmojiKeyboardService emojiKeyboardService) {
         this.emojiKeyboardService = emojiKeyboardService;
@@ -65,6 +68,10 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if (emojiTexts == null) {
                     if (getCurrentAppPackage(v.getContext()) != null) {
+                        //Sticker Analytics
+                        Log.d(TAG, String.valueOf(v.getContext().getResources().getResourceEntryName(iconIds.get(position))).replace("_"," "));
+                        Answers.getInstance().logCustom(new CustomEvent("Sticker ClickEvent")
+                               .putCustomAttribute("Name", String.valueOf(v.getContext().getResources().getResourceEntryName(iconIds.get(position))).replace("_"," ")));
                         passImage(v.getContext(), iconIds.get(position), v);
                     }
                 } else {

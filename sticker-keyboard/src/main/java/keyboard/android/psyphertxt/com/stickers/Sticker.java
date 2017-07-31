@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ class Sticker {
     private String name;
     private String uri;
     private Drawable drawable;
+    private static final String TAG = Sticker.class.getSimpleName();
 
     String getUri() {
         return uri;
@@ -49,7 +51,9 @@ class Sticker {
             Sticker sticker = new Sticker();
 
             //assign the name of the from xml
-            sticker.setName("");
+            sticker.setName(String.valueOf(context.getResources().getResourceEntryName(stickerName)).replace("_"," "));
+
+            Log.d(TAG, sticker.getName());
 
             sticker.setDrawable(ContextCompat.getDrawable(context, stickerName));
             //sticker.setDrawable(context.getDrawable(stickerName));
