@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.NativeExpressAdView;
@@ -95,11 +97,14 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                     Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
                     processImage(bitmap);
 
+                    //Sticker Analytics
+                    Answers.getInstance().logCustom(new CustomEvent("Sticker ClickEvent")
+                            .putCustomAttribute("Name", sticker.getName()));
+
                 }
             }
         });
     }
-
 
     private void stickerItemOnLongPressEvent(final View view, final int position) {
         view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -122,6 +127,10 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                         })
                         .build();
 
+                //Sticker Analytics
+                Answers.getInstance().logCustom(new CustomEvent("Sticker LongPressEvent")
+                        .putCustomAttribute("Name", sticker.getName()));
+
                 materialDialog.show();
 
                 ImageView imageView = ButterKnife.findById(materialDialog, R.id.imageView);
@@ -135,8 +144,6 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
             }
         });
     }
-
-
 
     private void shareStickerImage(Bitmap bitmap, Context context) {
 

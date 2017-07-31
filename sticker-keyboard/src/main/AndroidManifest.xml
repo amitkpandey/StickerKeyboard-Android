@@ -67,5 +67,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c12288a6699745e6d13d009cdcc2ca8ce18c38dd" />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
