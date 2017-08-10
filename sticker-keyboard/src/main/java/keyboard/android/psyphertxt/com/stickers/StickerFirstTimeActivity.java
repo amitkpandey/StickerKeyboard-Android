@@ -67,7 +67,7 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
                 firstOpen = true;
                 prefs.edit().putBoolean("FIRST_CLICK", firstOpen).apply();
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("http://www.cyfa.io/privacy-policy/"));
+                i.setData(Uri.parse("http://cyfa.io/privacy-policy/gstickers/sticker-privacy-policy.html"));
                 startActivityForResult(i, PRIVACY_POLICY_REQUEST);
             }
         });

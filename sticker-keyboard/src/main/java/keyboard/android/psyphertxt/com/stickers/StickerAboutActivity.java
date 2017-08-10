@@ -28,21 +28,21 @@ public class StickerAboutActivity extends AppCompatActivity {
         instagramIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openWebIntent("https://www.instagram.com/Ghanastickers/");
+                openWebIntent("https://www.instagram.com/gstickerss/");
             }
         });
 
         twitterIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openWebIntent("https://twitter.com/GhanaStickers");
+                openWebIntent("https://twitter.com/gstickerss");
             }
         });
 
         facebookIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openWebIntent("https://www.facebook.com/GhanaStickers/");
+                openWebIntent("https://www.facebook.com/gstickerss/");
             }
         });
 
@@ -50,7 +50,7 @@ public class StickerAboutActivity extends AppCompatActivity {
         privacyPolicyTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openWebIntent("http://www.cyfa.io/privacy-policy/");
+                openWebIntent("http://cyfa.io/privacy-policy/gstickers/sticker-privacy-policy.html");
             }
         });
     }
