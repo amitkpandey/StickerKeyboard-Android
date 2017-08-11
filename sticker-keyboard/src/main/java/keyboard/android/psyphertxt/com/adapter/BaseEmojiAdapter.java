@@ -21,9 +21,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import io.fabric.sdk.android.Fabric;
 import keyboard.android.psyphertxt.com.EmojiKeyboardService;
 import keyboard.android.psyphertxt.com.R;
 
+import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Callback;
@@ -42,6 +44,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
 
     public BaseEmojiAdapter(EmojiKeyboardService emojiKeyboardService) {
         this.emojiKeyboardService = emojiKeyboardService;
+        Fabric.with(emojiKeyboardService, new Answers(), new Crashlytics());
     }
 
     @Override
