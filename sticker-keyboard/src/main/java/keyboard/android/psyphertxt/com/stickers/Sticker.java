@@ -45,24 +45,28 @@ class Sticker {
 
         ArrayList<Integer> stickersArray = icons.getCyfaStickerIconIds();
 
-        for (Integer stickerName : stickersArray) {
+        try {
+            for (Integer stickerName : stickersArray) {
 
-            //create instance of sticker model
-            Sticker sticker = new Sticker();
+                //create instance of sticker model
+                Sticker sticker = new Sticker();
 
-            //assign the name of the from xml
-            sticker.setName(String.valueOf(context.getResources().getResourceEntryName(stickerName)).replace("_"," "));
+                //assign the name of the from xml
+                sticker.setName(String.valueOf(context.getResources().getResourceEntryName(stickerName)).replace("_", " "));
 
-            Log.d(TAG, sticker.getName());
+                Log.d(TAG, sticker.getName());
 
-            sticker.setDrawable(ContextCompat.getDrawable(context, stickerName));
-            //sticker.setDrawable(context.getDrawable(stickerName));
-            //set image uri using android asset location
-            //all images are in png
-            //sticker.setUri("file:///android_asset/stickers/" + stickerName + ".png");
+                sticker.setDrawable(ContextCompat.getDrawable(context, stickerName));
+                //sticker.setDrawable(context.getDrawable(stickerName));
+                //set image uri using android asset location
+                //all images are in png
+                //sticker.setUri("file:///android_asset/stickers/" + stickerName + ".png");
 
-            //add stickers to a list so they can be retrieved.
-            stickers.add(sticker);
+                //add stickers to a list so they can be retrieved.
+                stickers.add(sticker);
+            }
+        }catch (Exception e){
+            stickers = null;
         }
 
         return stickers;

@@ -26,6 +26,10 @@ import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.adapter.EmojiPagerAdapter;
 import keyboard.android.psyphertxt.com.stickers.StickerActivity;
 
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.NativeExpressAdView;
@@ -35,10 +39,12 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class EmojiKeyboardView extends View implements SharedPreferences.OnSharedPreferenceChangeListener,SmartTabLayout.TabProvider{
 
+    private static final String TAG = EmojiKeyboardView.class.getSimpleName();
+
     private ViewPager viewPager;
     private SmartTabLayout pagerSlidingTabStrip;
     private LinearLayout layout;
-
+    private LinearLayout admobFrame;
     private EmojiPagerAdapter emojiPagerAdapter;
     private EmojiKeyboardService emojiKeyboardService;
 
@@ -65,6 +71,8 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
 
         layout = (LinearLayout) inflater.inflate(R.layout.keyboard_main, null);
 
+        admobFrame = (LinearLayout) layout.findViewById(R.id.admob_frame);
+
         viewPager = (ViewPager) layout.findViewById(R.id.emojiKeyboard);
 
         new Handler().postDelayed(new Runnable() {
@@ -82,6 +90,12 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
                     @Override
                     public void onAdLoaded() {
                         mAdView.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(int i) {
+                        super.onAdFailedToLoad(i);
+                        showNativeAd();
                     }
                 });
             }
@@ -192,5 +206,34 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
         icon.setTextSize(14);
         icon.setText(getResources().getString(R.string.app_name));
         return icon;
+    }
+
+    private void showNativeAd() {
+        admobFrame.setVisibility(View.GONE);
+        Log.i(TAG, "iN FACEBOOK NATIVE");
+        AdView adView = new AdView(admobFrame.getContext(), "1582301235134013_1582364931794310", AdSize.BANNER_HEIGHT_50);
+        adView.setAdListener(new com.facebook.ads.AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                Log.i(TAG, "ERROR FACEBOOK NATIVE "+ adError.getErrorMessage());
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                admobFrame.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+
+            }
+        });
+        admobFrame.addView(adView);
+        adView.loadAd();
     }
 }

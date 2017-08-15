@@ -73,7 +73,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
                     if (getCurrentAppPackage(v.getContext()) != null) {
                         //Sticker Analytics
                         Log.d(TAG, String.valueOf(v.getContext().getResources().getResourceEntryName(iconIds.get(position))).replace("_"," "));
-                        Answers.getInstance().logCustom(new CustomEvent("Sticker ClickEvent")
+                        Answers.getInstance().logCustom(new CustomEvent("Keyboard Sticker ClickEvent")
                                .putCustomAttribute("Name", String.valueOf(v.getContext().getResources().getResourceEntryName(iconIds.get(position))).replace("_"," ")));
                         passImage(v.getContext(), iconIds.get(position), v);
                     }

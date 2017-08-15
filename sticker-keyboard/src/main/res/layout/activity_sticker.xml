@@ -12,11 +12,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
+        android:layout_above="@+id/admob_frame"
         android:adjustViewBounds="true"
-        android:layout_marginBottom="30dp"
         android:scrollbars="vertical" />
 
     <LinearLayout
+        android:id="@+id/admob_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/about_txt"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:background="#ddd"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/about_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

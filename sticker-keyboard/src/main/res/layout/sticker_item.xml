@@ -8,15 +8,6 @@
     android:background="#fff"
     tools:context="keyboard.android.psyphertxt.com.stickers.StickerActivity">
 
-    <LinearLayout
-        android:id="@+id/admob_frame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:background="#ddd"
-        />
-
     <keyboard.android.psyphertxt.com.utilities.ExpandableGridView
         android:id="@+id/sticker_grid"
         android:layout_width="match_parent"
