@@ -1,12 +1,15 @@
 package keyboard.android.psyphertxt.com.constants;
 
-import java.util.ArrayList;
+import android.graphics.drawable.Drawable;
+
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 public abstract class EmojiIcons {
 
-    protected ArrayList<Integer> cyfaStickerIconIds;
+    protected LinkedHashMap<String, Drawable> cyfaStickerIconIds;
 
-    public ArrayList<Integer> getCyfaStickerIconIds() {
+    public LinkedHashMap<String, Drawable> getCyfaStickerIconIds() {
         return cyfaStickerIconIds;
     }
 

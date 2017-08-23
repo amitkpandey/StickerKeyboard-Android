@@ -1,9 +1,12 @@
 package keyboard.android.psyphertxt.com.stickers;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +27,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdSize;
@@ -35,12 +40,16 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import keyboard.android.psyphertxt.com.R;
+import keyboard.android.psyphertxt.com.Utility;
+
+import static keyboard.android.psyphertxt.com.stickers.StickerGridAdapter.bitmapPath;
 
 public class StickerActivity extends AppCompatActivity {
 
@@ -48,8 +57,6 @@ public class StickerActivity extends AppCompatActivity {
     @Bind(R.id.sticker_grid_list)
     RecyclerView stickerGridView;
     ViewGroup admobFrame;
-    private NativeAd nativeAd;
-    private LinearLayout adView;
 
 
     private List<Sticker> stickers;
@@ -64,6 +71,8 @@ public class StickerActivity extends AppCompatActivity {
             finish();
         }
         setContentView(R.layout.activity_sticker);
+
+        deleteStickerEmojisOnStorage(StickerActivity.this);
 
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_info);
         //upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
@@ -93,6 +102,8 @@ public class StickerActivity extends AppCompatActivity {
                 stickerGridView.setItemAnimator(new DefaultItemAnimator());
                 stickerGridView.setAdapter(adapter);
             }else{
+                Answers.getInstance().logCustom(new CustomEvent("Home Click Event")
+                        .putCustomAttribute("Name", "Insufficient Memory"));
                 new MaterialDialog.Builder(this)
                         .title("Insufficient Memory")
                         .content("You have insufficient memory to run this app. Please clear some memory and try again.")
@@ -119,10 +130,14 @@ public class StickerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add:
+                Answers.getInstance().logCustom(new CustomEvent("Home Click Event")
+                        .putCustomAttribute("Name", "Add Keyboard"));
                 Intent intent=new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS);
                 startActivity(intent);
                 return true;
             case android.R.id.home:
+                Answers.getInstance().logCustom(new CustomEvent("Home Click Event")
+                        .putCustomAttribute("Name", "StickerAbout Activity"));
                 startActivity(new Intent(StickerActivity.this, StickerAboutActivity.class));
                 return true;
             default:
@@ -263,5 +278,56 @@ public class StickerActivity extends AppCompatActivity {
 
         // Request an ad
 //        nativeAd.loadAd();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "in on Activity result");
+        if(requestCode == 5 && resultCode == Activity.RESULT_OK){
+            Log.d(TAG, "in if condition");
+            try {
+                Uri uri = Uri.parse(bitmapPath);
+                File file = new File(uri.getPath());
+                if(bitmapPath.startsWith("content://")){
+                    ContentResolver contentResolver = getContentResolver();
+                    contentResolver.delete(uri, null, null);
+                }else {
+                    if (file.exists()) {
+                        Log.d(TAG, "in file exist");
+                        if (file.delete()) {
+                            Log.d(TAG, "in file delete");
+                        }
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    private void deleteStickerEmojisOnStorage(Context context) {
+        ArrayList<String> list = Utility.getArrayListString("filePaths", context);
+        if (list != null){
+            if(!list.isEmpty()) {
+                for (String string : list){
+                    Uri uri = Uri.parse(string);
+                    if(string.startsWith("content://")){
+                        ContentResolver contentResolver = getContentResolver();
+                        contentResolver.delete(uri, null, null);
+                    }else {
+                        File file = new File(uri.getPath());
+                        if (file.exists()) {
+                            Log.d(TAG, "in file exist");
+                            if (file.delete()) {
+                                Log.d(TAG, "in file delete");
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

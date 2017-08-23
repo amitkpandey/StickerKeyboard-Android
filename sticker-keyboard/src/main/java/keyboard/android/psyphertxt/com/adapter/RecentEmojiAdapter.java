@@ -1,6 +1,7 @@
 package keyboard.android.psyphertxt.com.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,11 +26,11 @@ public class RecentEmojiAdapter extends BaseEmojiAdapter {
     }
 
     private void setupEmojiDataFromList(ArrayList<RecentEntry> recentEntries) {
-        emojiTexts = new ArrayList<String>();
-        iconIds = new ArrayList<Integer>();
-        for(RecentEntry i: recentEntries) {
-            iconIds.add(Integer.parseInt(i.getIcon()));
-        }
+//        emojiTexts = new ArrayList<String>();
+//        iconIds = new ArrayList<Drawable>();
+//        for(RecentEntry i: recentEntries) {
+//            iconIds.add(Integer.parseInt(i.getIcon()));
+//        }
     }
 
     @Override

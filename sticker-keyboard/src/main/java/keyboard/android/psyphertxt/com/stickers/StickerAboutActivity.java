@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
 import keyboard.android.psyphertxt.com.R;
 
 public class StickerAboutActivity extends AppCompatActivity {
@@ -28,6 +31,8 @@ public class StickerAboutActivity extends AppCompatActivity {
         instagramIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("About Us ClickEvent")
+                        .putCustomAttribute("Name", "Instagram"));
                 openWebIntent("https://www.instagram.com/gstickerss/");
             }
         });
@@ -35,6 +40,8 @@ public class StickerAboutActivity extends AppCompatActivity {
         twitterIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("About Us ClickEvent")
+                        .putCustomAttribute("Name", "Twitter"));
                 openWebIntent("https://twitter.com/gstickerss");
             }
         });
@@ -42,6 +49,8 @@ public class StickerAboutActivity extends AppCompatActivity {
         facebookIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("About Us ClickEvent")
+                        .putCustomAttribute("Name", "Facebook"));
                 openWebIntent("https://www.facebook.com/gstickerss/");
             }
         });
@@ -50,6 +59,8 @@ public class StickerAboutActivity extends AppCompatActivity {
         privacyPolicyTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("About Us ClickEvent")
+                        .putCustomAttribute("Name", "Privacy Policy"));
                 openWebIntent("http://cyfa.io/privacy-policy/gstickers/sticker-privacy-policy.html");
             }
         });

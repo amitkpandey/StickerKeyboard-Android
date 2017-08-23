@@ -3,6 +3,7 @@
           package="keyboard.android.psyphertxt.com">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -21,7 +22,9 @@
             </intent-filter>
             <meta-data android:name="android.view.im" android:resource="@xml/method" />
         </service>
-        
+
+        <receiver android:name=".ShareBroadcastReceiver" android:exported="true"/>
+
         <activity
             android:name=".stickers.StickerActivity"
             android:launchMode="singleTop"

@@ -1,7 +1,10 @@
 package keyboard.android.psyphertxt.com.stickers;
 
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -42,6 +45,8 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import keyboard.android.psyphertxt.com.R;
+import keyboard.android.psyphertxt.com.ShareBroadcastReceiver;
+import keyboard.android.psyphertxt.com.Utility;
 
 class StickerGridAdapter extends ArrayAdapter<Sticker> {
 
@@ -49,6 +54,7 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
     private Context context;
     private List<Sticker> stickers;
     LinearLayout admobFrame;
+    public static String bitmapPath = "";
 
     StickerGridAdapter(Context context, List<Sticker> stickers) {
         super(context, R.layout.sticker_view, stickers);
@@ -94,7 +100,7 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                if (StickerFirstTimeActivity.isStoragePermissionGranted(v.getContext())) {
+                if (Utility.isStoragePermissionGranted(v.getContext())) {
                     Log.v(TAG,"Permission is granted");
                     //get current sticker by item position
                     final Sticker sticker = stickers.get(position);
@@ -108,10 +114,6 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                     Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
                     processImage(bitmap);
 
-                    //Sticker Analytics
-                    Answers.getInstance().logCustom(new CustomEvent("Sticker ClickEvent")
-                            .putCustomAttribute("Name", sticker.getName()));
-
                 }
             }
         });
@@ -124,9 +126,11 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                 boolean wrapInScrollView = true;
                 final Sticker sticker = stickers.get(position);
                 Log.d(TAG, sticker.getName());
+
                 //Sticker Analytics
                 Answers.getInstance().logCustom(new CustomEvent("Sticker LongPressEvent")
                         .putCustomAttribute("Name", sticker.getName()));
+
                 final Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
                 MaterialDialog materialDialog =   new MaterialDialog.Builder(view.getContext())
                         .title(R.string.app_name)
@@ -141,11 +145,6 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                             }
                         })
                         .build();
-
-                //Sticker Analytics
-                Answers.getInstance().logCustom(new CustomEvent("Sticker LongPressEvent")
-                        .putCustomAttribute("Name", sticker.getName()));
-
                 materialDialog.show();
 
                 admobFrame = ButterKnife.findById(materialDialog, R.id.admob_frame);
@@ -178,14 +177,25 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
 
     private void shareStickerImage(Bitmap bitmap, Context context) {
 
-        String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(),bitmap,"title",null);
+        if(Utility.isStoragePermissionGranted(context)) {
+            fixMediaDir();
+        }
+        bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "title", null);
+        Utility.saveArraylistString("filePaths", bitmapPath, context);
         Uri imageUri = Uri.parse(bitmapPath);
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
         shareIntent.setType("image/*");
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        context.startActivity(Intent.createChooser(shareIntent, "Share Sticker"));
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+            Log.d("INFORMATION", "The current android version allow us to know what app is chosen by the user.");
+
+            Intent receiverIntent = new Intent(context,ShareBroadcastReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            shareIntent = Intent.createChooser(shareIntent,"Share via...", pendingIntent.getIntentSender());
+        }
+        ((Activity)context).startActivityForResult(shareIntent, 5);
     }
 
     private void processImage(Bitmap bitmap) {
@@ -237,6 +247,21 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
         });
         admobFrame.addView(adView);
         adView.loadAd();
+    }
+
+    void fixMediaDir() {
+        File sdcard = Environment.getExternalStorageDirectory();
+        if (sdcard != null) {
+            File mediaDir = new File(sdcard, "DCIM/Camera");
+            if (!mediaDir.exists()) {
+                mediaDir.mkdirs();
+            }
+            mediaDir = new File(sdcard, "Pictures");
+            if (!mediaDir.exists()) {
+                mediaDir.mkdirs();
+            }
+            //new File("/sdcard/Pictures").mkdirs();
+        }
     }
 
 }

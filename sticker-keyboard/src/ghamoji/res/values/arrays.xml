@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="drawables">
+        <item>@drawable/abi_you_know</item>
+        <item>@drawable/abin_dada</item>
+        <item>@drawable/agye_gon</item>
+        <item>@drawable/ashe_wu_roff</item>
+        <item>@drawable/away_bus</item>
+        <item>@drawable/ay</item>
+        <item>@drawable/ay3_late</item>
+        <item>@drawable/cant_think_far</item>
+        <item>@drawable/chop_kiss</item>
+        <item>@drawable/dey_gee</item>
+        <item>@drawable/e_go_bee</item>
+        <item>@drawable/eish</item>
+        <item>@drawable/enko_yie</item>
+        <item>@drawable/forgeti_obia</item>
+        <item>@drawable/girls_abr3</item>
+        <item>@drawable/gyama_wo_yale</item>
+        <item>@drawable/heart</item>
+        <item>@drawable/herh_chai</item>
+        <item>@drawable/i_cant_think_madness</item>
+        <item>@drawable/i_laugh_enter</item>
+        <item>@drawable/kpuu_kpaa</item>
+        <item>@drawable/laugh</item>
+        <item>@drawable/leg_over</item>
+        <item>@drawable/ma_da_koraa</item>
+        <item>@drawable/man_tire</item>
+        <item>@drawable/medo_wo</item>
+        <item>@drawable/mobile_money</item>
+        <item>@drawable/mtchewww</item>
+        <item>@drawable/never_hex</item>
+        <item>@drawable/no_ko_fioo</item>
+        <item>@drawable/oh_ho</item>
+        <item>@drawable/ohemaa</item>
+        <item>@drawable/opana</item>
+        <item>@drawable/proposal_sized</item>
+        <item>@drawable/see_your_life</item>
+        <item>@drawable/send_me_mobile_money</item>
+        <item>@drawable/tenkew</item>
+        <item>@drawable/too_known</item>
+        <item>@drawable/tu_gu_me_su</item>
+        <item>@drawable/u_pap</item>
+        <item>@drawable/wha_less</item>
+        <item>@drawable/wo_no_no</item>
+        <item>@drawable/wu_be_ti_kpa</item>
+        <item>@drawable/wu_y3_nam_paa</item>
+        <item>@drawable/you_do_all</item>
+    </integer-array>
+
+</resources>

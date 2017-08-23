@@ -8,7 +8,10 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import keyboard.android.psyphertxt.com.MainSettings;
 import keyboard.android.psyphertxt.com.constants.Apple_EmojiIcons;
@@ -43,20 +46,20 @@ class Sticker {
 
         List<Sticker> stickers = new ArrayList<>();
 
-        ArrayList<Integer> stickersArray = icons.getCyfaStickerIconIds();
+        LinkedHashMap<String, Drawable> stickersArray = icons.getCyfaStickerIconIds();
 
         try {
-            for (Integer stickerName : stickersArray) {
+            for (Map.Entry<String, Drawable> entry : stickersArray.entrySet()) {
 
                 //create instance of sticker model
                 Sticker sticker = new Sticker();
 
                 //assign the name of the from xml
-                sticker.setName(String.valueOf(context.getResources().getResourceEntryName(stickerName)).replace("_", " "));
+                sticker.setName(entry.getKey().replace("_", " "));
 
                 Log.d(TAG, sticker.getName());
 
-                sticker.setDrawable(ContextCompat.getDrawable(context, stickerName));
+                sticker.setDrawable(entry.getValue());
                 //sticker.setDrawable(context.getDrawable(stickerName));
                 //set image uri using android asset location
                 //all images are in png
@@ -86,20 +89,7 @@ class Sticker {
     }
 
     private static EmojiIcons getPreferedIconSet(Context context) {
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-        if (sharedPreferences
-                .getString(MainSettings.CHANGE_ICON_SET_KEY, MainSettings.CHANGE_ICON_SET_VALUE_DEFAULT)
-                .equals(MainSettings.CHANGE_ICON_SET_VALUE_GOOGLE)){
-            return new Google_EmojiIcons();
-        } else if (sharedPreferences
-                .getString(MainSettings.CHANGE_ICON_SET_KEY, MainSettings.CHANGE_ICON_SET_VALUE_DEFAULT)
-                .equals(MainSettings.CHANGE_ICON_SET_VALUE_APPLE)) {
-            return new Apple_EmojiIcons();
-        }
-
-        return new Google_EmojiIcons();
+        return new Google_EmojiIcons(context);
     }
 
 }

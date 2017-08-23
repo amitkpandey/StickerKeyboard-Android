@@ -16,7 +16,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
 import keyboard.android.psyphertxt.com.R;
+import keyboard.android.psyphertxt.com.Utility;
 
 public class StickerFirstTimeActivity extends AppCompatActivity {
 
@@ -34,7 +38,7 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sticker_first_time);
 
-        isStoragePermissionGranted(this);
+        Utility.isStoragePermissionGranted(this);
 
         installKeyboardBtn = (Button) findViewById(R.id.btn_install_keyboard);
         installLaterTextView = (TextView) findViewById(R.id.tv_install_later);
@@ -46,6 +50,8 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
         installLaterTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("First Launch Click Event")
+                        .putCustomAttribute("Name", "Install Later"));
                 startActivity(new Intent(v.getContext(), StickerActivity.class));
                 finish();
             }
@@ -54,6 +60,8 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
         installKeyboardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("First Launch Click Event")
+                        .putCustomAttribute("Name", "Install Keyboard"));
                 firstOpen = true;
                 prefs.edit().putBoolean("FIRST_CLICK", firstOpen).apply();
                 Intent intent=new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS);
@@ -64,6 +72,8 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
         privacyPolicyTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("First Launch Click Event")
+                        .putCustomAttribute("Name", "Privacy Policy"));
                 firstOpen = true;
                 prefs.edit().putBoolean("FIRST_CLICK", firstOpen).apply();
                 Intent i = new Intent(Intent.ACTION_VIEW);
@@ -97,30 +107,17 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
         }
     }
 
-    public  static boolean isStoragePermissionGranted(Context context) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (context.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG,"Permission is granted");
-                return true;
-            } else {
-                Log.v(TAG,"Permission is revoked");
-                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted");
-            return true;
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
             Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
             //resume tasks needing this permission
+            Answers.getInstance().logCustom(new CustomEvent("First Launch Event")
+                    .putCustomAttribute("Name", "Permission Granted"));
+        }else if(grantResults[0]== PackageManager.PERMISSION_DENIED){
+            Answers.getInstance().logCustom(new CustomEvent("First Launch Event")
+                    .putCustomAttribute("Name", "Permission Denied"));
         }
     }
 

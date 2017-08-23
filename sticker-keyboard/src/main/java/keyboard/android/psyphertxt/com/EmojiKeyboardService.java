@@ -1,6 +1,7 @@
 package keyboard.android.psyphertxt.com;
 
 import android.content.ClipDescription;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.inputmethodservice.InputMethodService;
@@ -21,6 +22,9 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import java.io.File;
+import java.util.ArrayList;
 
 import keyboard.android.psyphertxt.com.adapter.BaseEmojiAdapter;
 import keyboard.android.psyphertxt.com.view.EmojiKeyboardView;
@@ -48,6 +52,17 @@ public class EmojiKeyboardService extends InputMethodService {
 
         if (Build.VERSION.SDK_INT >= 17) {
             enableHardwareAcceleration();
+        }
+    }
+
+    @Override
+    public void onBindInput() {
+        super.onBindInput();
+        try {
+            if(staticApplicationContext != null)
+            deleteStickerEmojisOnStorage(staticApplicationContext);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -202,4 +217,27 @@ public class EmojiKeyboardService extends InputMethodService {
         return false;
     }
 
+
+    private void deleteStickerEmojisOnStorage(Context context) {
+        ArrayList<String> list = Utility.getArrayListString("filePaths", context);
+        if (list != null){
+            if(!list.isEmpty()) {
+                for (String string : list){
+                    Uri uri = Uri.parse(string);
+                    if(string.startsWith("content://")){
+                        ContentResolver contentResolver = getContentResolver();
+                        contentResolver.delete(uri, null, null);
+                    }else {
+                        File file = new File(uri.getPath());
+                        if (file.exists()) {
+                            Log.d(TAG, "in file exist");
+                            if (file.delete()) {
+                                Log.d(TAG, "in file delete");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.AnyRes;
@@ -21,24 +24,26 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import io.fabric.sdk.android.Fabric;
-import keyboard.android.psyphertxt.com.EmojiKeyboardService;
-import keyboard.android.psyphertxt.com.R;
-
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
+import keyboard.android.psyphertxt.com.EmojiKeyboardService;
+import keyboard.android.psyphertxt.com.R;
+import keyboard.android.psyphertxt.com.Utility;
+
 
 public abstract class BaseEmojiAdapter extends BaseAdapter {
 
     protected EmojiKeyboardService emojiKeyboardService;
-    protected ArrayList<String> emojiTexts;
-    protected ArrayList<Integer> iconIds;
+    protected LinkedList<String> emojiTexts;
+    protected LinkedList<Drawable> iconIds;
+    public static String bitmapPath = "";
     public static EditorInfo info;
     private static final String TAG = BaseEmojiAdapter.class.getSimpleName();
 
@@ -64,22 +69,22 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(iconIds.get(position));
+        imageView.setImageDrawable(iconIds.get(position));
         imageView.setBackgroundResource(R.drawable.btn_background);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (emojiTexts == null) {
-                    if (getCurrentAppPackage(v.getContext()) != null) {
-                        //Sticker Analytics
-                        Log.d(TAG, String.valueOf(v.getContext().getResources().getResourceEntryName(iconIds.get(position))).replace("_"," "));
-                        Answers.getInstance().logCustom(new CustomEvent("Keyboard Sticker ClickEvent")
-                               .putCustomAttribute("Name", String.valueOf(v.getContext().getResources().getResourceEntryName(iconIds.get(position))).replace("_"," ")));
-                        passImage(v.getContext(), iconIds.get(position), v);
-                    }
-                } else {
-                    emojiKeyboardService.sendText(emojiTexts.get(position));
+//                if (emojiTexts == null) {
+                if (getCurrentAppPackage(v.getContext()) != null) {
+                    //Sticker Analytics
+                    Log.d(TAG, String.valueOf(emojiTexts.get(position)).replace("_", " "));
+                    Answers.getInstance().logCustom(new CustomEvent("Keyboard Sticker ClickEvent")
+                            .putCustomAttribute("Name", String.valueOf(emojiTexts.get(position)).replace("_", " ")));
+                    passImage(v.getContext(), imageView, v);
                 }
+//                } else {
+//                    emojiKeyboardService.sendText(emojiTexts.get(position));
+//                }
             }
         });
         return imageView;
@@ -124,56 +129,47 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
         return null;
     }
 
-    public void passImage(final Context context, int drawableId, final View v) {
-        final ImageView imageView = new ImageView(v.getContext());
-        System.out.println(">>>>>>>>>>>>" + drawableId);
-        Picasso.with(v.getContext())
-                .load(drawableId)
-                .noFade()
-                .into(imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
+    public void passImage(final Context context, ImageView imageView, final View v) {
 
-                        //convert image to bitmap so it can be shared.
-                        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                        String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "title", null);
-                        Uri imageUri = Uri.parse(bitmapPath);
-                        Intent intent = createIntent(v.getContext(), imageUri);
-                        try {
-                            context.getApplicationContext().startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        //v.getContext().startActivity(intent);
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
+        //convert image to bitmap so it can be shared.
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        // Create new bitmap based on the size and config of the old
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+        newBitmap.eraseColor(Color.WHITE);
+        Canvas canvas = new Canvas(newBitmap);  // create a canvas to draw on the new image
+        canvas.drawBitmap(bitmap, 0f, 0f, null); // draw old image on the background
+        bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), newBitmap, "title", null);
+        Utility.saveArraylistString("filePaths", bitmapPath, context);
+        Uri imageUri = Uri.parse(bitmapPath);
+        Intent intent = createIntent(v.getContext(), imageUri);
+        try {
+            context.getApplicationContext().startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+        //v.getContext().startActivity(intent);
+//                    }
+//
+//                    @Override
+//                    public void onError() {
+//
+//                    }
+//                });
     }
 
     public Intent createIntent(Context context, Uri uri) {
+        String appName = getCurrentAppPackage(context);
+        Answers.getInstance().logCustom(new CustomEvent("Share Click Event")
+                .putCustomAttribute("Name", appName));
         Intent sendIntent = new Intent("android.intent.action.MAIN");
         sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
         sendIntent.putExtra("jid", "" + "@s.whatsapp.net");
         sendIntent.putExtra(Intent.EXTRA_TEXT, "");
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.setPackage(getCurrentAppPackage(context));
+        sendIntent.setPackage(appName);
         sendIntent.setType("image/png");
         sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return sendIntent;
-//        String packageNames = getCurrentAppPackage(context);
-//        System.out.println(">>>>>>>>>>> "+ packageNames);
-//        Uri mUri = Uri.parse("smsto:+233543951604");
-//        Intent sharingIntent = new Intent(Intent.ACTION_SENDTO, mUri);
-//        sharingIntent.setType("image/png");
-//        sharingIntent.setPackage(packageNames);
-//        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
-//        sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        return sharingIntent;
     }
 
     public static final Uri getUriToDrawable(@NonNull Context context,
