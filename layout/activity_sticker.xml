@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_ll"
+    tools:context="keyboard.android.psyphertxt.com.stickers.StickerActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/sticker_grid_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/admob_frame"
+        android:adjustViewBounds="true"
+        android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:id="@+id/admob_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/about_txt"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:background="#ddd"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/about_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="#fff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9.9sp"
+            android:textColor="#5e5e5e"
+            android:letterSpacing="-0.02"
+            android:text="MADE WITH"
+            android:layout_marginRight="10dp"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_heart"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9.9sp"
+            android:textColor="#5e5e5e"
+            android:letterSpacing="-0.02"
+            android:text="FROM GHANA"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

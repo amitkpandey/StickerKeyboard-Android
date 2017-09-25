@@ -1,22 +1,16 @@
 package keyboard.android.psyphertxt.com.stickers;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import keyboard.android.psyphertxt.com.MainSettings;
-import keyboard.android.psyphertxt.com.constants.Apple_EmojiIcons;
 import keyboard.android.psyphertxt.com.constants.EmojiIcons;
-import keyboard.android.psyphertxt.com.constants.Google_EmojiIcons;
+import keyboard.android.psyphertxt.com.constants.Sticker_EmojiIcons;
 
 class Sticker {
     private String name;
@@ -40,9 +34,9 @@ class Sticker {
         this.name = name;
     }
 
-    static List<Sticker> initStickers(Context context) {
+    static List<Sticker> initStickers(Context context, boolean withExpressions) {
 
-        EmojiIcons icons = getPreferedIconSet(context);
+        EmojiIcons icons = getPreferedIconSet(context, withExpressions);
 
         List<Sticker> stickers = new ArrayList<>();
 
@@ -88,8 +82,8 @@ class Sticker {
         return name;
     }
 
-    private static EmojiIcons getPreferedIconSet(Context context) {
-        return new Google_EmojiIcons(context);
+    private static EmojiIcons getPreferedIconSet(Context context, boolean withExpressions) {
+        return new Sticker_EmojiIcons(context, withExpressions);
     }
 
 }

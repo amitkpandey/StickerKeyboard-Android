@@ -47,6 +47,8 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
     private LinearLayout admobFrame;
     private EmojiPagerAdapter emojiPagerAdapter;
     private EmojiKeyboardService emojiKeyboardService;
+    SharedPreferences prefs;
+    Boolean withExpressions;
 
     public EmojiKeyboardView(Context context) {
         super(context);
@@ -66,6 +68,11 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
     private void initialize(Context context) {
 
         emojiKeyboardService = (EmojiKeyboardService) context;
+
+        prefs = context.getSharedPreferences(
+                "sticker_app", Context.MODE_PRIVATE);
+
+        withExpressions = prefs.getBoolean("icons_with_text", false);
 
         LayoutInflater inflater = (LayoutInflater)   getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -108,13 +115,15 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
 
         //pagerSlidingTabStrip.setSelectedTabIndicatorHeight(6);
 
-        emojiPagerAdapter = new EmojiPagerAdapter(context, viewPager, height);
+        emojiPagerAdapter = new EmojiPagerAdapter(context, viewPager, height, withExpressions);
 
         viewPager.setAdapter(emojiPagerAdapter);
 
         setupDeleteButton();
 
         setupGoToNextActivityButton();
+
+        setupSwitchButton();
 
         pagerSlidingTabStrip.setViewPager(viewPager);
 
@@ -153,6 +162,21 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
         });
     }
 
+    private void setupSwitchButton() {
+
+        final ImageView switchBtn = (ImageView) layout.findViewById(R.id.switchButton);
+
+        switchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                withExpressions = withExpressions == false ? true : false;
+                prefs.edit().putBoolean("icons_with_text", withExpressions).apply();
+                switchBtn.setImageResource(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
+                emojiPagerAdapter.notifyDataChanged(switchBtn.getContext(), withExpressions);
+            }
+        });
+    }
+
     private void setupGoToNextActivityButton() {
 
         ImageView gotoNextActivity = (ImageView) layout.findViewById(R.id.openActivityButton);
@@ -186,7 +210,7 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
 
         Log.d("sharedPreferenceChange", "function called on change of shared preferences with key " + key);
         if (key.equals("icon_set")){
-            emojiPagerAdapter = new EmojiPagerAdapter(getContext(), viewPager, height);
+            emojiPagerAdapter = new EmojiPagerAdapter(getContext(), viewPager, height, withExpressions);
             viewPager.setAdapter(emojiPagerAdapter);
             this.invalidate();
         }

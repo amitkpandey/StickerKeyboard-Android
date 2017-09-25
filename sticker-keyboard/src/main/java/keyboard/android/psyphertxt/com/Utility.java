@@ -1,6 +1,6 @@
 package keyboard.android.psyphertxt.com;
 
-import android.*;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;

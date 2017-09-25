@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    tools:context="keyboard.android.psyphertxt.com.stickers.StickerDetailActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_ll"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14.4sp"
+            android:paddingLeft="31dp"
+            android:paddingRight="31dp"
+            android:fontFamily="sans-serif-medium"
+            android:textStyle="normal"
+            android:textColor="#686868"
+            android:layout_marginBottom="40dp"
+            android:text="@string/this_application"
+            />
+
+        <Button
+            android:id="@+id/btn_install_keyboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="14sp"
+            android:background="@drawable/button_rounded_white"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="60dp"
+            android:text="@string/install_keyboard"/>
+
+
+        <TextView
+            android:id="@+id/tv_install_later"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14.4sp"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#686868"
+            android:text="@string/install_keyboard_later"
+        />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_privacy_policy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="37dp"
+        android:textColor="#535353"
+        android:text="@string/view_privacy_policy"
+        />
+
+</RelativeLayout>

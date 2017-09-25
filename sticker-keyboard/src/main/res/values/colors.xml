@@ -7,9 +7,10 @@
     <color name="delete_color">#adadad</color>
     <color name="divider_color">#1A000000</color>
     <color name="experimental">#FF0000</color>
-
+    <color name="colorPrimary">#f9f7f7</color>
+    <color name="colorPrimaryDark">#492217</color>
+    <color name="colorAccent">#5c0320</color>
     <color name="trial_expired_background">#DD000000</color>
-
     <color name="black">#222222</color>
 
 </resources>

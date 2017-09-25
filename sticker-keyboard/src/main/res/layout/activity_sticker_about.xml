@@ -34,10 +34,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:paddingTop="15dp"
         android:layout_below="@+id/lin_txt"
         android:layout_above="@+id/lin_bottom"
-        android:src="@drawable/artwork"/>
+        android:src="@drawable/artwork"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:id="@+id/lin_bottom"

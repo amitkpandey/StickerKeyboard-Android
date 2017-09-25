@@ -71,13 +71,14 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
 
         imageView.setImageDrawable(iconIds.get(position));
         imageView.setBackgroundResource(R.drawable.btn_background);
+        Log.d(TAG, "showing ");
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                if (emojiTexts == null) {
                 if (getCurrentAppPackage(v.getContext()) != null) {
                     //Sticker Analytics
-                    Log.d(TAG, String.valueOf(emojiTexts.get(position)).replace("_", " "));
+                    Log.d(TAG, "showing "+String.valueOf(emojiTexts.get(position)).replace("_", " "));
                     Answers.getInstance().logCustom(new CustomEvent("Keyboard Sticker ClickEvent")
                             .putCustomAttribute("Name", String.valueOf(emojiTexts.get(position)).replace("_", " ")));
                     passImage(v.getContext(), imageView, v);
@@ -92,7 +93,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int arg0) {
-        return null;
+        return iconIds.get(arg0);
     }
 
     @Override
@@ -179,5 +180,15 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
                 + '/' + context.getResources().getResourceTypeName(drawableId)
                 + '/' + context.getResources().getResourceEntryName(drawableId));
         return imageUri;
+    }
+
+    public void addAll(LinkedList<Drawable> iconIds, LinkedList<String> emojiTexts) {
+        Log.v("this",iconIds.size()+" resultsize");
+
+        this.iconIds.clear();
+        this.emojiTexts.clear();
+        this.iconIds = iconIds;
+        this.emojiTexts = emojiTexts;
+        notifyDataSetChanged();
     }
 }

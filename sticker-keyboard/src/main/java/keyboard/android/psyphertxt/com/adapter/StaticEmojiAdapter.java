@@ -16,5 +16,9 @@ public class StaticEmojiAdapter extends BaseEmojiAdapter {
         if(emojiTextsAsStrings != null)
             this.emojiTexts =  emojiTextsAsStrings;
         this.iconIds = iconIds;
+        System.out.println(emojiTextsAsStrings);
+    }
+    public void aaddAll(LinkedList<String> emojiTextsAsStrings, LinkedList<Drawable> iconIds){
+        addAll(iconIds, emojiTextsAsStrings);
     }
 }
