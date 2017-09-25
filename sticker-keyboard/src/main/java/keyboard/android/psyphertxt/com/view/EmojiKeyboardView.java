@@ -111,9 +111,6 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
         pagerSlidingTabStrip = (SmartTabLayout) layout.findViewById(R.id.emojiCategorytab);
 
         pagerSlidingTabStrip.setCustomTabView(this);
-        //pagerSlidingTabStrip.setSelectedTabIndicatorColor(getResources().getColor(R.color.holo_blue));
-
-        //pagerSlidingTabStrip.setSelectedTabIndicatorHeight(6);
 
         emojiPagerAdapter = new EmojiPagerAdapter(context, viewPager, height, withExpressions);
 
@@ -134,11 +131,6 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
 
     public View getView() {
         return layout;
-    }
-
-    public void notifyDataSetChanged() {
-        emojiPagerAdapter.notifyDataSetChanged();
-        viewPager.refreshDrawableState();
     }
 
     private void setupDeleteButton() {
@@ -165,14 +157,17 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
     private void setupSwitchButton() {
 
         final ImageView switchBtn = (ImageView) layout.findViewById(R.id.switchButton);
-
+        switchBtn.setImageResource(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
         switchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 withExpressions = withExpressions == false ? true : false;
                 prefs.edit().putBoolean("icons_with_text", withExpressions).apply();
                 switchBtn.setImageResource(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
-                emojiPagerAdapter.notifyDataChanged(switchBtn.getContext(), withExpressions);
+                emojiPagerAdapter = new EmojiPagerAdapter(getContext(), viewPager, height, withExpressions);
+                viewPager.setAdapter(emojiPagerAdapter);
+                emojiPagerAdapter.notifyDataSetChanged();
+                EmojiKeyboardView.this.invalidate();
             }
         });
     }

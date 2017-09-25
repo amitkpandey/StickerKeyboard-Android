@@ -181,14 +181,4 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
                 + '/' + context.getResources().getResourceEntryName(drawableId));
         return imageUri;
     }
-
-    public void addAll(LinkedList<Drawable> iconIds, LinkedList<String> emojiTexts) {
-        Log.v("this",iconIds.size()+" resultsize");
-
-        this.iconIds.clear();
-        this.emojiTexts.clear();
-        this.iconIds = iconIds;
-        this.emojiTexts = emojiTexts;
-        notifyDataSetChanged();
-    }
 }

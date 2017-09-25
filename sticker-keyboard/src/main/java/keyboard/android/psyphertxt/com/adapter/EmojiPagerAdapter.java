@@ -74,17 +74,4 @@ public class EmojiPagerAdapter extends PagerAdapter {
         return "";
     }
 
-    public void notifyDataChanged(final Context context, boolean withExpression){
-        this.withExpression = withExpression;
-        final EmojiIcons icons = getPreferedIconSet();
-        adapter = new StaticEmojiAdapter(context, new LinkedList<String>(icons.getCyfaStickerIconIds().keySet()), new LinkedList<Drawable>(icons.getCyfaStickerIconIds().values()));
-        final GridView gridView = (GridView) new KeyboardSinglePageView(context, adapter).getView();
-        gridView.post(new Runnable() {
-            @Override
-            public void run() {
-                gridView.invalidateViews(); //invalidate old
-                adapter.aaddAll(new LinkedList<String>(icons.getCyfaStickerIconIds().keySet()), new LinkedList<Drawable>(icons.getCyfaStickerIconIds().values()));
-            }
-        });
-    }
 }
