@@ -26,6 +26,8 @@ import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.adapter.EmojiPagerAdapter;
 import keyboard.android.psyphertxt.com.stickers.StickerActivity;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdSize;
@@ -140,6 +142,8 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("Keyboard Click Event")
+                        .putCustomAttribute("Name", "Open Keyboard Settings"));
                 InputMethodManager imeManager = (InputMethodManager) v.getContext().getApplicationContext().getSystemService(INPUT_METHOD_SERVICE);
                 imeManager.showInputMethodPicker();
             }
@@ -148,6 +152,8 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
         delete.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("Keyboard Click Event")
+                        .putCustomAttribute("Name", "Switch to Previous IME"));
                 emojiKeyboardService.switchToPreviousInputMethod();
                 return false;
             }
@@ -161,6 +167,8 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
         switchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("Home Click Event")
+                        .putCustomAttribute("Name", "Switch Button"));
                 withExpressions = withExpressions == false ? true : false;
                 prefs.edit().putBoolean("icons_with_text", withExpressions).apply();
                 switchBtn.setImageResource(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
@@ -173,12 +181,13 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
     }
 
     private void setupGoToNextActivityButton() {
-
         ImageView gotoNextActivity = (ImageView) layout.findViewById(R.id.openActivityButton);
 
         gotoNextActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answers.getInstance().logCustom(new CustomEvent("Keyboard Click Event")
+                        .putCustomAttribute("Name", "Open Sticker App"));
                 Intent intent = new Intent(v.getContext(), StickerActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 v.getContext().startActivity(intent);

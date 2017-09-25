@@ -6,7 +6,7 @@
         <item>@drawable/agye_gon</item>
         <item>@drawable/ashe_wu_roff</item>
         <item>@drawable/away_bus</item>
-        <item>@drawable/ay_2</item>
+        <item>@drawable/ay</item>
         <item>@drawable/cant_think_far</item>
         <item>@drawable/abi_you_know</item>
         <item>@drawable/ay3_late</item>
@@ -43,7 +43,7 @@
         <item>@drawable/opana</item>
         <item>@drawable/say_fi</item>
         <item>@drawable/see_your_life</item>
-        <item>@drawable/send_me_mobile_money</item>
+        <item>@drawable/send_me_money</item>
         <item>@drawable/tenkew</item>
         <item>@drawable/too_known</item>
         <item>@drawable/tu_gu_me_su</item>
@@ -56,6 +56,55 @@
         <item>@drawable/y3_wo_krom</item>
         <item>@drawable/you_do_all</item>
         <item>@drawable/you_dat</item>
+    </integer-array>
+
+
+    <integer-array name="drawables_no_expressions">
+        <item>@drawable/abi_you_know_no_txt</item>
+        <item>@drawable/abin_dada_no_txt</item>
+        <item>@drawable/agye_gon_no_txt</item>
+        <item>@drawable/ashe_wu_roff_no_txt</item>
+        <item>@drawable/away_bus_no_txt</item>
+        <item>@drawable/ay_no_txt</item>
+        <item>@drawable/ay3_late_no_txt</item>
+        <item>@drawable/cant_think_far_no_txt</item>
+        <item>@drawable/chop_kiss_no_txt</item>
+        <item>@drawable/dey_gee_no_txt</item>
+        <item>@drawable/e_go_bee_no_txt</item>
+        <item>@drawable/eish_no_txt</item>
+        <item>@drawable/enko_yie_no_txt</item>
+        <item>@drawable/forgeti_obia_no_txt</item>
+        <item>@drawable/girls_abr3_no_txt</item>
+        <item>@drawable/gyama_wo_yale_no_txt</item>
+        <item>@drawable/heart_no_txt</item>
+        <item>@drawable/herh_chai_no_txt</item>
+        <item>@drawable/i_cant_think_madness_no_txt</item>
+        <item>@drawable/i_laugh_enter_no_txt</item>
+        <item>@drawable/kpuu_kpaa_no_txt</item>
+        <item>@drawable/laugh_no_txt</item>
+        <item>@drawable/leg_over_no_txt</item>
+        <item>@drawable/ma_da_koraa_no_txt</item>
+        <item>@drawable/man_tire_no_txt</item>
+        <item>@drawable/marry_me_no_txt</item>
+        <item>@drawable/medo_wo_no_txt</item>
+        <item>@drawable/mtchewww_no_txt</item>
+        <item>@drawable/never_hex_no_txt</item>
+        <item>@drawable/no_ko_fioo_no_txt</item>
+        <item>@drawable/oh_ho_no_txt</item>
+        <item>@drawable/ohemaa_no_txt</item>
+        <item>@drawable/opana_no_txt</item>
+        <item>@drawable/say_fi_no_txt</item>
+        <item>@drawable/see_your_life_no_txt</item>
+        <item>@drawable/send_me_money_no_txt</item>
+        <item>@drawable/tenkew_no_txt</item>
+        <item>@drawable/too_known_no_txt</item>
+        <item>@drawable/tu_gu_me_su_no_txt</item>
+        <item>@drawable/u_pap_no_txt</item>
+        <item>@drawable/wha_less_no_txt</item>
+        <item>@drawable/wo_no_no_no_txt</item>
+        <item>@drawable/wu_be_ti_kpa_no_txt</item>
+        <item>@drawable/wu_y3_nam_paa_no_txt</item>
+        <item>@drawable/you_do_all_no_txt</item>
     </integer-array>
 
 </resources>

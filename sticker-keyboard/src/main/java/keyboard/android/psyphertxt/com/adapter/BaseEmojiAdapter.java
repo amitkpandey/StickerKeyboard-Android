@@ -160,8 +160,6 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
 
     public Intent createIntent(Context context, Uri uri) {
         String appName = getCurrentAppPackage(context);
-        Answers.getInstance().logCustom(new CustomEvent("Share Click Event")
-                .putCustomAttribute("Name", appName));
         Intent sendIntent = new Intent("android.intent.action.MAIN");
         sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
         sendIntent.putExtra("jid", "" + "@s.whatsapp.net");

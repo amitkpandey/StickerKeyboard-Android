@@ -93,9 +93,9 @@ public class StickerActivity extends AppCompatActivity {
         addAdMobView();
 
 
-        if(BuildConfig.APPLICATION_ID.contains("naija")){
+        //if(BuildConfig.APPLICATION_ID.contains("naija")){
             implementWalkThrough();
-        }
+       // }
     }
 
     private void setupAdapter() {
@@ -147,6 +147,8 @@ public class StickerActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.switchicons:
+                Answers.getInstance().logCustom(new CustomEvent("Home Click Event")
+                        .putCustomAttribute("Name", "Switch Button"));
                 withExpressions = withExpressions == false ? true : false;
                 prefs.edit().putBoolean("icons_with_text", withExpressions).apply();
                 switchMenuItem.setIcon(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
@@ -294,76 +296,89 @@ public class StickerActivity extends AppCompatActivity {
     }
 
     private void implementWalkThrough(){
-        viewTreeObserver = getWindow().getDecorView().getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                switchMenu = findViewById(R.id.switchicons);
-                // This could be called when the button is not there yet, so we must test for null
-                if (switchMenu != null) {
-                    // Found it! Do what you need with the button
-                    int[] location = new int[2];
-                    switchMenu.getLocationInWindow(location);
-                    Log.d(TAG, "x=" + location[0] + " y=" + location[1]);
+        System.out.println(">>>>"+BuildConfig.APPLICATION_ID);
+        try {
+            viewTreeObserver = getWindow().getDecorView().getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    switchMenu = findViewById(R.id.switchicons);
+                    // This could be called when the button is not there yet, so we must test for null
+                    if (switchMenu != null) {
+                        // Found it! Do what you need with the button
+                        int[] location = new int[2];
+                        switchMenu.getLocationInWindow(location);
+                        Log.d(TAG, "x=" + location[0] + " y=" + location[1]);
 
-                    if (viewTreeObserver != null) {
-                        // Now you can get rid of this listener
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            if (viewTreeObserver.isAlive()) {
-                                viewTreeObserver.removeOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                                    @Override
-                                    public void onGlobalLayout() {
+                        if (viewTreeObserver != null) {
+                            // Now you can get rid of this listener
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                if (viewTreeObserver.isAlive()) {
+                                    viewTreeObserver.removeOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                                        @Override
+                                        public void onGlobalLayout() {
 
-                                    }
-                                });
-                            }else{
-                                viewTreeObserver = getWindow().getDecorView().getViewTreeObserver();
+                                        }
+                                    });
+                                } else {
+                                    viewTreeObserver = getWindow().getDecorView().getViewTreeObserver();
+                                    viewTreeObserver.removeGlobalOnLayoutListener(this);
+                                }
+                            } else {
                                 viewTreeObserver.removeGlobalOnLayoutListener(this);
                             }
-                        } else {
-                            viewTreeObserver.removeGlobalOnLayoutListener(this);
-                        }
-                        showcaseView = new MaterialShowcaseView.Builder(StickerActivity.this)
-                                .setTarget(switchMenu)
-                                .setDismissText("GOT IT")
-                                .setContentText("Tap on this menu to enable or disable stickers with text")
-                                .setDismissOnTargetTouch(true)
-                                .setContentTextColor(Color.parseColor("#dddddd"))
-                                .setDismissTextColor(Color.parseColor("#ffffff"))
-                                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-                                .singleUse(String.valueOf(System.currentTimeMillis())) // provide a unique ID used to ensure it is only shown once
-                                .show();
-                    }else{
-                        viewTreeObserver = getWindow().getDecorView().getViewTreeObserver();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            if (viewTreeObserver.isAlive()) {
-                                viewTreeObserver.removeOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                                    @Override
-                                    public void onGlobalLayout() {
-
-                                    }
-                                });
-                            }else{
-                                viewTreeObserver = getWindow().getDecorView().getViewTreeObserver();
-                                viewTreeObserver.removeGlobalOnLayoutListener(this);
+                            try {
+                                showcaseView = new MaterialShowcaseView.Builder(StickerActivity.this)
+                                        .setTarget(switchMenu)
+                                        .setDismissText("GOT IT")
+                                        .setContentText("Tap on this menu to enable or disable stickers with text")
+                                        .setDismissOnTargetTouch(true)
+                                        .setContentTextColor(Color.parseColor("#dddddd"))
+                                        .setDismissTextColor(Color.parseColor("#ffffff"))
+                                        .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+                                        .singleUse(BuildConfig.APPLICATION_ID) // provide a unique ID used to ensure it is only shown once
+                                        .show();
+                            }catch (Exception e){
+                                e.printStackTrace();
                             }
                         } else {
-                            viewTreeObserver.removeGlobalOnLayoutListener(this);
+                            viewTreeObserver = getWindow().getDecorView().getViewTreeObserver();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                if (viewTreeObserver.isAlive()) {
+                                    viewTreeObserver.removeOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                                        @Override
+                                        public void onGlobalLayout() {
+
+                                        }
+                                    });
+                                } else {
+                                    viewTreeObserver = getWindow().getDecorView().getViewTreeObserver();
+                                    viewTreeObserver.removeGlobalOnLayoutListener(this);
+                                }
+                            } else {
+                                viewTreeObserver.removeGlobalOnLayoutListener(this);
+                            }
+                            try {
+                                showcaseView = new MaterialShowcaseView.Builder(StickerActivity.this)
+                                        .setTarget(switchMenu)
+                                        .setDismissText("GOT IT")
+                                        .setContentText("Tap on this menu to enable or disable stickers with text")
+                                        .setDismissOnTargetTouch(true)
+                                        .setContentTextColor(Color.parseColor("#dddddd"))
+                                        .setDismissTextColor(Color.parseColor("#ffffff"))
+                                        .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+                                        .singleUse(BuildConfig.APPLICATION_ID) // provide a unique ID used to ensure it is only shown once
+                                        .show();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
-                        showcaseView = new MaterialShowcaseView.Builder(StickerActivity.this)
-                                .setTarget(switchMenu)
-                                .setDismissText("GOT IT")
-                                .setContentText("Tap on this menu to enable or disable stickers with text")
-                                .setDismissOnTargetTouch(true)
-                                .setContentTextColor(Color.parseColor("#dddddd"))
-                                .setDismissTextColor(Color.parseColor("#ffffff"))
-                                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-                                .singleUse(String.valueOf(System.currentTimeMillis())) // provide a unique ID used to ensure it is only shown once
-                                .show();
                     }
                 }
-            }
-        });
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
