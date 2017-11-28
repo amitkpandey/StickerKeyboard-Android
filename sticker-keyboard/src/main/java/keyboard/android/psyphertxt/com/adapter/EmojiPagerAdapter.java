@@ -36,7 +36,7 @@ public class EmojiPagerAdapter extends PagerAdapter {
         this.withExpression = withExpression;
 
         EmojiIcons icons = getPreferedIconSet();
-        adapter = new StaticEmojiAdapter(context, new LinkedList<String>(icons.getCyfaStickerIconIds().keySet()), new LinkedList<Drawable>(icons.getCyfaStickerIconIds().values()));
+        adapter = new StaticEmojiAdapter(context, new LinkedList<String>(icons.getCyfaStickerIconIds().keySet()), new LinkedList<Integer>(icons.getCyfaStickerIconIds().values()));
         pages.add(new KeyboardSinglePageView(context, adapter).getView());
     }
 

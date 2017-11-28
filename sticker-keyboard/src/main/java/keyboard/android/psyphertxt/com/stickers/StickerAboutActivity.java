@@ -15,18 +15,15 @@ import keyboard.android.psyphertxt.com.R;
 
 public class StickerAboutActivity extends AppCompatActivity {
 
-    ImageView instagramIv, twitterIv, facebookIv;
-    TextView privacyPolicyTv;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sticker_about);
 
-        instagramIv = (ImageView) findViewById(R.id.iv_instagram);
-        twitterIv = (ImageView) findViewById(R.id.iv_twitter);
-        facebookIv = (ImageView) findViewById(R.id.iv_facebook);
-        privacyPolicyTv = (TextView) findViewById(R.id.tv_privacy_policy);
+        ImageView instagramIv = findViewById(R.id.iv_instagram);
+        ImageView twitterIv =  findViewById(R.id.iv_twitter);
+        ImageView facebookIv =  findViewById(R.id.iv_facebook);
+        TextView privacyPolicyTv =  findViewById(R.id.tv_privacy_policy);
 
         instagramIv.setOnClickListener(new View.OnClickListener() {
             @Override

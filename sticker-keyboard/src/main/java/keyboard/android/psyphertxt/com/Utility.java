@@ -3,22 +3,30 @@ package keyboard.android.psyphertxt.com;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.app.AlertDialog;
 import android.util.Log;
-
+import android.view.Window;
+import android.view.WindowManager;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import keyboard.android.psyphertxt.com.utilities.ObjectSerializer;
 
@@ -35,14 +43,14 @@ public class Utility {
         return list;
     }
 
-    public static final LinkedList<Drawable> initArrayList(int resourceName, Context  context) {
-        LinkedList<Drawable> list = new LinkedList<>();
+    public static final LinkedList<Integer> initArrayList(int resourceName, Context  context) {
+        LinkedList<Integer> list = new LinkedList<>();
         list = new LinkedList<>(initLinkHashMap(resourceName, context).values());
         return list;
     }
 
-    public static final LinkedHashMap<String, Drawable> initLinkHashMap(int resourceName, Context  context) {
-        LinkedHashMap<String, Drawable> list = new LinkedHashMap<String, Drawable>();
+    public static final LinkedHashMap<String, Integer> initLinkHashMap(int resourceName, Context  context) {
+        LinkedHashMap<String, Integer> list = new LinkedHashMap<String, Integer>();
 
         Resources res = context.getResources();
         TypedArray icons = res.obtainTypedArray(resourceName);
@@ -51,13 +59,8 @@ public class Utility {
         {
             try {
                 Log.d("<<<<", String.valueOf(i));
-                Drawable drawable = icons.getDrawable(i);
-                if (drawable == null) {
-                    break;
-                } else {
-                    String name = context.getResources().getResourceEntryName(icons.getResourceId(i, -1));
-                    list.put(name, drawable);
-                }
+                String name = context.getResources().getResourceEntryName(icons.getResourceId(i, -1));
+                list.put(name, icons.getResourceId(i, -1));
                 i++;
             }catch (Exception e){
                 e.printStackTrace();
@@ -68,7 +71,7 @@ public class Utility {
         return list;
     }
 
-    public static boolean isStoragePermissionGranted(Context context) {
+    public static boolean isStoragePermissionGranted(final Context context) {
         if (Build.VERSION.SDK_INT >= 23) {
             if (context.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -80,7 +83,57 @@ public class Utility {
                 Answers.getInstance().logCustom(new CustomEvent("First Launch Permission Check Event")
                         .putCustomAttribute("Name", "Permission Already Denied"));
                 Log.v(TAG,"Permission is revoked");
-                ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                if(context instanceof Activity) {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                }else if(context instanceof EmojiKeyboardService){
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
+                    builder.setTitle("Storage Permission");
+                    builder.setMessage("You haven't enabled the storage permission. Please enable to share stickers");
+                    builder.setNegativeButton("DISABLE", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).setPositiveButton("ENABLE", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID));
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent);
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    Window window = alert.getWindow();
+                    WindowManager.LayoutParams lp = window.getAttributes();
+                    lp.token = EmojiKeyboardService.mInputView.getWindowToken();
+                    lp.type = WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG;
+                    window.setAttributes(lp);
+                    window.addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                    alert.show();
+
+
+
+//                    new MaterialDialog.Builder(context)
+//                            .title("Storage Permission ")
+//                            .content("You haven't enabled the storage permission. Please enable to share")
+//                            .positiveText("ENABLE")
+//                            .negativeText("DISABLE")
+//                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                                @Override
+//                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                    context.startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID)));
+//                                }
+//                            })
+//                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+//                                @Override
+//                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                    dialog.dismiss();
+//                                }
+//                            })
+//                            .show();
+                }
                 return false;
             }
         }
@@ -110,12 +163,8 @@ public class Utility {
         editor.commit();
     }
 
-    public static void removeStringFromList(String key, String filePath, Context context){
+    public static void removeStringsFromList(String key, Context context){
         ArrayList<String> list = new ArrayList<>();
-        if(getArrayListString(key, context) != null){
-            list = getArrayListString(key, context);
-        }
-        list.remove(filePath);
         //save list into SP
         SharedPreferences prefs = context.getSharedPreferences("gh", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -141,4 +190,28 @@ public class Utility {
         Log.d(TAG, strings.toString());
         return strings;
     }
+
+    public static Map<String, String> splitQuery(String urlString) {
+        Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+        URL url = null;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        if(url != null) {
+            String query = url.getQuery();
+            String[] pairs = query.split("&");
+            for (String pair : pairs) {
+                int idx = pair.indexOf("=");
+                try {
+                    query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return query_pairs;
+    }
+
 }

@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer-array name="drawables">
+        <item>@drawable/jollof</item>
+        <item>@drawable/waakye</item>
+        <item>@drawable/fried_rice</item>
+        <item>@drawable/tilapia_banku</item>
+        <item>@drawable/kofo_brokeman</item>
+        <item>@drawable/kenkey</item>
+        <item>@drawable/rice_and_stew</item>
+        <item>@drawable/banku_okro_stew</item>
+        <item>@drawable/omotuo</item>
+        <item>@drawable/fufu</item>
+        <item>@drawable/gari_soaki</item>
+        <item>@drawable/koko_koose</item>
+        <item>@drawable/koko_boflot</item>
+        <item>@drawable/red_red</item>
+        <item>@drawable/fried_yam</item>
+        <item>@drawable/kelewele</item>
+        <item>@drawable/boiled_yam</item>
+        <item>@drawable/gari_fotor</item>
+        <item>@drawable/tuo_zaafi</item>
         <item>@drawable/ampesi</item>
         <item>@drawable/angwa_mo</item>
         <item>@drawable/apapransa</item>
-        <item>@drawable/banku_okro_stew</item>
-        <item>@drawable/boiled_yam</item>
         <item>@drawable/eto</item>
         <item>@drawable/fante_kenkey</item>
-        <item>@drawable/fried_rice</item>
-        <item>@drawable/fried_yam</item>
-        <item>@drawable/fufu</item>
-        <item>@drawable/gari_fotor</item>
-        <item>@drawable/gari_soaki</item>
-        <item>@drawable/jollof</item>
         <item>@drawable/kaklo</item>
-        <item>@drawable/kelewele</item>
-        <item>@drawable/kenkey</item>
         <item>@drawable/khebab</item>
-        <item>@drawable/kofo_brokeman</item>
-        <item>@drawable/koko_boflot</item>
-        <item>@drawable/koko_koose</item>
         <item>@drawable/ndomie</item>
-        <item>@drawable/omotuo</item>
-        <item>@drawable/red_red</item>
-        <item>@drawable/rice_and_stew</item>
         <item>@drawable/spaghetti</item>
-        <item>@drawable/tilapia_banku</item>
-        <item>@drawable/tuo_zaafi</item>
-        <item>@drawable/waakye</item>
     </integer-array>
 
 
     <integer-array name="drawables_no_expressions">
+        <item>@drawable/jollof_n</item>
+        <item>@drawable/waakye_n</item>
+        <item>@drawable/fried_rice_n</item>
+        <item>@drawable/banku_tilapa_n</item>
+        <item>@drawable/kofi_broke_man_n</item>
+        <item>@drawable/kenkey_n</item>
+        <item>@drawable/rice_and_stew_n</item>
+        <item>@drawable/banku_okro_n</item>
+        <item>@drawable/emo_ne_nkwan_n</item>
+        <item>@drawable/fufu_light_soup_n</item>
+        <item>@drawable/gari_soaking_n</item>
+        <item>@drawable/koko_koose_n</item>
+        <item>@drawable/koko_boflot_n</item>
+        <item>@drawable/red_red_n</item>
+        <item>@drawable/fried_yam_n</item>
+        <item>@drawable/kelewele_n</item>
+        <item>@drawable/yam_and_stew_n</item>
+        <item>@drawable/gari_fotor_n</item>
+        <item>@drawable/tuozaafi_n</item>
         <item>@drawable/ampesi_n</item>
         <item>@drawable/angwa_moo_n</item>
         <item>@drawable/apapransa_n</item>
-        <item>@drawable/banku_okro_n</item>
-        <item>@drawable/yam_and_stew_n</item>
         <item>@drawable/eto_n</item>
         <item>@drawable/fante_kenkey_n</item>
-        <item>@drawable/fried_rice_n</item>
-        <item>@drawable/fried_yam_n</item>
-        <item>@drawable/fufu_light_soup_n</item>
-        <item>@drawable/gari_fotor_n</item>
-        <item>@drawable/gari_soaking_n</item>
-        <item>@drawable/jollof_n</item>
         <item>@drawable/kaklo_n</item>
-        <item>@drawable/kelewele_n</item>
-        <item>@drawable/kenkey_n</item>
         <item>@drawable/khebab_n</item>
-        <item>@drawable/kofi_broke_man_n</item>
-        <item>@drawable/koko_boflot_n</item>
-        <item>@drawable/koko_koose_n</item>
         <item>@drawable/ndomie_n</item>
-        <item>@drawable/emo_ne_nkwan_n</item>
-        <item>@drawable/red_red_n</item>
-        <item>@drawable/rice_and_stew_n</item>
         <item>@drawable/spaghetti_n</item>
-        <item>@drawable/banku_tilapa_n</item>
-        <item>@drawable/tuozaafi_n</item>
-        <item>@drawable/waakye_n</item>
     </integer-array>
 
 </resources>

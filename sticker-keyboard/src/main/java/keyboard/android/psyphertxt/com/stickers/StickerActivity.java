@@ -38,9 +38,16 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,7 +56,6 @@ import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.Utility;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
-import static keyboard.android.psyphertxt.com.stickers.StickerGridAdapter.bitmapPath;
 
 public class StickerActivity extends AppCompatActivity {
 
@@ -95,9 +101,40 @@ public class StickerActivity extends AppCompatActivity {
         addAdMobView();
 
 
-        //if(BuildConfig.APPLICATION_ID.contains("naija")){
+        if(!BuildConfig.APPLICATION_ID.contains("gkeyboard")){
             implementWalkThrough();
-       // }
+        }
+
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                        }
+                        if(deepLink != null){
+                            Map<String, String> hm = Utility.splitQuery(deepLink.toString());
+                            if(hm.containsKey("utm_campaign")){
+                                Answers.getInstance().logCustom(new CustomEvent("App Install Campaign")
+                                        .putCustomAttribute("Campaign", hm.get("utm_campaign")));
+                            }else{
+                                Answers.getInstance().logCustom(new CustomEvent("App Install Campaign")
+                                        .putCustomAttribute("Campaign", deepLink.toString()));
+                            }
+                            System.out.println("++++++++++++++++"+deepLink.toString());
+                        }
+
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "getDynamicLink:onFailure", e);
+                    }
+                });
     }
 
     private void setupAdapter() {
@@ -135,8 +172,10 @@ public class StickerActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-        switchMenuItem = menu.findItem(R.id.switchicons);
-        switchMenuItem.setIcon(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
+        if(!BuildConfig.APPLICATION_ID.contains("gkeyboard")) {
+            switchMenuItem = menu.findItem(R.id.switchicons);
+            switchMenuItem.setIcon(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
+        }
         return true;
     }
 
@@ -149,15 +188,17 @@ public class StickerActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.switchicons:
-                Answers.getInstance().logCustom(new CustomEvent("Home Click Event")
-                        .putCustomAttribute("Name", "Switch Button"));
-                withExpressions = withExpressions == false ? true : false;
-                prefs.edit().putBoolean("icons_with_text", withExpressions).apply();
-                switchMenuItem.setIcon(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
-                stickers = Sticker.initStickers(StickerActivity.this, withExpressions);
-                StickerAdapter adapter = new StickerAdapter(this, stickers);
-                stickerGridView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                if(!BuildConfig.APPLICATION_ID.contains("gkeyboard")) {
+                    Answers.getInstance().logCustom(new CustomEvent("Home Click Event")
+                            .putCustomAttribute("Name", "Switch Button"));
+                    withExpressions = withExpressions == false ? true : false;
+                    prefs.edit().putBoolean("icons_with_text", withExpressions).apply();
+                    switchMenuItem.setIcon(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
+                    stickers = Sticker.initStickers(StickerActivity.this, withExpressions);
+                    StickerAdapter adapter = new StickerAdapter(this, stickers);
+                    stickerGridView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
 
                 return true;
             case android.R.id.home:
@@ -174,7 +215,8 @@ public class StickerActivity extends AppCompatActivity {
         ViewGroup adCardView = admobFrame;
         AdRequest adRequest = new AdRequest.Builder()
 //                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-                .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")  // My Galaxy Nexus test phone
+                .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")
+                .addTestDevice("8667822E35F5855655D951EA91079F91")// My Galaxy Nexus test phone
                 .build();
         View view = View.inflate(admobFrame.getContext(), R.layout.admob_sticker_item, adCardView);
         final NativeExpressAdView mAdView = (NativeExpressAdView) view.findViewById(R.id.adView);
@@ -241,28 +283,6 @@ public class StickerActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "in on Activity result");
-        if(requestCode == 5 && resultCode == Activity.RESULT_OK){
-            Log.d(TAG, "in if condition");
-            try {
-                Uri uri = Uri.parse(bitmapPath);
-                File file = new File(uri.getPath());
-                if(bitmapPath.startsWith("content://")){
-                    ContentResolver contentResolver = getContentResolver();
-                    contentResolver.delete(uri, null, null);
-                }else {
-                    if (file.exists()) {
-                        Log.d(TAG, "in file exist");
-                        if (file.delete()) {
-                            Log.d(TAG, "in file delete");
-                        }
-                    }
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-
     }
 
 
@@ -275,21 +295,24 @@ public class StickerActivity extends AppCompatActivity {
                         if (string != null) {
                             if (!string.isEmpty()) {
                                 Uri uri = Uri.parse(string);
-                                if (string.startsWith("content://")) {
-                                    ContentResolver contentResolver = getContentResolver();
-                                    contentResolver.delete(uri, null, null);
-                                } else {
-                                    File file = new File(uri.getPath());
-                                    if (file.exists()) {
-                                        Log.d(TAG, "in file exist");
-                                        if (file.delete()) {
-                                            Log.d(TAG, "in file delete");
+                                if(uri != null) {
+                                    if (string.startsWith("content://")) {
+                                        ContentResolver contentResolver = getContentResolver();
+                                        contentResolver.delete(uri, null, null);
+                                    } else {
+                                        File file = new File(uri.getPath());
+                                        if (file.exists()) {
+                                            Log.d(TAG, "in file exist");
+                                            if (file.delete()) {
+                                                Log.d(TAG, "in file delete");
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
+                    Utility.removeStringsFromList("filePaths", context);
                 }
             }
         }catch (Exception e){
@@ -394,5 +417,11 @@ public class StickerActivity extends AppCompatActivity {
         }else{
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        deleteStickerEmojisOnStorage(StickerActivity.this);
     }
 }

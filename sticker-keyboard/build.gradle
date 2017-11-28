@@ -24,8 +24,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 15
-        versionName "1.1.0"
+        versionCode 23
+        versionName "1.2.2"
         multiDexEnabled true //important
     }
 
@@ -36,6 +36,9 @@ android {
         }
         debug {
             debuggable true
+        }
+        dexOptions {
+            javaMaxHeapSize "4g"
         }
     }
     lintOptions {
@@ -98,7 +101,7 @@ dependencies {
         exclude group:"com.google.android.gms"
         exclude group: 'com.google.guava'
     }
-    compile ('com.google.firebase:firebase-ads:11.0.1'){
+    compile ('com.google.firebase:firebase-ads:11.6.0'){
         exclude group: 'com.google.guava'
     }
     compile ('com.android.support.constraint:constraint-layout:1.0.2'){
@@ -123,4 +126,10 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
+    compile('com.google.firebase:firebase-invites:11.6.0'){
+        exclude group: 'com.google.guava'
+    }
 }
+
+apply plugin: 'com.google.gms.google-services'
+

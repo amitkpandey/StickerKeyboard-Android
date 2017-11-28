@@ -38,6 +38,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.common.collect.Lists;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,11 +53,9 @@ import keyboard.android.psyphertxt.com.utilities.ExpandableGridView;
 class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
 
     private static final String TAG = StickerGridAdapter.class.getSimpleName();
-    private int GRIDS_PER_SECTION = 9;
     private Context context;
     private List<Sticker> stickers;
     LinearLayout admobFrame;
-    public static String bitmapPath = "";
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageStickers;
@@ -82,9 +81,19 @@ class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.imageStickers.setImageDrawable(stickers.get(position).getDrawable());
-        stickerOnClickEvent(holder.imageStickers, position);
-        stickerItemOnLongPressEvent(holder.imageStickers, position);
+        System.out.println(">>>>>>>>>>"+stickers.get(position).getName());
+        int resID = context.getResources().getIdentifier(stickers.get(position).getName() , "drawable", context.getPackageName());
+        if(resID != 0) {
+            try {
+                Picasso.with(context)
+                        .load(resID)
+                        .into(holder.imageStickers);
+                stickerOnClickEvent(holder.imageStickers, position);
+                stickerItemOnLongPressEvent(holder.imageStickers, position);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -117,7 +126,7 @@ class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
 //    }
 
 
-    private void stickerOnClickEvent(View view, final int position){
+    private void stickerOnClickEvent(final View view, final int position){
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -132,8 +141,12 @@ class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
                             .putCustomAttribute("Name", sticker.getName()));
 
                     //convert image to bitmap so it can be shared.
-                    Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
-                    processImage(bitmap);
+                    try {
+                        Bitmap bitmap = ((BitmapDrawable) ((ImageView) view).getDrawable()).getBitmap();
+                        processImage(bitmap);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 
                 }
             }
@@ -152,7 +165,7 @@ class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
                 Answers.getInstance().logCustom(new CustomEvent("Sticker LongPressEvent")
                         .putCustomAttribute("Name", sticker.getName()));
 
-                final Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
+                final Bitmap bitmap = ((BitmapDrawable)((ImageView)view).getDrawable()).getBitmap();
                 MaterialDialog materialDialog =   new MaterialDialog.Builder(view.getContext())
                         .title(R.string.app_name)
                         .customView(R.layout.sticker_dialog_view, wrapInScrollView)
@@ -200,23 +213,23 @@ class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
 
         if(Utility.isStoragePermissionGranted(context)) {
             fixMediaDir();
-        }
-        bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "title", null);
-        Utility.saveArraylistString("filePaths", bitmapPath, context);
-        Uri imageUri = Uri.parse(bitmapPath);
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-        shareIntent.setType("image/*");
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
-            Log.d("INFORMATION", "The current android version allow us to know what app is chosen by the user.");
+            String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "title", null);
+            Utility.saveArraylistString("filePaths", bitmapPath, context);
+            Uri imageUri = Uri.parse(bitmapPath);
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+            shareIntent.setType("image/*");
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+                Log.d("INFORMATION", "The current android version allow us to know what app is chosen by the user.");
 
-            Intent receiverIntent = new Intent(context,ShareBroadcastReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-            shareIntent = Intent.createChooser(shareIntent,"Share via...", pendingIntent.getIntentSender());
+                Intent receiverIntent = new Intent(context,ShareBroadcastReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                shareIntent = Intent.createChooser(shareIntent,"Share via...", pendingIntent.getIntentSender());
+            }
+            ((Activity)context).startActivityForResult(shareIntent, 5);
         }
-        ((Activity)context).startActivityForResult(shareIntent, 5);
     }
 
     private void processImage(Bitmap bitmap) {

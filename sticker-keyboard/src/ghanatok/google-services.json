@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "591400933294",
+    "firebase_url": "https://sticker-apps.firebaseio.com",
+    "project_id": "sticker-apps",
+    "storage_bucket": "sticker-apps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591400933294:android:bc0a1d89c9101854",
+        "android_client_info": {
+          "package_name": "keyboard.android.psyphertxt.com.gtokkeyboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591400933294-58slde7qdhhibddas00plvcqg47efo2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzFg2nyesf9NEU7osERFMEYBpLeGQSVlM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

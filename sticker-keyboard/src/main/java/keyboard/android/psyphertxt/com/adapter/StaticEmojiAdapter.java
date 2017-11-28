@@ -11,11 +11,10 @@ import java.util.LinkedList;
 
 public class StaticEmojiAdapter extends BaseEmojiAdapter {
 
-    public StaticEmojiAdapter(Context context, LinkedList<String> emojiTextsAsStrings, LinkedList<Drawable> iconIds) {
+    public StaticEmojiAdapter(Context context, LinkedList<String> emojiTextsAsStrings, LinkedList<Integer> iconIds) {
         super((EmojiKeyboardService) context);
         if(emojiTextsAsStrings != null)
             this.emojiTexts =  emojiTextsAsStrings;
         this.iconIds = iconIds;
     }
-
 }

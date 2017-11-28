@@ -7,9 +7,9 @@ import java.util.LinkedList;
 
 public abstract class EmojiIcons {
 
-    protected LinkedHashMap<String, Drawable> cyfaStickerIconIds;
+    protected LinkedHashMap<String, Integer> cyfaStickerIconIds;
 
-    public LinkedHashMap<String, Drawable> getCyfaStickerIconIds() {
+    public LinkedHashMap<String, Integer> getCyfaStickerIconIds() {
         return cyfaStickerIconIds;
     }
 

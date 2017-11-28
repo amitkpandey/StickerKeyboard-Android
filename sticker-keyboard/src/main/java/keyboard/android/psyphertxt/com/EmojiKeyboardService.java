@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -36,7 +37,7 @@ public class EmojiKeyboardService extends InputMethodService {
     public static final String MIME_TYPE_PNG = "image/png";
 
     private InputConnection inputConnection;
-
+    public static View mInputView;
     private InputMethodManager previousInputMethodManager;
     private IBinder iBinder;
     private static final String AUTHORITY = "keyboard.android.psyphertxt.com.gkeyboard.inputcontent";
@@ -77,8 +78,8 @@ public class EmojiKeyboardService extends InputMethodService {
         BaseEmojiAdapter.info = getCurrentInputEditorInfo();
         emojiKeyboardView = (EmojiKeyboardView) getLayoutInflater()
                 .inflate(R.layout.emoji_keyboard_layout, null);
-
-        return emojiKeyboardView.getView();
+        mInputView = emojiKeyboardView.getView();
+        return mInputView;
     }
 
     @Override
@@ -126,9 +127,6 @@ public class EmojiKeyboardService extends InputMethodService {
 
 
     public void switchToPreviousInputMethod() {
-
-        Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vib.vibrate(25);
 
         try {
             previousInputMethodManager.switchToLastInputMethod(iBinder);

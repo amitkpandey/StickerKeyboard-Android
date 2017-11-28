@@ -1,0 +1,205 @@
+Applications Memory Usage (kB):
+Uptime: 145204825 Realtime: 272312460
+
+Total PSS by process:
+   488470 kB: keyboard.android.psyphertxt.com.gtokkeyboard (pid 17819 / activities)
+    90688 kB: system (pid 1278)
+    83231 kB: tv.peel.app (pid 14310)
+    58354 kB: com.google.android.gms (pid 16254)
+    58159 kB: com.htc.launcher (pid 9828 / activities)
+    57046 kB: com.android.systemui (pid 1603)
+    47031 kB: com.google.android.gms.persistent (pid 2159)
+    39466 kB: com.htc.sense.ime (pid 1768)
+    33711 kB: com.android.phone (pid 1804 / activities)
+    31790 kB: com.facebook.katana (pid 17949)
+    22942 kB: com.whatsapp (pid 18223)
+    19862 kB: org.thoughtcrime.securesms (pid 1540)
+    14278 kB: com.android.vending (pid 4175)
+    13726 kB: com.htc.htcdialer (pid 1914 / activities)
+    13441 kB: android.process.acore (pid 1951)
+    12642 kB: com.facebook.katana:videoplayer (pid 758)
+    10792 kB: com.mobilesrepublic.appy (pid 10718)
+     8338 kB: com.mobilesrepublic.appy:service (pid 21117)
+     7795 kB: com.android.nfc (pid 1792)
+     6848 kB: com.htc.Weather:weather_sync_provider (pid 18491)
+     6766 kB: server (pid 17137)
+     5519 kB: com.htc.dotmatrixevent (pid 6231)
+     5236 kB: com.aiqidi.nemo:remote (pid 17030)
+     4569 kB: mediaserver (pid 464)
+     4459 kB: com.nero.android.htc.sync (pid 16410)
+     4204 kB: com.facebook.katana:notification (pid 19871)
+     3289 kB: org.simalliance.openmobileapi.service:remote (pid 1933)
+     3200 kB: surfaceflinger (pid 373)
+     2863 kB: zygote (pid 471)
+     2620 kB: logd (pid 354)
+     2098 kB: com.htc.club (pid 4822)
+     2049 kB: rild (pid 372)
+     1771 kB: com.google.android.googlequicksearchbox:interactor (pid 24811)
+     1624 kB: com.htc.sense.ime:provider_latin (pid 23354)
+     1502 kB: liz.agyei.dss.volta.test (pid 2546)
+     1285 kB: com.android.server.SystemServer (pid 5000)
+     1269 kB: sdcard (pid 1575)
+     1241 kB: pnpmgr (pid 2857)
+     1091 kB: com.htc.cirmodule (pid 5304)
+      853 kB: mm-qcamera-daemon (pid 474)
+      736 kB: htc_ebdlogd (pid 623)
+      639 kB: netd (pid 459)
+      564 kB: wpa_supplicant (pid 30382)
+      547 kB: dumpsys (pid 19321)
+      493 kB: ATFWD-daemon (pid 17293)
+      472 kB: /init (pid 1)
+      417 kB: adbd (pid 10941)
+      320 kB: thermal-engine (pid 472)
+      306 kB: ueventd (pid 251)
+      279 kB: logcat (pid 15929)
+      249 kB: drmserver (pid 463)
+      220 kB: vold (pid 355)
+      213 kB: sh (pid 17132)
+      203 kB: netmgrd (pid 381)
+      187 kB: qmuxd (pid 379)
+      184 kB: healthd (pid 368)
+      181 kB: installd (pid 465)
+      160 kB: keystore (pid 467)
+      152 kB: servicemanager (pid 371)
+      150 kB: gatekeeperd (pid 479)
+      148 kB: dhcpcd (pid 30462)
+      113 kB: mpdecision (pid 2946)
+      112 kB: mdnsd (pid 6196)
+       99 kB: logcat (pid 648)
+       97 kB: tpd_daemon (pid 384)
+       90 kB: logcat (pid 650)
+       83 kB: logcat (pid 649)
+       74 kB: lmkd (pid 369)
+       68 kB: cand (pid 477)
+       45 kB: hvdcp (pid 457)
+       24 kB: hld (pid 470)
+       23 kB: time_daemon (pid 506)
+       13 kB: rmt_storage (pid 377)
+       12 kB: adsprpcd (pid 475)
+        8 kB: wcnss_service (pid 507)
+        8 kB: qseecomd (pid 580)
+        5 kB: debuggerd (pid 462)
+        5 kB: qseecomd (pid 504)
+        4 kB: dumpstate (pid 468)
+        4 kB: dumpstate (pid 469)
+
+Total PSS by OOM adjustment:
+    33137 kB: Native
+                6766 kB: server (pid 17137)
+                4569 kB: mediaserver (pid 464)
+                3200 kB: surfaceflinger (pid 373)
+                2863 kB: zygote (pid 471)
+                2620 kB: logd (pid 354)
+                2049 kB: rild (pid 372)
+                1269 kB: sdcard (pid 1575)
+                1241 kB: pnpmgr (pid 2857)
+                 853 kB: mm-qcamera-daemon (pid 474)
+                 736 kB: htc_ebdlogd (pid 623)
+                 639 kB: netd (pid 459)
+                 564 kB: wpa_supplicant (pid 30382)
+                 547 kB: dumpsys (pid 19321)
+                 493 kB: ATFWD-daemon (pid 17293)
+                 472 kB: /init (pid 1)
+                 417 kB: adbd (pid 10941)
+                 320 kB: thermal-engine (pid 472)
+                 306 kB: ueventd (pid 251)
+                 279 kB: logcat (pid 15929)
+                 249 kB: drmserver (pid 463)
+                 220 kB: vold (pid 355)
+                 213 kB: sh (pid 17132)
+                 203 kB: netmgrd (pid 381)
+                 187 kB: qmuxd (pid 379)
+                 184 kB: healthd (pid 368)
+                 181 kB: installd (pid 465)
+                 160 kB: keystore (pid 467)
+                 152 kB: servicemanager (pid 371)
+                 150 kB: gatekeeperd (pid 479)
+                 148 kB: dhcpcd (pid 30462)
+                 113 kB: mpdecision (pid 2946)
+                 112 kB: mdnsd (pid 6196)
+                  99 kB: logcat (pid 648)
+                  97 kB: tpd_daemon (pid 384)
+                  90 kB: logcat (pid 650)
+                  83 kB: logcat (pid 649)
+                  74 kB: lmkd (pid 369)
+                  68 kB: cand (pid 477)
+                  45 kB: hvdcp (pid 457)
+                  24 kB: hld (pid 470)
+                  23 kB: time_daemon (pid 506)
+                  13 kB: rmt_storage (pid 377)
+                  12 kB: adsprpcd (pid 475)
+                   8 kB: wcnss_service (pid 507)
+                   8 kB: qseecomd (pid 580)
+                   5 kB: debuggerd (pid 462)
+                   5 kB: qseecomd (pid 504)
+                   4 kB: dumpstate (pid 468)
+                   4 kB: dumpstate (pid 469)
+    90688 kB: System
+               90688 kB: system (pid 1278)
+    98552 kB: Persistent
+               57046 kB: com.android.systemui (pid 1603)
+               33711 kB: com.android.phone (pid 1804 / activities)
+                7795 kB: com.android.nfc (pid 1792)
+   488470 kB: Foreground
+              488470 kB: keyboard.android.psyphertxt.com.gtokkeyboard (pid 17819 / activities)
+   145592 kB: Visible
+               58354 kB: com.google.android.gms (pid 16254)
+               47031 kB: com.google.android.gms.persistent (pid 2159)
+               14278 kB: com.android.vending (pid 4175)
+               13726 kB: com.htc.htcdialer (pid 1914 / activities)
+                5519 kB: com.htc.dotmatrixevent (pid 6231)
+                3289 kB: org.simalliance.openmobileapi.service:remote (pid 1933)
+                1771 kB: com.google.android.googlequicksearchbox:interactor (pid 24811)
+                1624 kB: com.htc.sense.ime:provider_latin (pid 23354)
+   123788 kB: Perceptible
+               83231 kB: tv.peel.app (pid 14310)
+               39466 kB: com.htc.sense.ime (pid 1768)
+                1091 kB: com.htc.cirmodule (pid 5304)
+    58159 kB: Home
+               58159 kB: com.htc.launcher (pid 9828 / activities)
+    67037 kB: A Services
+               22942 kB: com.whatsapp (pid 18223)
+               19862 kB: org.thoughtcrime.securesms (pid 1540)
+               13441 kB: android.process.acore (pid 1951)
+               10792 kB: com.mobilesrepublic.appy (pid 10718)
+    71554 kB: B Services
+               31790 kB: com.facebook.katana (pid 17949)
+               12642 kB: com.facebook.katana:videoplayer (pid 758)
+                8338 kB: com.mobilesrepublic.appy:service (pid 21117)
+                5236 kB: com.aiqidi.nemo:remote (pid 17030)
+                4459 kB: com.nero.android.htc.sync (pid 16410)
+                4204 kB: com.facebook.katana:notification (pid 19871)
+                2098 kB: com.htc.club (pid 4822)
+                1502 kB: liz.agyei.dss.volta.test (pid 2546)
+                1285 kB: com.android.server.SystemServer (pid 5000)
+     6848 kB: Cached
+                6848 kB: com.htc.Weather:weather_sync_provider (pid 18491)
+
+Total PSS by category:
+   705013 kB: Dalvik
+   217243 kB: Native
+    51736 kB: Gfx dev
+    40703 kB: .so mmap
+    33400 kB: .dex mmap
+    30829 kB: .art mmap
+    29871 kB: Dalvik Other
+    24220 kB: Unknown
+    18137 kB: .oat mmap
+    15328 kB: Stack
+     7139 kB: Other mmap
+     6262 kB: .apk mmap
+     3424 kB: Ashmem
+      299 kB: Other dev
+      185 kB: .ttf mmap
+       36 kB: Cursor
+        0 kB: .jar mmap
+        0 kB: EGL mtrack
+        0 kB: GL mtrack
+        0 kB: Other mtrack
+
+Total RAM: 1867160 kB (status critical)
+ Free RAM: 244000 kB (6848 cached pss + 46444 cached kernel + 190708 free)
+ Used RAM: 1311229 kB (1176977 used pss + 134252 kernel)
+ Lost RAM: 311931 kB
+     ZRAM: 121728 kB physical used for 297708 kB in swap (838848 kB total swap)
+   Tuning: 192 (large 512), oom 184320 kB, restore limit 61440 kB (high-end-gfx)

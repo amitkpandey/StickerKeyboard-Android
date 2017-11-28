@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -42,8 +43,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
 
     protected EmojiKeyboardService emojiKeyboardService;
     protected LinkedList<String> emojiTexts;
-    protected LinkedList<Drawable> iconIds;
-    public static String bitmapPath = "";
+    protected LinkedList<Integer> iconIds;
     public static EditorInfo info;
     private static final String TAG = BaseEmojiAdapter.class.getSimpleName();
 
@@ -69,23 +69,25 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageDrawable(iconIds.get(position));
-        imageView.setBackgroundResource(R.drawable.btn_background);
+        int resID = imageView.getContext().getResources().getIdentifier(emojiTexts.get(position) , "drawable", imageView.getContext().getPackageName());
+        Picasso.with(imageView.getContext())
+                .load(resID)
+                .into(imageView);
         Log.d(TAG, "showing ");
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (emojiTexts == null) {
-                if (getCurrentAppPackage(v.getContext()) != null) {
+            if (getCurrentAppPackage(v.getContext()) != null) {
+                if(Utility.isStoragePermissionGranted(v.getContext())) {
                     //Sticker Analytics
                     Log.d(TAG, "showing "+String.valueOf(emojiTexts.get(position)).replace("_", " "));
                     Answers.getInstance().logCustom(new CustomEvent("Keyboard Sticker ClickEvent")
                             .putCustomAttribute("Name", String.valueOf(emojiTexts.get(position)).replace("_", " ")));
                     passImage(v.getContext(), imageView, v);
+                } else{
+
                 }
-//                } else {
-//                    emojiKeyboardService.sendText(emojiTexts.get(position));
-//                }
+            }
             }
         });
         return imageView;
@@ -139,7 +141,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
         newBitmap.eraseColor(Color.WHITE);
         Canvas canvas = new Canvas(newBitmap);  // create a canvas to draw on the new image
         canvas.drawBitmap(bitmap, 0f, 0f, null); // draw old image on the background
-        bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), newBitmap, "title", null);
+        String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), newBitmap, "title", null);
         Utility.saveArraylistString("filePaths", bitmapPath, context);
         Uri imageUri = Uri.parse(bitmapPath);
         Intent intent = createIntent(v.getContext(), imageUri);

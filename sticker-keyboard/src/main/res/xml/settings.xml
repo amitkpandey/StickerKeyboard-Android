@@ -5,7 +5,5 @@
     <ListPreference
         android:key="emoji_keyboard_color"
         android:title="@string/emoji_keyboard_color"
-        android:entries="@array/emojiKeyboardColor"
-        android:entryValues="@array/emojiKeyboardColorSet"
         android:defaultValue="1" />
 </PreferenceScreen>

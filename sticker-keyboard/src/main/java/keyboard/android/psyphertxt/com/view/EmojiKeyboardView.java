@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import keyboard.android.psyphertxt.com.BuildConfig;
 import keyboard.android.psyphertxt.com.EmojiKeyboardService;
 import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.adapter.EmojiPagerAdapter;
@@ -122,7 +123,9 @@ public class EmojiKeyboardView extends View implements SharedPreferences.OnShare
 
         setupGoToNextActivityButton();
 
-        setupSwitchButton();
+        if(!BuildConfig.APPLICATION_ID.contains("gkeyboard")){
+            setupSwitchButton();
+        }
 
         pagerSlidingTabStrip.setViewPager(viewPager);
 

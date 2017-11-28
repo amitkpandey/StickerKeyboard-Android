@@ -15,8 +15,7 @@ import keyboard.android.psyphertxt.com.constants.Sticker_EmojiIcons;
 class Sticker {
     private String name;
     private String uri;
-    private Drawable drawable;
-    private static final String TAG = Sticker.class.getSimpleName();
+    private Integer drawable;
 
     String getUri() {
         return uri;
@@ -40,18 +39,16 @@ class Sticker {
 
         List<Sticker> stickers = new ArrayList<>();
 
-        LinkedHashMap<String, Drawable> stickersArray = icons.getCyfaStickerIconIds();
+        LinkedHashMap<String, Integer> stickersArray = icons.getCyfaStickerIconIds();
 
         try {
-            for (Map.Entry<String, Drawable> entry : stickersArray.entrySet()) {
+            for (Map.Entry<String, Integer> entry : stickersArray.entrySet()) {
 
                 //create instance of sticker model
                 Sticker sticker = new Sticker();
 
                 //assign the name of the from xml
-                sticker.setName(entry.getKey().replace("_", " "));
-
-                Log.d(TAG, sticker.getName());
+                sticker.setName(entry.getKey());
 
                 sticker.setDrawable(entry.getValue());
                 //sticker.setDrawable(context.getDrawable(stickerName));
@@ -69,11 +66,11 @@ class Sticker {
         return stickers;
     }
 
-    public Drawable getDrawable() {
+    public Integer getDrawable() {
         return drawable;
     }
 
-    public void setDrawable(Drawable drawable) {
+    public void setDrawable(Integer drawable) {
         this.drawable = drawable;
     }
 

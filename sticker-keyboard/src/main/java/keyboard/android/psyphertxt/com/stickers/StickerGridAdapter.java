@@ -54,7 +54,6 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
     private Context context;
     private List<Sticker> stickers;
     LinearLayout admobFrame;
-    public static String bitmapPath = "";
 
     StickerGridAdapter(Context context, List<Sticker> stickers) {
         super(context, R.layout.sticker_view, stickers);
@@ -76,7 +75,20 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.imageStickers.setImageDrawable(stickers.get(position).getDrawable());
+        int resID = context.getResources().getIdentifier(stickers.get(position).getName() , "drawable", context.getPackageName());
+        if(resID != 0) {
+            try {
+                Picasso.with(context)
+                        .load(resID)
+                        .into(holder.imageStickers);
+                stickerOnClickEvent(holder.imageStickers, position);
+                stickerItemOnLongPressEvent(holder.imageStickers, position);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+       // holder.imageStickers.setImageDrawable(stickers.get(position).getDrawable());
 
         stickerOnClickEvent(convertView, position);
         stickerItemOnLongPressEvent(convertView, position);
@@ -96,7 +108,7 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
 
     }
 
-    private void stickerOnClickEvent(View view, final int position){
+    private void stickerOnClickEvent(final View view, final int position){
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -111,7 +123,7 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                             .putCustomAttribute("Name", sticker.getName()));
 
                     //convert image to bitmap so it can be shared.
-                    Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
+                    Bitmap bitmap = ((BitmapDrawable)((ImageView)view).getDrawable()).getBitmap();;
                     processImage(bitmap);
 
                 }
@@ -131,7 +143,7 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                 Answers.getInstance().logCustom(new CustomEvent("Sticker LongPressEvent")
                         .putCustomAttribute("Name", sticker.getName()));
 
-                final Bitmap bitmap = ((BitmapDrawable) sticker.getDrawable()).getBitmap();
+                final Bitmap bitmap = ((BitmapDrawable)((ImageView)view).getDrawable()).getBitmap();
                 MaterialDialog materialDialog =   new MaterialDialog.Builder(view.getContext())
                         .title(R.string.app_name)
                         .customView(R.layout.sticker_dialog_view, wrapInScrollView)
@@ -180,7 +192,7 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
         if(Utility.isStoragePermissionGranted(context)) {
             fixMediaDir();
         }
-        bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "title", null);
+        String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "title", null);
         Utility.saveArraylistString("filePaths", bitmapPath, context);
         Uri imageUri = Uri.parse(bitmapPath);
         Intent shareIntent = new Intent();
