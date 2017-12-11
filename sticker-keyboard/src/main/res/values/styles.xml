@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="sv_backgroundColor">#ef6c3708</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -13,4 +14,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="CustomShowcaseTheme2" parent="ShowcaseView">
+        <item name="sv_backgroundColor">#e51249d9</item>
+        <item name="sv_showcaseColor">#25467A</item>
+        <item name="sv_buttonText">DONE</item>
+    </style>
 </resources>

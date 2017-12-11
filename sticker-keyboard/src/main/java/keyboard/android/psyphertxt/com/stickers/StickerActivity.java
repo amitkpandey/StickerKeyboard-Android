@@ -1,10 +1,11 @@
 package keyboard.android.psyphertxt.com.stickers;
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -14,8 +15,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextPaint;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -34,6 +36,8 @@ import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
@@ -54,7 +58,6 @@ import butterknife.ButterKnife;
 import keyboard.android.psyphertxt.com.BuildConfig;
 import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.Utility;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 
 public class StickerActivity extends AppCompatActivity {
@@ -68,7 +71,7 @@ public class StickerActivity extends AppCompatActivity {
     View switchMenu;
     MenuItem switchMenuItem;
     ViewTreeObserver viewTreeObserver;
-    MaterialShowcaseView showcaseView;
+    ShowcaseView showcaseView;
     SharedPreferences prefs;
 
     @Override
@@ -86,8 +89,10 @@ public class StickerActivity extends AppCompatActivity {
 
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_info);
         //upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setHomeAsUpIndicator(upArrow);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         MobileAds.initialize(getApplicationContext(), "pub-1112176598912130");
 
@@ -102,7 +107,11 @@ public class StickerActivity extends AppCompatActivity {
 
 
         if(!BuildConfig.APPLICATION_ID.contains("gkeyboard")){
-            implementWalkThrough();
+            try {
+                implementWalkThrough();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         FirebaseDynamicLinks.getInstance()
@@ -336,33 +345,56 @@ public class StickerActivity extends AppCompatActivity {
                         Log.d(TAG, "x=" + location[0] + " y=" + location[1]);
 
                         if (viewTreeObserver != null) {
-                            // Now you can get rid of this listener
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                if (viewTreeObserver.isAlive()) {
-                                    viewTreeObserver.removeOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                                        @Override
-                                        public void onGlobalLayout() {
-
-                                        }
-                                    });
-                                } else {
-                                    viewTreeObserver = getWindow().getDecorView().getViewTreeObserver();
-                                    viewTreeObserver.removeGlobalOnLayoutListener(this);
-                                }
-                            } else {
-                                viewTreeObserver.removeGlobalOnLayoutListener(this);
-                            }
                             try {
-                                showcaseView = new MaterialShowcaseView.Builder(StickerActivity.this)
-                                        .setTarget(switchMenu)
-                                        .setDismissText("GOT IT")
+                                // Now you can get rid of this listener
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+                                    if (viewTreeObserver.isAlive()) {
+                                        try {
+                                            viewTreeObserver.removeOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                                                @Override
+                                                public void onGlobalLayout() {
+
+                                                }
+                                            });
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else {
+                                        viewTreeObserver = getWindow().getDecorView().getViewTreeObserver();
+                                        viewTreeObserver.removeGlobalOnLayoutListener(this);
+                                    }
+                                } else {
+                                    if (viewTreeObserver.isAlive()) {
+                                        viewTreeObserver.removeGlobalOnLayoutListener(this);
+                                    }
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            TextPaint textPaint =  new TextPaint();
+                            textPaint.setColor(Color.parseColor("#77554455"));
+                            try {
+                                showcaseView = new ShowcaseView.Builder(StickerActivity.this)
+                                        .setTarget(new ViewTarget(R.id.switchicons, StickerActivity.this))
                                         .setContentText("Tap on this menu to enable or disable stickers with text")
-                                        .setDismissOnTargetTouch(true)
-                                        .setContentTextColor(Color.parseColor("#dddddd"))
-                                        .setDismissTextColor(Color.parseColor("#ffffff"))
-                                        .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-                                        .singleUse(BuildConfig.APPLICATION_ID) // provide a unique ID used to ensure it is only shown once
-                                        .show();
+                                        .setContentTitle("Tips")
+                                        .withMaterialShowcase()
+                                        .setStyle(R.style.CustomShowcaseTheme2)
+                                        .hideOnTouchOutside()
+                                        .useDecorViewAsParent()
+                                        .singleShot(10000)
+                                        .build();
+//                                showcaseView = new MaterialShowcaseView.Builder(StickerActivity.this)
+//                                        .setTarget(switchMenu)
+//                                        .setDismissText("GOT IT")
+//                                        .setContentText("Tap on this menu to enable or disable stickers with text")
+//                                        .setDismissOnTargetTouch(true)
+//                                        .setContentTextColor(Color.parseColor("#dddddd"))
+//                                        .setDismissTextColor(Color.parseColor("#ffffff"))
+//                                        .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+//                                        .singleUse(BuildConfig.APPLICATION_ID) // provide a unique ID used to ensure it is only shown once
+//                                        .show();
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
@@ -384,16 +416,16 @@ public class StickerActivity extends AppCompatActivity {
                                 viewTreeObserver.removeGlobalOnLayoutListener(this);
                             }
                             try {
-                                showcaseView = new MaterialShowcaseView.Builder(StickerActivity.this)
-                                        .setTarget(switchMenu)
-                                        .setDismissText("GOT IT")
+                                showcaseView = new ShowcaseView.Builder(StickerActivity.this)
+                                        .setTarget(new ViewTarget(R.id.switchicons, StickerActivity.this))
                                         .setContentText("Tap on this menu to enable or disable stickers with text")
-                                        .setDismissOnTargetTouch(true)
-                                        .setContentTextColor(Color.parseColor("#dddddd"))
-                                        .setDismissTextColor(Color.parseColor("#ffffff"))
-                                        .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-                                        .singleUse(BuildConfig.APPLICATION_ID) // provide a unique ID used to ensure it is only shown once
-                                        .show();
+                                        .setContentTitle("Tips")
+                                        .withMaterialShowcase()
+                                        .setStyle(R.style.CustomShowcaseTheme2)
+                                        .hideOnTouchOutside()
+                                        .useDecorViewAsParent()
+                                        .singleShot(10000)
+                                        .build();
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
@@ -408,9 +440,10 @@ public class StickerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(showcaseView != null){
+        if(showcaseView != null && showcaseView.isShowing() ){
             try {
                 showcaseView.hide();
+                showcaseView = null;
             }catch (Exception e){
                 super.onBackPressed();
             }
@@ -422,6 +455,13 @@ public class StickerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        deleteStickerEmojisOnStorage(StickerActivity.this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                deleteStickerEmojisOnStorage(StickerActivity.this);
+            }
+        }else{
+            deleteStickerEmojisOnStorage(StickerActivity.this);
+        }
     }
 }

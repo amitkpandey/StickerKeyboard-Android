@@ -122,9 +122,11 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                     Answers.getInstance().logCustom(new CustomEvent("Sticker ClickEvent")
                             .putCustomAttribute("Name", sticker.getName()));
 
-                    //convert image to bitmap so it can be shared.
-                    Bitmap bitmap = ((BitmapDrawable)((ImageView)view).getDrawable()).getBitmap();;
-                    processImage(bitmap);
+                    if((BitmapDrawable)((ImageView)view).getDrawable() != null) {
+                        //convert image to bitmap so it can be shared.
+                        Bitmap bitmap = ((BitmapDrawable) ((ImageView) view).getDrawable()).getBitmap();
+                        processImage(bitmap);
+                    }
 
                 }
             }
@@ -142,46 +144,47 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                 //Sticker Analytics
                 Answers.getInstance().logCustom(new CustomEvent("Sticker LongPressEvent")
                         .putCustomAttribute("Name", sticker.getName()));
+                if((BitmapDrawable)((ImageView)view).getDrawable() != null) {
+                    final Bitmap bitmap = ((BitmapDrawable) ((ImageView) view).getDrawable()).getBitmap();
+                    MaterialDialog materialDialog = new MaterialDialog.Builder(view.getContext())
+                            .title(R.string.app_name)
+                            .customView(R.layout.sticker_dialog_view, wrapInScrollView)
+                            .positiveText("Share")
+                            .neutralText("Close")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    processImage(bitmap);
+                                    dialog.dismiss();
+                                }
+                            })
+                            .build();
+                    materialDialog.show();
 
-                final Bitmap bitmap = ((BitmapDrawable)((ImageView)view).getDrawable()).getBitmap();
-                MaterialDialog materialDialog =   new MaterialDialog.Builder(view.getContext())
-                        .title(R.string.app_name)
-                        .customView(R.layout.sticker_dialog_view, wrapInScrollView)
-                        .positiveText("Share")
-                        .neutralText("Close")
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                processImage(bitmap);
-                                dialog.dismiss();
-                            }
-                        })
-                        .build();
-                materialDialog.show();
+                    admobFrame = ButterKnife.findById(materialDialog, R.id.admob_frame);
+                    ImageView imageView = ButterKnife.findById(materialDialog, R.id.imageView);
+                    imageView.setImageBitmap(bitmap);
+                    AdRequest adRequest = new AdRequest.Builder()
+                            .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")
+                            .build();
+                    final NativeExpressAdView mAdView = ButterKnife.findById(materialDialog, R.id.adView);
+                    mAdView.setVisibility(View.GONE);
+                    mAdView.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                            mAdView.setVisibility(View.VISIBLE);
+                        }
 
-                admobFrame = ButterKnife.findById(materialDialog, R.id.admob_frame);
-                ImageView imageView = ButterKnife.findById(materialDialog, R.id.imageView);
-                imageView.setImageBitmap(bitmap);
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")
-                        .build();
-                final NativeExpressAdView mAdView = ButterKnife.findById(materialDialog, R.id.adView);
-                mAdView.setVisibility(View.GONE);
-                mAdView.setAdListener(new AdListener(){
-                    @Override
-                    public void onAdLoaded() {
-                        super.onAdLoaded();
-                        mAdView.setVisibility(View.VISIBLE);
-                    }
+                        @Override
+                        public void onAdFailedToLoad(int i) {
+                            super.onAdFailedToLoad(i);
+                            showNativeAd();
 
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-                        super.onAdFailedToLoad(i);
-                        showNativeAd();
-
-                    }
-                });
-                mAdView.loadAd(adRequest);
+                        }
+                    });
+                    mAdView.loadAd(adRequest);
+                }
                 return true;
             }
         });

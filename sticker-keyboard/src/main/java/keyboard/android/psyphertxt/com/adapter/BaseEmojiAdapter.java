@@ -133,24 +133,28 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
     }
 
     public void passImage(final Context context, ImageView imageView, final View v) {
-
-        //convert image to bitmap so it can be shared.
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        // Create new bitmap based on the size and config of the old
-        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
-        newBitmap.eraseColor(Color.WHITE);
-        Canvas canvas = new Canvas(newBitmap);  // create a canvas to draw on the new image
-        canvas.drawBitmap(bitmap, 0f, 0f, null); // draw old image on the background
-        String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), newBitmap, "title", null);
-        Utility.saveArraylistString("filePaths", bitmapPath, context);
-        Uri imageUri = Uri.parse(bitmapPath);
-        Intent intent = createIntent(v.getContext(), imageUri);
-        try {
-            context.getApplicationContext().startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
-        //v.getContext().startActivity(intent);
+        if((BitmapDrawable)((ImageView)imageView).getDrawable() != null) {
+            //convert image to bitmap so it can be shared.
+            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            // Create new bitmap based on the size and config of the old
+            Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+            newBitmap.eraseColor(Color.WHITE);
+            Canvas canvas = new Canvas(newBitmap);  // create a canvas to draw on the new image
+            canvas.drawBitmap(bitmap, 0f, 0f, null); // draw old image on the background
+            String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), newBitmap, "title", null);
+            if (bitmapPath != null) {
+                Utility.saveArraylistString("filePaths", bitmapPath, context);
+                Uri imageUri = Uri.parse(bitmapPath);
+                if (imageUri != null) {
+                    Intent intent = createIntent(v.getContext(), imageUri);
+                    try {
+                        context.getApplicationContext().startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            //v.getContext().startActivity(intent);
 //                    }
 //
 //                    @Override
@@ -158,6 +162,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
 //
 //                    }
 //                });
+        }
     }
 
     public Intent createIntent(Context context, Uri uri) {

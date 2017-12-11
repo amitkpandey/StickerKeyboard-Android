@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer-array name="drawables_no_expressions">
+        <item>@drawable/am_not_lying_n</item>
+        <item>@drawable/broken_heart_crying_n</item>
+        <item>@drawable/i_catch_ooh_n</item>
+        <item>@drawable/i_go_beat_u_erh_n</item>
+        <item>@drawable/konkonsa_n</item>
+        <item>@drawable/meedu_n</item>
+        <item>@drawable/woboa_koraa_n</item>
         <item>@drawable/emoji1</item>
         <item>@drawable/emoji2</item>
         <item>@drawable/emoji3</item>
@@ -90,6 +97,13 @@
     </integer-array>
 
     <integer-array name="drawables">
+        <item>@drawable/am_not_lying_n</item>
+        <item>@drawable/broken_heart_crying_n</item>
+        <item>@drawable/i_catch_ooh_n</item>
+        <item>@drawable/i_go_beat_u_erh_n</item>
+        <item>@drawable/konkonsa_n</item>
+        <item>@drawable/meedu_n</item>
+        <item>@drawable/woboa_koraa_n</item>
         <item>@drawable/emoji1</item>
         <item>@drawable/emoji2</item>
         <item>@drawable/emoji3</item>

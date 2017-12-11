@@ -29,6 +29,23 @@
         <item>@drawable/khebab</item>
         <item>@drawable/ndomie</item>
         <item>@drawable/spaghetti</item>
+        <item>@drawable/aboloo</item>
+        <item>@drawable/attieke</item>
+        <item>@drawable/bread_and_egg</item>
+        <item>@drawable/corn</item>
+        <item>@drawable/curry_rice</item>
+        <item>@drawable/domedo</item>
+        <item>@drawable/fufu_palm_nut</item>
+        <item>@drawable/gashit</item>
+        <item>@drawable/kokonte_and_palmnut</item>
+        <item>@drawable/mpotompoto</item>
+        <item>@drawable/nkate_cake</item>
+        <item>@drawable/ofam</item>
+        <item>@drawable/plantain_chips</item>
+        <item>@drawable/rice_and_beans</item>
+        <item>@drawable/tubaani</item>
+        <item>@drawable/yam_chips</item>
+
     </integer-array>
 
 
@@ -61,6 +78,27 @@
         <item>@drawable/khebab_n</item>
         <item>@drawable/ndomie_n</item>
         <item>@drawable/spaghetti_n</item>
+        <item>@drawable/aboloo_n</item>
+        <item>@drawable/attieke_n</item>
+        <item>@drawable/bread_egg_n</item>
+        <item>@drawable/corn_n</item>
+        <item>@drawable/curry_rice_n</item>
+        <item>@drawable/domedo_n</item>
+        <item>@drawable/fufu_palmnut_n</item>
+        <item>@drawable/gashit_n</item>
+        <item>@drawable/kokonte_palm_n</item>
+        <item>@drawable/mpotompoto_n</item>
+        <item>@drawable/nkate_cake_n</item>
+        <item>@drawable/ofam_n</item>
+        <item>@drawable/plantain_chips_n</item>
+        <item>@drawable/rice_and_beans_n</item>
+        <item>@drawable/tubaani_n</item>
+        <item>@drawable/yam_chips_n</item>
+
+
+
+
+
     </integer-array>
 
 </resources>

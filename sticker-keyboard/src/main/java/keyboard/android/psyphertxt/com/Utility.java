@@ -87,52 +87,34 @@ public class Utility {
                     ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 }else if(context instanceof EmojiKeyboardService){
 
+                    try {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
+                        builder.setTitle("Storage Permission");
+                        builder.setMessage("You haven't enabled the storage permission. Please enable to share stickers");
+                        builder.setNegativeButton("DISABLE", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
-                    builder.setTitle("Storage Permission");
-                    builder.setMessage("You haven't enabled the storage permission. Please enable to share stickers");
-                    builder.setNegativeButton("DISABLE", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    }).setPositiveButton("ENABLE", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID));
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
-                        }
-                    });
-                    AlertDialog alert = builder.create();
-                    Window window = alert.getWindow();
-                    WindowManager.LayoutParams lp = window.getAttributes();
-                    lp.token = EmojiKeyboardService.mInputView.getWindowToken();
-                    lp.type = WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG;
-                    window.setAttributes(lp);
-                    window.addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-                    alert.show();
-
-
-
-//                    new MaterialDialog.Builder(context)
-//                            .title("Storage Permission ")
-//                            .content("You haven't enabled the storage permission. Please enable to share")
-//                            .positiveText("ENABLE")
-//                            .negativeText("DISABLE")
-//                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-//                                @Override
-//                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                    context.startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID)));
-//                                }
-//                            })
-//                            .onNegative(new MaterialDialog.SingleButtonCallback() {
-//                                @Override
-//                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                    dialog.dismiss();
-//                                }
-//                            })
-//                            .show();
+                            }
+                        }).setPositiveButton("ENABLE", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID));
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        Window window = alert.getWindow();
+                        WindowManager.LayoutParams lp = window.getAttributes();
+                        lp.token = EmojiKeyboardService.mInputView.getWindowToken();
+                        lp.type = WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG;
+                        window.setAttributes(lp);
+                        window.addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                        alert.show();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 return false;
             }

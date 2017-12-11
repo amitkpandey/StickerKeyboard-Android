@@ -24,8 +24,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 23
-        versionName "1.2.2"
+        versionCode 26
+        versionName "1.4"
         multiDexEnabled true //important
     }
 
@@ -119,7 +119,7 @@ dependencies {
         transitive = true;
     }
 
-    compile 'com.github.deano2390:MaterialShowcaseView:1.1.0@aar'
+    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
 
     compile 'com.facebook.android:audience-network-sdk:4.+'
 
