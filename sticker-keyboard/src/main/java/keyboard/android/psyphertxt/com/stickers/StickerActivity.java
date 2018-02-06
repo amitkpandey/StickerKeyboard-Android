@@ -44,16 +44,18 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import keyboard.android.psyphertxt.com.BuildConfig;
 import keyboard.android.psyphertxt.com.R;
@@ -63,7 +65,7 @@ import keyboard.android.psyphertxt.com.Utility;
 public class StickerActivity extends AppCompatActivity {
 
     private static final String TAG = StickerActivity.class.getSimpleName();
-    @Bind(R.id.sticker_grid_list)
+    @BindView(R.id.sticker_grid_list)
     RecyclerView stickerGridView;
     ViewGroup admobFrame;
     boolean withExpressions = true;
@@ -82,6 +84,32 @@ public class StickerActivity extends AppCompatActivity {
         if(!prefs.getBoolean("FIRST_LAUNCH", false)){
             startActivity(new Intent(StickerActivity.this, StickerFirstTimeActivity.class));
             finish();
+        }
+        if(!prefs.getBoolean("USER_SIGNED_IN", false)){
+            FirebaseAuth.getInstance()
+                    .signInAnonymously()
+                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            System.out.println(">>>>>>>>"+authResult.toString());
+                            prefs.edit().putBoolean("USER_SIGNED_IN", true).commit();
+                            // Keep track of the referrer in the RTDB. Database calls
+                            // will depend on the structure of your app's RTDB.
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                            DatabaseReference userRecord =
+//                                    FirebaseDatabase.getInstance().getReference()
+//                                            .child("users")
+//                                            .child(user.getUid());
+//                            userRecord.child("referred_by").setValue(referrerUid);
+                        }
+
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
         setContentView(R.layout.activity_sticker);
 

@@ -4,7 +4,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
@@ -19,13 +19,14 @@ repositories {
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "25.0.3"
+    buildToolsVersion '26.0.2'
+    flavorDimensions "ghanatok"
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 26
-        versionName "1.4"
+        versionCode 28
+        versionName "1.5"
         multiDexEnabled true //important
     }
 
@@ -62,6 +63,8 @@ android {
 
     dexOptions {
         preDexLibraries = false
+        incremental true
+        javaMaxHeapSize "4g"
     }
 
     packagingOptions {
@@ -97,11 +100,13 @@ dependencies {
         exclude group:"com.google.android.gms"
         exclude group: 'com.google.guava'
     }
-    compile ('com.jakewharton:butterknife:7.0.1'){
-        exclude group:"com.google.android.gms"
-        exclude group: 'com.google.guava'
-    }
-    compile ('com.google.firebase:firebase-ads:11.6.0'){
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+//    compile ('com.jakewharton:butterknife:7.0.1'){
+//        exclude group:"com.google.android.gms"
+//        exclude group: 'com.google.guava'
+//    }
+    compile ('com.google.firebase:firebase-ads:11.8.0'){
         exclude group: 'com.google.guava'
     }
     compile ('com.android.support.constraint:constraint-layout:1.0.2'){
@@ -126,9 +131,11 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
-    compile('com.google.firebase:firebase-invites:11.6.0'){
+    compile('com.google.firebase:firebase-invites:11.8.0'){
         exclude group: 'com.google.guava'
     }
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.google.firebase:firebase-auth:11.8.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
