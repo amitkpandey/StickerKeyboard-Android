@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="drawables_no_expressions">
+        <item>@drawable/beamsmile</item>
+        <item>@drawable/cuddling</item>
+        <item>@drawable/facehugs</item>
+        <item>@drawable/facesmell</item>
+        <item>@drawable/flowers</item>
+        <item>@drawable/girlsgiggling</item>
+        <item>@drawable/girlssitting</item>
+        <item>@drawable/heartbeat</item>
+        <item>@drawable/kissing</item>
+        <item>@drawable/kitchencuddles</item>
+        <item>@drawable/legsacross</item>
+        <item>@drawable/popcornmovie</item>
+        <item>@drawable/strolling</item>
+        <item>@drawable/backpeckkiss</item>
+        <item>@drawable/crosshug</item>
+        <item>@drawable/consoling</item>
+        <item>@drawable/gamesplay</item>
+        <item>@drawable/girl</item>
+        <item>@drawable/holdinghand</item>
+        <item>@drawable/loveinpark</item>
+        <item>@drawable/whatever</item>
+    </integer-array>
+
+    <integer-array name="drawables">
+        <item>@drawable/beamsmile</item>
+        <item>@drawable/cuddling</item>
+        <item>@drawable/facehugs</item>
+        <item>@drawable/facesmell</item>
+        <item>@drawable/flowers</item>
+        <item>@drawable/girlsgiggling</item>
+        <item>@drawable/girlssitting</item>
+        <item>@drawable/heartbeat</item>
+        <item>@drawable/kissing</item>
+        <item>@drawable/kitchencuddles</item>
+        <item>@drawable/legsacross</item>
+        <item>@drawable/popcornmovie</item>
+        <item>@drawable/strolling</item>
+        <item>@drawable/backpeckkiss</item>
+        <item>@drawable/crosshug</item>
+        <item>@drawable/consoling</item>
+        <item>@drawable/gamesplay</item>
+        <item>@drawable/girl</item>
+        <item>@drawable/holdinghand</item>
+        <item>@drawable/loveinpark</item>
+        <item>@drawable/whatever</item>
+    </integer-array>
+
+</resources>

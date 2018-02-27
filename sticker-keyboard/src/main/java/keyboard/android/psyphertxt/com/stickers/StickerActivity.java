@@ -134,7 +134,7 @@ public class StickerActivity extends AppCompatActivity {
         addAdMobView();
 
 
-        if(!BuildConfig.APPLICATION_ID.contains("gkeyboard")){
+        if(!BuildConfig.APPLICATION_ID.contains("gkeyboard") && !BuildConfig.APPLICATION_ID.contains("lovetok")){
             try {
                 implementWalkThrough();
             }catch (Exception e){
@@ -158,8 +158,8 @@ public class StickerActivity extends AppCompatActivity {
                                 Answers.getInstance().logCustom(new CustomEvent("App Install Campaign")
                                         .putCustomAttribute("Campaign", hm.get("utm_campaign")));
                             }else{
-                                Answers.getInstance().logCustom(new CustomEvent("App Install Campaign")
-                                        .putCustomAttribute("Campaign", deepLink.toString()));
+                                Answers.getInstance().logCustom(new CustomEvent("App Install")
+                                        .putCustomAttribute("Organic", deepLink.toString()));
                             }
                             System.out.println("++++++++++++++++"+deepLink.toString());
                         }
@@ -209,7 +209,7 @@ public class StickerActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-        if(!BuildConfig.APPLICATION_ID.contains("gkeyboard")) {
+        if(!BuildConfig.APPLICATION_ID.contains("gkeyboard") && !BuildConfig.APPLICATION_ID.contains("lovetok")) {
             switchMenuItem = menu.findItem(R.id.switchicons);
             switchMenuItem.setIcon(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
         }
@@ -225,7 +225,7 @@ public class StickerActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.switchicons:
-                if(!BuildConfig.APPLICATION_ID.contains("gkeyboard")) {
+                if(!BuildConfig.APPLICATION_ID.contains("gkeyboard") && !BuildConfig.APPLICATION_ID.contains("lovetok")) {
                     Answers.getInstance().logCustom(new CustomEvent("Home Click Event")
                             .putCustomAttribute("Name", "Switch Button"));
                     withExpressions = withExpressions == false ? true : false;

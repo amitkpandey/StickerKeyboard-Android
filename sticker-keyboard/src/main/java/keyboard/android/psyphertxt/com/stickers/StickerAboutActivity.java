@@ -126,6 +126,8 @@ public class StickerAboutActivity extends AppCompatActivity {
                     shareAppWithFriends("Food Stickers");
                 }else if(BuildConfig.APPLICATION_ID.contains("naijadylog")){
                     shareAppWithFriends("Naija Dylog");
+                }else if(BuildConfig.APPLICATION_ID.contains("lovetok")){
+                    shareAppWithFriends("LoveTok");
                 }
                 return true;
             default:

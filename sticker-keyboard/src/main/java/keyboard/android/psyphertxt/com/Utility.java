@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -24,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -59,8 +61,16 @@ public class Utility {
         {
             try {
                 Log.d("<<<<", String.valueOf(i));
-                String name = context.getResources().getResourceEntryName(icons.getResourceId(i, -1));
-                list.put(name, icons.getResourceId(i, -1));
+                Drawable drawable = icons.getDrawable(i);
+                if (drawable == null) {
+                    break;
+                } else {
+                    int drawableId = icons.getResourceId(i, -1);
+                    if(drawableId != -1) {
+                        String name = context.getResources().getResourceEntryName(icons.getResourceId(i, -1));
+                        list.put(name, drawableId);
+                    }
+                }
                 i++;
             }catch (Exception e){
                 e.printStackTrace();
@@ -174,26 +184,34 @@ public class Utility {
     }
 
     public static Map<String, String> splitQuery(String urlString) {
-        Map<String, String> query_pairs = new LinkedHashMap<String, String>();
-        URL url = null;
         try {
-            url = new URL(urlString);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        if(url != null) {
-            String query = url.getQuery();
-            String[] pairs = query.split("&");
-            for (String pair : pairs) {
-                int idx = pair.indexOf("=");
-                try {
-                    query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+            Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+            URL url = null;
+            try {
+                url = new URL(urlString);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            if (url != null) {
+                String query = url.getQuery();
+                if (query != null) {
+                    if (query.contains("&")) {
+                        String[] pairs = query.split("&");
+                        for (String pair : pairs) {
+                            int idx = pair.indexOf("=");
+                            try {
+                                query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
             }
+            return query_pairs;
+        } catch (Exception e){
+            e.printStackTrace();
         }
-        return query_pairs;
+        return new LinkedHashMap<>();
     }
-
 }

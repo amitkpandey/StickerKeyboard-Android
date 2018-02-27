@@ -59,6 +59,9 @@ android {
         naijadylog {
             applicationId "keyboard.android.psyphertxt.com.naijadylog"
         }
+        lovetok {
+            applicationId "keyboard.android.psyphertxt.com.lovetok"
+        }
     }
 
     dexOptions {
