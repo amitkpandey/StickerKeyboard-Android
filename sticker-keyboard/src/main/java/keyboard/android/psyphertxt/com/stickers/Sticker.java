@@ -40,6 +40,7 @@ class Sticker {
         List<Sticker> stickers = new ArrayList<>();
 
         LinkedHashMap<String, Integer> stickersArray = icons.getCyfaStickerIconIds();
+        System.out.println(">>>>"+stickersArray.toString());
 
         try {
             for (Map.Entry<String, Integer> entry : stickersArray.entrySet()) {
@@ -61,6 +62,7 @@ class Sticker {
             }
         }catch (Exception e){
             stickers = null;
+            e.printStackTrace();
         }
 
         return stickers;

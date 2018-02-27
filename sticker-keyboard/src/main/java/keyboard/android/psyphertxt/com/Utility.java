@@ -68,6 +68,7 @@ public class Utility {
                     int drawableId = icons.getResourceId(i, -1);
                     if(drawableId != -1) {
                         String name = context.getResources().getResourceEntryName(icons.getResourceId(i, -1));
+                        System.out.println(">>>>>>>>>"+name);
                         list.put(name, drawableId);
                     }
                 }
