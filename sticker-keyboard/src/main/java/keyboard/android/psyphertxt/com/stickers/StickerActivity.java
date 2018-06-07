@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -52,8 +53,12 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,7 +72,6 @@ public class StickerActivity extends AppCompatActivity {
     private static final String TAG = StickerActivity.class.getSimpleName();
     @BindView(R.id.sticker_grid_list)
     RecyclerView stickerGridView;
-    ViewGroup admobFrame;
     boolean withExpressions = true;
     private List<Sticker> stickers;
     View switchMenu;
@@ -75,10 +79,15 @@ public class StickerActivity extends AppCompatActivity {
     ViewTreeObserver viewTreeObserver;
     ShowcaseView showcaseView;
     SharedPreferences prefs;
+    AdItem ad = null;
+    StickerAdapter adapter;
+    LinkedList<AdItem> ads;
+    int randomInt = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ads = new LinkedList<>();
         prefs = this.getSharedPreferences(
                 "sticker_app", Context.MODE_PRIVATE);
         if(!prefs.getBoolean("FIRST_LAUNCH", false)){
@@ -126,12 +135,30 @@ public class StickerActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        admobFrame = (ViewGroup) findViewById(R.id.admob_frame);
+        //admobFrame = findViewById(R.id.admob_frame);
 
         withExpressions = prefs.getBoolean("icons_with_text", false);
+        ads.add(new AdItem("GhanaTok", "Kweku is a jovial character and a cool dude who is enthusiastic about creating humour out of situations. Ama is a sassy girl who brings a spark of attitude to any conversation. ", R.drawable.ghanatok_advert, "https://play.google.com/store/apps/details?id=keyboard.android.psyphertxt.com.gtokkeyboard", AdItem.ADTYPE.ANDROID, "INSTALL NOW"));
+        ads.add(new AdItem("LoveTok", "Communicating your affections for someone can be tricky at first, but there are many other ways of expressing yourself other than blurting out, \"I love you\".", R.drawable.lovetok_advert, "https://play.google.com/store/apps/details?id=keyboard.android.psyphertxt.com.lovetok", AdItem.ADTYPE.ANDROID, "DOWNLOAD"));
+        ads.add(new AdItem("Naija Dylog", "Funke and Chuku are cousins who are friendly in nature. Funke has a desire for good living and quality material assets. She is well liked by others for her sense of humour. Chuku is a pleasure loving person.", R.drawable.naija_dylog_advert, "https://play.google.com/store/apps/details?id=keyboard.android.psyphertxt.com.naijadylog&hl=en", AdItem.ADTYPE.ANDROID, "FREE"));
+        ads.add(new AdItem("Food Stickers", "Love food? Express your cravings using these food stickers in your instant messaging chat applications (WhatsApp, Facebook messenger, Telegram, Viber, etc)", R.drawable.foodstickers_advert, "https://play.google.com/store/apps/details?id=keyboard.android.psyphertxt.com.foodstickers&hl=en", AdItem.ADTYPE.ANDROID, "INSTALL NOW"));
+        ads.add(new AdItem("Bonanza", "is a simple card game that involves players using cards to form simple mathematical sentences that sum up to give either the highest or lowest whole number possible.", R.drawable.bonanza_advert, "http://www.daffodilsgp.com/portfolio-item/bonanza-card-game/", AdItem.ADTYPE.WEB, "FIND OUT MORE"));
+        ads.add(new AdItem("Nudu", "is a simple board game with a simple objective… Fulfilment in life. Nudu recreates lives journey to fulfilment in an exciting board game that people of all ages will enjoy.", R.drawable.nudu_advert, "+233 50 162 0994", AdItem.ADTYPE.PHONE, "BUY NOW"));
+        ads.add(new AdItem("G-Match", "Can you match all the stickers in the puzzle with the limited number of moves and time? Challenge yourself and match the stickers to earn rewards", R.drawable.gmatch_advert, "http://gstickerss.com/games", AdItem.ADTYPE.WEB, "PLAY NOW"));
+        ads.add(new AdItem("G-Stickers", "provide new forms of sticker expressions through nonverbal languages worth millions. Combining our classic characters with hilarious situations and priceless phrases, these stickers will help you express your likes (or dislikes) without saying a word.", R.drawable.gstickers_advert, "http://gstickerss.com/games", AdItem.ADTYPE.WEB, "FIND OUT MORE"));
+        if(BuildConfig.APPLICATION_ID.contains("lovetok")){
+            ads.remove(1);
+        } else if(BuildConfig.APPLICATION_ID.contains("gtokkeyboard")){
+            ads.remove(0);
+        } else if(BuildConfig.APPLICATION_ID.contains("foodstickers")){
+            ads.remove(3);
+        } else if(BuildConfig.APPLICATION_ID.contains("naijadylog")){
+            ads.remove(2);
+        }
+
 
         setupAdapter();
-        addAdMobView();
+        //addAdMobView();
 
 
         if(!BuildConfig.APPLICATION_ID.contains("gkeyboard") && !BuildConfig.APPLICATION_ID.contains("lovetok")){
@@ -181,11 +208,34 @@ public class StickerActivity extends AppCompatActivity {
 
         if (stickerGridView.getAdapter() == null) {
             if(stickers != null) {
-                StickerAdapter adapter = new StickerAdapter(this, stickers);
+                randomInt = new Random().nextInt();
+                ad = ads.get(randomInt < 0 ?   (randomInt * -1) % ads.size() : randomInt % ads.size());
+                adapter = new StickerAdapter(this, stickers, ad);
                 GridLayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 3, LinearLayout.VERTICAL, false);
+                mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        switch (adapter.getItemViewType(position)) {
+                            case 0:
+                                return 3;
+                            case 1:
+                                return 1;
+                            default:
+                                return 1;
+                        }
+                    }
+                });
                 stickerGridView.setLayoutManager(mLayoutManager);
                 stickerGridView.setItemAnimator(new DefaultItemAnimator());
                 stickerGridView.setAdapter(adapter);
+
+
+                Timer progressTimer = new Timer();
+                ProgressTimerTask   timeTask = new ProgressTimerTask();
+                progressTimer.scheduleAtFixedRate(timeTask, 30000, 30000);
+
+
+
             }else{
                 Answers.getInstance().logCustom(new CustomEvent("Home Click Event")
                         .putCustomAttribute("Name", "Insufficient Memory"));
@@ -232,7 +282,7 @@ public class StickerActivity extends AppCompatActivity {
                     prefs.edit().putBoolean("icons_with_text", withExpressions).apply();
                     switchMenuItem.setIcon(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
                     stickers = Sticker.initStickers(StickerActivity.this, withExpressions);
-                    StickerAdapter adapter = new StickerAdapter(this, stickers);
+                    adapter = new StickerAdapter(this, stickers, ad);
                     stickerGridView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                 }
@@ -248,74 +298,74 @@ public class StickerActivity extends AppCompatActivity {
         }
     }
 
-    private void addAdMobView(){
-        ViewGroup adCardView = admobFrame;
-        AdRequest adRequest = new AdRequest.Builder()
+//    private void addAdMobView(){
+//        ViewGroup adCardView = admobFrame;
+//        AdRequest adRequest = new AdRequest.Builder()
 //                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-                .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")
-                .addTestDevice("8667822E35F5855655D951EA91079F91")// My Galaxy Nexus test phone
-                .build();
-        View view = View.inflate(admobFrame.getContext(), R.layout.admob_sticker_item, adCardView);
-        final NativeExpressAdView mAdView = (NativeExpressAdView) view.findViewById(R.id.adView);
-        mAdView.loadAd(adRequest);
-        mAdView.setVisibility(View.GONE);
-        mAdView.setAdListener(new AdListener(){
-            @Override
-            public void onAdLoaded() {
-                mAdView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-                super.onAdFailedToLoad(i);
-                showNativeAd();
-            }
-        });
-
-        // The NativeExpressAdViewHolder recycled by the RecyclerView may be a different
-        // instance than the one used previously for this position. Clear the
-        // NativeExpressAdViewHolder of any subviews in case it has a different
-        // AdView associated with it, and make sure the AdView for this position doesn't
-        // already have a parent of a different recycled NativeExpressAdViewHolder.
-        if (adCardView.getChildCount() > 0) {
-            adCardView.removeAllViews();
-        }
-        if (mAdView.getParent() != null) {
-            ((ViewGroup) mAdView.getParent()).removeView(mAdView);
-        }
-
-        // Add the Native Express ad to the native express ad view.
-        adCardView.addView(mAdView);
-    }
-
-    private void showNativeAd() {
-        admobFrame.setVisibility(View.GONE);
-        Log.i(TAG, "iN FACEBOOK NATIVE");
-        AdView adView = new AdView(this, "1582301235134013_1582364931794310", AdSize.BANNER_HEIGHT_50);
-        adView.setAdListener(new com.facebook.ads.AdListener() {
-            @Override
-            public void onError(Ad ad, AdError adError) {
-                Log.i(TAG, "ERROR FACEBOOK NATIVE "+ adError.getErrorMessage());
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-                admobFrame.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-
-            }
-        });
-        admobFrame.addView(adView);
-        adView.loadAd();
-    }
+//                .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")
+//                .addTestDevice("8667822E35F5855655D951EA91079F91")// My Galaxy Nexus test phone
+//                .build();
+//        View view = View.inflate(admobFrame.getContext(), R.layout.admob_sticker_item, adCardView);
+//        final NativeExpressAdView mAdView = (NativeExpressAdView) view.findViewById(R.id.adView);
+//        mAdView.loadAd(adRequest);
+//        mAdView.setVisibility(View.GONE);
+//        mAdView.setAdListener(new AdListener(){
+//            @Override
+//            public void onAdLoaded() {
+//                mAdView.setVisibility(View.VISIBLE);
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int i) {
+//                super.onAdFailedToLoad(i);
+//                showNativeAd();
+//            }
+//        });
+//
+//        // The NativeExpressAdViewHolder recycled by the RecyclerView may be a different
+//        // instance than the one used previously for this position. Clear the
+//        // NativeExpressAdViewHolder of any subviews in case it has a different
+//        // AdView associated with it, and make sure the AdView for this position doesn't
+//        // already have a parent of a different recycled NativeExpressAdViewHolder.
+//        if (adCardView.getChildCount() > 0) {
+//            adCardView.removeAllViews();
+//        }
+//        if (mAdView.getParent() != null) {
+//            ((ViewGroup) mAdView.getParent()).removeView(mAdView);
+//        }
+//
+//        // Add the Native Express ad to the native express ad view.
+//        adCardView.addView(mAdView);
+//    }
+//
+//    private void showNativeAd() {
+//        admobFrame.setVisibility(View.GONE);
+//        Log.i(TAG, "iN FACEBOOK NATIVE");
+//        AdView adView = new AdView(this, "1582301235134013_1582364931794310", AdSize.BANNER_HEIGHT_50);
+//        adView.setAdListener(new com.facebook.ads.AdListener() {
+//            @Override
+//            public void onError(Ad ad, AdError adError) {
+//                Log.i(TAG, "ERROR FACEBOOK NATIVE "+ adError.getErrorMessage());
+//            }
+//
+//            @Override
+//            public void onAdLoaded(Ad ad) {
+//                admobFrame.setVisibility(View.VISIBLE);
+//            }
+//
+//            @Override
+//            public void onAdClicked(Ad ad) {
+//
+//            }
+//
+//            @Override
+//            public void onLoggingImpression(Ad ad) {
+//
+//            }
+//        });
+//        admobFrame.addView(adView);
+//        adView.loadAd();
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -490,6 +540,27 @@ public class StickerActivity extends AppCompatActivity {
             }
         }else{
             deleteStickerEmojisOnStorage(StickerActivity.this);
+        }
+    }
+
+
+    private class ProgressTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    randomInt = new Random().nextInt();
+                    AdItem ad_t = ads.get( randomInt < 0 ?   (randomInt * -1) % ads.size() : randomInt % ads.size());
+                    ad.setTitle(ad_t.getTitle());
+                    ad.setAdButtonText(ad_t.getAdButtonText());
+                    ad.setDescription(ad_t.getDescription());
+                    ad.setImageUrl(ad_t.getImageUrl());
+                    ad.setLink(ad_t.getLink());
+                    ad.setType(ad_t.getType());
+                    adapter.notifyItemChanged(0);
+                }
+            });
         }
     }
 }

@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer-array name="drawables_no_expressions">
+        <item>@drawable/d1</item>
+        <item>@drawable/d2</item>
+        <item>@drawable/d4</item>
+        <item>@drawable/d5</item>
+        <item>@drawable/d6</item>
+        <item>@drawable/d7</item>
+        <item>@drawable/d8</item>
+        <item>@drawable/d9</item>
+        <item>@drawable/d10</item>
+        <item>@drawable/d11</item>
+        <item>@drawable/d12</item>
+        <item>@drawable/d13</item>
+        <item>@drawable/d15</item>
+        <item>@drawable/argu_free</item>
+        <item>@drawable/hair_cuddle_free</item>
+        <item>@drawable/kitten_cuddle_free</item>
+        <item>@drawable/kitten_love_free</item>
+        <item>@drawable/low_hug_free</item>
+        <item>@drawable/selfie_free</item>
+        <item>@drawable/together_forever_free</item>
         <item>@drawable/beamsmile</item>
         <item>@drawable/cuddling</item>
         <item>@drawable/facehugs</item>
@@ -25,6 +45,26 @@
     </integer-array>
 
     <integer-array name="drawables">
+        <item>@drawable/d1</item>
+        <item>@drawable/d2</item>
+        <item>@drawable/d4</item>
+        <item>@drawable/d5</item>
+        <item>@drawable/d6</item>
+        <item>@drawable/d7</item>
+        <item>@drawable/d8</item>
+        <item>@drawable/d9</item>
+        <item>@drawable/d10</item>
+        <item>@drawable/d11</item>
+        <item>@drawable/d12</item>
+        <item>@drawable/d13</item>
+        <item>@drawable/d15</item>
+        <item>@drawable/argu_free</item>
+        <item>@drawable/hair_cuddle_free</item>
+        <item>@drawable/kitten_cuddle_free</item>
+        <item>@drawable/kitten_love_free</item>
+        <item>@drawable/low_hug_free</item>
+        <item>@drawable/selfie_free</item>
+        <item>@drawable/together_forever_free</item>
         <item>@drawable/beamsmile</item>
         <item>@drawable/cuddling</item>
         <item>@drawable/facehugs</item>

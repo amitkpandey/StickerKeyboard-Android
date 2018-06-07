@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp"
+    android:background="#fff"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/adImage"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:src="@drawable/launch_bckgrnd"
+            android:scaleType="centerCrop"/>
+
+        <Button
+            android:id="@+id/adCallToAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_rounded_purple"
+            android:layout_marginRight="10dp"
+            android:text="FIND OUT MORE"
+            android:textSize="13dp"
+            android:elevation="20dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:layout_gravity="center_vertical|end"
+            />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/adTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="7dp"
+        android:text="ADVERTISEMENT"
+        android:textSize="12dp"
+        android:textStyle="bold"
+        android:textColor="#ddd"/>
+
+    <TextView
+        android:id="@+id/adDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="7dp"
+        android:textSize="13dp"
+        android:text="Nudu is an online game for lovers of the ludu game and its available for sale att all major outlets and stands"
+        android:lineSpacingMultiplier="1"/>
+
+
+</LinearLayout>

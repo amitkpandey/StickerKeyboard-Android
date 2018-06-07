@@ -110,14 +110,18 @@ public class StickerFirstTimeActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
-            //resume tasks needing this permission
-            Answers.getInstance().logCustom(new CustomEvent("First Launch Event")
-                    .putCustomAttribute("Name", "Permission Granted"));
-        }else if(grantResults[0]== PackageManager.PERMISSION_DENIED){
-            Answers.getInstance().logCustom(new CustomEvent("First Launch Event")
-                    .putCustomAttribute("Name", "Permission Denied"));
+        try {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
+                //resume tasks needing this permission
+                Answers.getInstance().logCustom(new CustomEvent("First Launch Event")
+                        .putCustomAttribute("Name", "Permission Granted"));
+            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Answers.getInstance().logCustom(new CustomEvent("First Launch Event")
+                        .putCustomAttribute("Name", "Permission Denied"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

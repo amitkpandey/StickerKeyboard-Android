@@ -10,9 +10,11 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,12 +52,13 @@ import keyboard.android.psyphertxt.com.ShareBroadcastReceiver;
 import keyboard.android.psyphertxt.com.Utility;
 import keyboard.android.psyphertxt.com.utilities.ExpandableGridView;
 
-class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
+class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = StickerGridAdapter.class.getSimpleName();
     private Context context;
     private List<Sticker> stickers;
-    LinearLayout admobFrame;
+    AdItem ad;
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageStickers;
@@ -67,31 +70,91 @@ class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
         }
     }
 
-    StickerAdapter(Context context, List<Sticker> stickers) {
+
+    public class AdViewHolder extends RecyclerView.ViewHolder {
+        ImageView adImage;
+        TextView adDescription;
+        Button adCallToAction;
+
+        public AdViewHolder(View view) {
+            super(view);
+            adImage = view.findViewById(R.id.adImage);
+            adDescription = view.findViewById(R.id.adDescription);
+            adCallToAction = view.findViewById(R.id.adCallToAction);
+        }
+    }
+
+    StickerAdapter(Context context, List<Sticker> stickers, AdItem ad) {
         this.context = context;
         this.stickers = stickers;
+        this.ad = ad;
+    }
+
+
+
+
+        @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType == 0){
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.ad_layout, parent, false);
+            return new AdViewHolder(itemView);
+        }else{
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.sticker_view, parent, false);
+            return new ViewHolder(itemView);
+        }
+
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.sticker_view, parent, false);
-        return new ViewHolder(itemView);
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        System.out.println(">>>>>>>>>>"+stickers.get(position).getName());
-        int resID = context.getResources().getIdentifier(stickers.get(position).getName() , "drawable", context.getPackageName());
-        if(resID != 0) {
-            try {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if(holder.getItemViewType() == 0){
+            if(ad != null) {
+                holder.itemView.setVisibility(View.VISIBLE);
                 Picasso.with(context)
-                        .load(resID)
-                        .into(holder.imageStickers);
-                stickerOnClickEvent(holder.imageStickers, position);
-                stickerItemOnLongPressEvent(holder.imageStickers, position);
-            }catch (Exception e){
-                e.printStackTrace();
+                          .load((int)ad.getImageUrl())
+                        .into(((AdViewHolder) holder).adImage);
+                ((AdViewHolder) holder).adDescription.setText(Html.fromHtml("<b>"+ad.getTitle()+"</b> "+ad.getDescription()));
+                ((AdViewHolder) holder).adCallToAction.setText(ad.getAdButtonText());
+
+
+
+                ((AdViewHolder) holder).adCallToAction.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Answers.getInstance().logCustom(new CustomEvent("Ad Call To Action")
+                                .putCustomAttribute("Name", ad.getLink()));
+
+                        if(ad.getType() == AdItem.ADTYPE.ANDROID  || ad.getType() == AdItem.ADTYPE.WEB){
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(ad.getLink()));
+                            holder.itemView.getContext().startActivity(i);
+                        } else if(ad.getType() == AdItem.ADTYPE.PHONE){
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            intent.setData(Uri.parse("tel:"+ad.getLink()));
+                            holder.itemView.getContext().startActivity(intent);
+                        }
+                    }
+                });
+
+            }else{
+                holder.itemView.setVisibility(View.GONE);
+            }
+
+        }else {
+            System.out.println(">>>>>>>>>>" + stickers.get(position).getName());
+            int resID = context.getResources().getIdentifier(stickers.get(position).getName(), "drawable", context.getPackageName());
+            if (resID != 0) {
+                try {
+                    Picasso.with(context)
+                            .load(resID)
+                            .into(((ViewHolder) holder).imageStickers);
+                    stickerOnClickEvent(((ViewHolder) holder).imageStickers, position);
+                    stickerItemOnLongPressEvent(((ViewHolder) holder).imageStickers, position);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -184,29 +247,29 @@ class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
                             .build();
                     materialDialog.show();
 
-                    admobFrame = ButterKnife.findById(materialDialog, R.id.admob_frame);
+                    //admobFrame = ButterKnife.findById(materialDialog, R.id.admob_frame);
                     ImageView imageView = ButterKnife.findById(materialDialog, R.id.imageView);
                     imageView.setImageBitmap(bitmap);
-                    AdRequest adRequest = new AdRequest.Builder()
-                            .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")
-                            .build();
-                    final NativeExpressAdView mAdView = ButterKnife.findById(materialDialog, R.id.adView);
-                    mAdView.setVisibility(View.GONE);
-                    mAdView.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            super.onAdLoaded();
-                            mAdView.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAdFailedToLoad(int i) {
-                            super.onAdFailedToLoad(i);
-                            showNativeAd();
-
-                        }
-                    });
-                    mAdView.loadAd(adRequest);
+//                    AdRequest adRequest = new AdRequest.Builder()
+//                            .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")
+//                            .build();
+//                    final NativeExpressAdView mAdView = ButterKnife.findById(materialDialog, R.id.adView);
+//                    mAdView.setVisibility(View.GONE);
+//                    mAdView.setAdListener(new AdListener() {
+//                        @Override
+//                        public void onAdLoaded() {
+//                            super.onAdLoaded();
+//                            mAdView.setVisibility(View.VISIBLE);
+//                        }
+//
+//                        @Override
+//                        public void onAdFailedToLoad(int i) {
+//                            super.onAdFailedToLoad(i);
+//                            showNativeAd();
+//
+//                        }
+//                    });
+//                    mAdView.loadAd(adRequest);
                 }
                 return true;
             }
@@ -250,34 +313,34 @@ class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
         }
     }
 
-    private void showNativeAd() {
-        admobFrame.setVisibility(View.GONE);
-        Log.i(TAG, "iN FACEBOOK NATIVE");
-        AdView adView = new AdView(admobFrame.getContext(), "1582301235134013_1582364931794310", com.facebook.ads.AdSize.BANNER_HEIGHT_50);
-        adView.setAdListener(new com.facebook.ads.AdListener() {
-            @Override
-            public void onError(Ad ad, AdError adError) {
-
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-                admobFrame.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-
-            }
-        });
-        admobFrame.addView(adView);
-        adView.loadAd();
-    }
+//    private void showNativeAd() {
+//        admobFrame.setVisibility(View.GONE);
+//        Log.i(TAG, "iN FACEBOOK NATIVE");
+//        AdView adView = new AdView(admobFrame.getContext(), "1582301235134013_1582364931794310", com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+//        adView.setAdListener(new com.facebook.ads.AdListener() {
+//            @Override
+//            public void onError(Ad ad, AdError adError) {
+//
+//            }
+//
+//            @Override
+//            public void onAdLoaded(Ad ad) {
+//                admobFrame.setVisibility(View.VISIBLE);
+//            }
+//
+//            @Override
+//            public void onAdClicked(Ad ad) {
+//
+//            }
+//
+//            @Override
+//            public void onLoggingImpression(Ad ad) {
+//
+//            }
+//        });
+//        admobFrame.addView(adView);
+//        adView.loadAd();
+//    }
 
     void fixMediaDir() {
         File sdcard = Environment.getExternalStorageDirectory();
@@ -294,5 +357,12 @@ class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.ViewHolder> {
         }
     }
 
-
+    @Override
+    public int getItemViewType(int position) {
+        super.getItemViewType(position);
+        if(position == 0){
+            return 0;
+        }
+        return 1;
+    }
 }
