@@ -20,30 +20,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
-import com.facebook.ads.AdView;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.NativeExpressAdView;
 import com.squareup.picasso.Picasso;
-
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
-
-import butterknife.ButterKnife;
 import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.ShareBroadcastReceiver;
 import keyboard.android.psyphertxt.com.Utility;
@@ -53,7 +37,6 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
     private static final String TAG = StickerGridAdapter.class.getSimpleName();
     private Context context;
     private List<Sticker> stickers;
-    LinearLayout admobFrame;
 
     StickerGridAdapter(Context context, List<Sticker> stickers) {
         super(context, R.layout.sticker_view, stickers);
@@ -161,29 +144,7 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
                             .build();
                     materialDialog.show();
 
-                    admobFrame = ButterKnife.findById(materialDialog, R.id.admob_frame);
-                    ImageView imageView = ButterKnife.findById(materialDialog, R.id.imageView);
-                    imageView.setImageBitmap(bitmap);
-                    AdRequest adRequest = new AdRequest.Builder()
-                            .addTestDevice("CCDF3FFB9F1C5F61511338E52C46D7E3")
-                            .build();
-                    final NativeExpressAdView mAdView = ButterKnife.findById(materialDialog, R.id.adView);
-                    mAdView.setVisibility(View.GONE);
-                    mAdView.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            super.onAdLoaded();
-                            mAdView.setVisibility(View.VISIBLE);
-                        }
 
-                        @Override
-                        public void onAdFailedToLoad(int i) {
-                            super.onAdFailedToLoad(i);
-                            showNativeAd();
-
-                        }
-                    });
-                    mAdView.loadAd(adRequest);
                 }
                 return true;
             }
@@ -235,34 +196,6 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
 //        return bmOverlay;
 //    }
 
-    private void showNativeAd() {
-        admobFrame.setVisibility(View.GONE);
-        Log.i(TAG, "iN FACEBOOK NATIVE");
-        AdView adView = new AdView(admobFrame.getContext(), "1582301235134013_1582364931794310", com.facebook.ads.AdSize.BANNER_HEIGHT_50);
-        adView.setAdListener(new com.facebook.ads.AdListener() {
-            @Override
-            public void onError(Ad ad, AdError adError) {
-
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-                admobFrame.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-
-            }
-        });
-        admobFrame.addView(adView);
-        adView.loadAd();
-    }
 
     void fixMediaDir() {
         File sdcard = Environment.getExternalStorageDirectory();
