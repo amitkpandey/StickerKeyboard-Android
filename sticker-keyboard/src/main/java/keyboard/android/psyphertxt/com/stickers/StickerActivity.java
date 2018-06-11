@@ -83,32 +83,32 @@ public class StickerActivity extends AppCompatActivity {
             startActivity(new Intent(StickerActivity.this, StickerFirstTimeActivity.class));
             finish();
         }
-        if(!prefs.getBoolean("USER_SIGNED_IN", false)){
-            FirebaseAuth.getInstance()
-                    .signInAnonymously()
-                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            System.out.println(">>>>>>>>"+authResult.toString());
-                            prefs.edit().putBoolean("USER_SIGNED_IN", true).commit();
-                            // Keep track of the referrer in the RTDB. Database calls
-                            // will depend on the structure of your app's RTDB.
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//                            DatabaseReference userRecord =
-//                                    FirebaseDatabase.getInstance().getReference()
-//                                            .child("users")
-//                                            .child(user.getUid());
-//                            userRecord.child("referred_by").setValue(referrerUid);
-                        }
-
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+//        if(!prefs.getBoolean("USER_SIGNED_IN", false)){
+//            FirebaseAuth.getInstance()
+//                    .signInAnonymously()
+//                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//                        @Override
+//                        public void onSuccess(AuthResult authResult) {
+//                            System.out.println(">>>>>>>>"+authResult.toString());
+//                            prefs.edit().putBoolean("USER_SIGNED_IN", true).commit();
+//                            // Keep track of the referrer in the RTDB. Database calls
+//                            // will depend on the structure of your app's RTDB.
+//                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+////                            DatabaseReference userRecord =
+////                                    FirebaseDatabase.getInstance().getReference()
+////                                            .child("users")
+////                                            .child(user.getUid());
+////                            userRecord.child("referred_by").setValue(referrerUid);
+//                        }
+//
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//        }
         setContentView(R.layout.activity_sticker);
 
         deleteStickerEmojisOnStorage(StickerActivity.this);

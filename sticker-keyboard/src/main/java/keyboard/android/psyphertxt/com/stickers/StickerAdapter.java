@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -37,7 +38,6 @@ import butterknife.ButterKnife;
 import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.ShareBroadcastReceiver;
 import keyboard.android.psyphertxt.com.Utility;
-import keyboard.android.psyphertxt.com.utilities.ExpandableGridView;
 
 class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -111,16 +111,26 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     @Override
                     public void onClick(View v) {
                         Answers.getInstance().logCustom(new CustomEvent("Ad Call To Action")
-                                .putCustomAttribute("Name", ad.getLink()));
+                                .putCustomAttribute("Link", ad.getLink()).putCustomAttribute("Type", ad.getAdButtonText()).putCustomAttribute("Name", ad.getTitle()));
 
                         if(ad.getType() == AdItem.ADTYPE.ANDROID  || ad.getType() == AdItem.ADTYPE.WEB){
-                            Intent i = new Intent(Intent.ACTION_VIEW);
-                            i.setData(Uri.parse(ad.getLink()));
-                            holder.itemView.getContext().startActivity(i);
+                            try {
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse(ad.getLink()));
+                                holder.itemView.getContext().startActivity(i);
+                            }catch (Exception e){
+                                    e.printStackTrace();
+                                    Toast.makeText(holder.itemView.getContext(), "No App found to handle Web Launches", Toast.LENGTH_LONG).show();
+                            }
                         } else if(ad.getType() == AdItem.ADTYPE.PHONE){
-                            Intent intent = new Intent(Intent.ACTION_DIAL);
-                            intent.setData(Uri.parse("tel:"+ad.getLink()));
-                            holder.itemView.getContext().startActivity(intent);
+                            try{
+                                Intent intent = new Intent(Intent.ACTION_DIAL);
+                                intent.setData(Uri.parse("tel:"+ad.getLink()));
+                                holder.itemView.getContext().startActivity(intent);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                Toast.makeText(holder.itemView.getContext(), "No App found to handle Web Launches", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 });

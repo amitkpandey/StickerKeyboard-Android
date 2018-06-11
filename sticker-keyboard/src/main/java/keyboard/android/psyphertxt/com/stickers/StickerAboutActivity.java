@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
@@ -102,9 +103,14 @@ public class StickerAboutActivity extends AppCompatActivity {
     }
 
     private void openWebIntent(String string){
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(string));
-        startActivity(i);
+        try {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(string));
+            startActivity(i);
+        }catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(StickerAboutActivity.this, "No App found to handle Web Launches", Toast.LENGTH_LONG).show();
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
