@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<integer-array name="drawables">
+    <item>@drawable/adamant</item>
+    <item>@drawable/bawling</item>
+    <item>@drawable/bored</item>
+    <item>@drawable/clenching</item>
+    <item>@drawable/confident</item>
+    <item>@drawable/content</item>
+    <item>@drawable/crying</item>
+    <item>@drawable/happy</item>
+    <item>@drawable/hesitant</item>
+    <item>@drawable/huh</item>
+    <item>@drawable/in_love</item>
+    <item>@drawable/insecure</item>
+    <item>@drawable/joking</item>
+    <item>@drawable/laughing</item>
+    <item>@drawable/sad</item>
+    <item>@drawable/scared</item>
+    <item>@drawable/sick</item>
+    <item>@drawable/sleeping</item>
+    <item>@drawable/smart</item>
+    <item>@drawable/smiling</item>
+    <item>@drawable/stunned</item>
+    <item>@drawable/thinking</item>
+    <item>@drawable/trembling</item>
+    <item>@drawable/worried</item>
+</integer-array>
