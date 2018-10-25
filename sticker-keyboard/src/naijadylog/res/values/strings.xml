@@ -24,5 +24,7 @@
     <string name="install_keyboard_later">Install Keyboard Later</string>
     <string name="view_privacy_policy">VIEW PRIVACY POLICY</string>
     <string name="ghanatok_was_produced">&appname; was produced by G-Stickers. Follow G-Stickers on</string>
+    <string name="base64">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhwjSz1Vwj0/RSJiwDwG7DP1emZXtrdfokCOacCpKRImTCHLSXC5wro4rNgIaAidoiMKY0gEvV1yvs3+iE37yL5ofBmkv48NXgsWmW/jnZBc6GY686vfy81rPH7Q0wDqKVumOZJlUgUpUAU/qi+YgegJUQPnYaYLI0nuJ2srqHDAkCvYgp/19K6MIH4lTlJypeOcB5pFvnWAgkDTNlkdgi3a1hCnGwuPlaEdib4jaDoy/PR9kze7fdZuimQ/5yMDMwh2ccGLl/rSTyuX+RuvG0eXRiOgnPdKgzrd3c/uAsbvnLTRZRAUPFPCfSJDzvk4CzrSVchrAXFIgBXwIK9g1sQIDAQAB</string>
+    <string name="purchase_itemId">2idondie_02</string>
 
 </resources>

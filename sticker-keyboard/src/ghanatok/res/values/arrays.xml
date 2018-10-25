@@ -29,6 +29,65 @@
         <item>@drawable/your_head_die</item>
     </integer-array>
 
+    <integer-array name="drawables_free">
+        <item>@drawable/birthday_distin_female</item>
+        <item>@drawable/chop_kiss_female</item>
+        <item>@drawable/chop_kiss</item>
+        <item>@drawable/dey_gee</item>
+        <item>@drawable/e_go_bee</item>
+        <item>@drawable/ei_saaah</item>
+        <item>@drawable/forgeti_obia</item>
+        <item>@drawable/forgetti_obiaa_female</item>
+        <item>@drawable/gye_wu_twoo</item>
+        <item>@drawable/ma_da_koraa</item>
+        <item>@drawable/man_tire</item>
+        <item>@drawable/medo_wo</item>
+        <item>@drawable/never_hex</item>
+        <item>@drawable/no_bf</item>
+        <item>@drawable/ohemaa</item>
+        <item>@drawable/wu_ye_nam_paa</item>
+        <item>@drawable/you_do_all</item>
+        <item>@drawable/you_that_female</item>
+    </integer-array>
+
+    <integer-array name="drawables_paid">
+        <item>@drawable/am_kiss_you</item>
+        <item>@drawable/am_love_you</item>
+        <item>@drawable/congrats</item>
+        <item>@drawable/imu</item>
+        <item>@drawable/roff</item>
+        <item>@drawable/send_me_mobile_money</item>
+        <item>@drawable/too_much_sauce</item>
+        <item>@drawable/your_head_die</item>
+    </integer-array>
+
+    <integer-array name="drawables_no_expressions_free">
+        <item>@drawable/birthday_distin_female_no_text</item>
+        <item>@drawable/chop_kiss_female_no_text</item>
+        <item>@drawable/chop_kiss_no_text</item>
+        <item>@drawable/dey_gee_no_txt</item>
+        <item>@drawable/e_go_bee_no_txt</item>
+        <item>@drawable/ei_saaah_no_text</item>
+        <item>@drawable/forgeti_obia_no_text</item>
+        <item>@drawable/forgetti_obiaa_female_no_text</item>
+        <item>@drawable/gye_wu_twoo_no_text</item>
+        <item>@drawable/ma_da_koraa_no_text</item>
+        <item>@drawable/man_tire_no_text</item>
+        <item>@drawable/never_hex_no_text</item>
+        <item>@drawable/no_bf_no_text</item>
+        <item>@drawable/ohemaa_no_text</item>
+        <item>@drawable/wu_ye_nam_paa_no_text</item>
+        <item>@drawable/you_do_all_no_text</item>
+        <item>@drawable/you_that_female_no_text</item>
+    </integer-array>
+
+    <integer-array name="drawables_no_expressions_paid">
+        <item>@drawable/congrats_no_text</item>
+        <item>@drawable/imu_no_text</item>
+        <item>@drawable/promise_no_text</item>
+        <item>@drawable/sauce_no_text</item>
+        <item>@drawable/send_me_mobile_money_no_text</item>
+    </integer-array>
 
     <integer-array name="drawables_no_expressions">
         <item>@drawable/birthday_distin_female_no_text</item>

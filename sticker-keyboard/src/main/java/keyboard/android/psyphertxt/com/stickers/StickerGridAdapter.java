@@ -174,6 +174,7 @@ class StickerGridAdapter extends ArrayAdapter<Sticker> {
         ((Activity)context).startActivityForResult(shareIntent, 5);
     }
 
+
     private void processImage(Bitmap bitmap) {
         try {
             // Create new bitmap based on the size and config of the old

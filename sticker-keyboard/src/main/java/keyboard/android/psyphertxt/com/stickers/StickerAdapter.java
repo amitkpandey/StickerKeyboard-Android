@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -32,28 +33,36 @@ import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.ShareBroadcastReceiver;
 import keyboard.android.psyphertxt.com.Utility;
+import keyboard.android.psyphertxt.com.products.IabHelper;
+
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = StickerGridAdapter.class.getSimpleName();
+    IabHelper.OnIabPurchaseFinishedListener purchaseFinishedListener;
+    IabHelper helper;
     private Context context;
     private List<Sticker> stickers;
+    List<StickerItem> items;
+    SharedPreferences sharedPrefs;
     AdItem ad;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageStickers;
+        ImageView imageStickers, imageLock;
 
         public ViewHolder(View view) {
             super(view);
             imageStickers = view.findViewById(R.id.sticker_image);
-
+            imageLock = view.findViewById(R.id.sticker_lock);
         }
     }
 
@@ -77,7 +86,13 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.ad = ad;
     }
 
-
+    StickerAdapter(Context context, List<Sticker> stickers, IabHelper helper, IabHelper.OnIabPurchaseFinishedListener purchaseFinishedListener, List<StickerItem> items) {
+        this.context = context;
+        this.stickers = stickers;
+        this.helper = helper;
+        this.purchaseFinishedListener = purchaseFinishedListener;
+        this.items = items;
+    }
 
 
         @Override
@@ -89,6 +104,8 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }else{
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.sticker_view, parent, false);
+            sharedPrefs = context.getSharedPreferences("Purchased", Context.MODE_PRIVATE);
+
             return new ViewHolder(itemView);
         }
 
@@ -153,6 +170,33 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     e.printStackTrace();
                 }
             }
+
+            String stickerName = stickers.get(position).getName();
+            if (!(sharedPrefs.getBoolean("Purchased", false)) ){
+                ((ViewHolder) holder).imageLock.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ViewHolder) holder).imageLock.setVisibility(View.GONE);
+                    }
+                });
+            } else {
+                if (!(stickerName.equals("kpa") || stickerName.equals("mumu") || stickerName.equals("chop_kiss_no_text")
+                || stickerName.equals("baff_up_2_notxt") || stickerName.equals("i_don_die_notxt") || stickerName.equals("congrats"))) {
+                    ((ViewHolder) holder).imageLock.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((ViewHolder) holder).imageLock.setVisibility(View.VISIBLE);
+                        }
+                    });
+                } else {
+                    ((ViewHolder) holder).imageLock.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((ViewHolder) holder).imageLock.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            }
         }
     }
 
@@ -204,7 +248,7 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     try {
                         if(((ImageView) view).getDrawable() != null) {
                             Bitmap bitmap = ((BitmapDrawable) ((ImageView) view).getDrawable()).getBitmap();
-                            processImage(bitmap);
+                            processImage(bitmap,sticker);
                         }
                     }catch (Exception e){
                         e.printStackTrace();
@@ -237,7 +281,7 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    processImage(bitmap);
+                                    processImage(bitmap,sticker);
                                     dialog.dismiss();
                                 }
                             })
@@ -296,17 +340,39 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    private void processImage(Bitmap bitmap) {
-        try {
-            // Create new bitmap based on the size and config of the old
-            Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
-            newBitmap.eraseColor(Color.WHITE);
-            Canvas canvas = new Canvas(newBitmap);  // create a canvas to draw on the new image
-            canvas.drawBitmap(bitmap, 0f, 0f, null); // draw old image on the background
-            //bitmap.recycle();
-            shareStickerImage(newBitmap, context);
-        } catch (Exception exception) {
-            Log.e("debug_log", exception.toString());
+
+    private void processImage(Bitmap bitmap, Sticker sticker) {
+
+        if(sharedPrefs.getBoolean("Purchase",true)){
+            try {
+                // Create new bitmap based on the size and config of the old
+                Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+                newBitmap.eraseColor(Color.WHITE);
+                Canvas canvas = new Canvas(newBitmap);  // create a canvas to draw on the new image
+                canvas.drawBitmap(bitmap, 0f, 0f, null); // draw old image on the background
+                //bitmap.recycle();
+                shareStickerImage(newBitmap, context);
+            } catch (Exception exception) {
+                Log.e("debug_log", exception.toString());
+            }
+        }else {
+            if(sticker.getName().equals("kpa") || sticker.getName().equals("mumu") || sticker.getName().equals("chop_kiss_no_text")
+                    || sticker.getName().equals("baff_up_2_notxt") || sticker.getName().equals("i_don_die_notxt") || sticker.getName().equals("congrats")){
+                try {
+                    // Create new bitmap based on the size and config of the old
+                    Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+                    newBitmap.eraseColor(Color.WHITE);
+                    Canvas canvas = new Canvas(newBitmap);  // create a canvas to draw on the new image
+                    canvas.drawBitmap(bitmap, 0f, 0f, null); // draw old image on the background
+                    //bitmap.recycle();
+                    shareStickerImage(newBitmap, context);
+                } catch (Exception exception) {
+                    Log.e("debug_log", exception.toString());
+                }
+            }else
+            {
+                helper.launchPurchaseFlow((Activity) context, context.getString(R.string.purchase_itemId),1001, purchaseFinishedListener);
+            }
         }
     }
 
