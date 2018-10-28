@@ -12,5 +12,12 @@
         android:layout_centerVertical="true"
         android:src="@android:drawable/alert_dark_frame"
         />
-
+    <ImageView
+        android:id="@+id/sticker_lock"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_green_lock"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@id/sticker_image"
+        android:visibility="gone"/>
 </RelativeLayout>

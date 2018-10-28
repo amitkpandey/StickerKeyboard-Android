@@ -1,8 +1,6 @@
 package keyboard.android.psyphertxt.com.stickers;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

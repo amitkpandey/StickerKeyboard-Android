@@ -1,6 +1,7 @@
 package keyboard.android.psyphertxt.com.stickers;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -42,6 +44,7 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +57,10 @@ import butterknife.ButterKnife;
 import keyboard.android.psyphertxt.com.BuildConfig;
 import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.Utility;
+import keyboard.android.psyphertxt.com.products.IabHelper;
+import keyboard.android.psyphertxt.com.products.IabResult;
+import keyboard.android.psyphertxt.com.products.Inventory;
+import keyboard.android.psyphertxt.com.products.Purchase;
 
 
 public class StickerActivity extends AppCompatActivity {
@@ -67,18 +74,27 @@ public class StickerActivity extends AppCompatActivity {
     MenuItem switchMenuItem;
     ViewTreeObserver viewTreeObserver;
     ShowcaseView showcaseView;
-    SharedPreferences prefs;
+    SharedPreferences prefs, sharedPref;
     AdItem ad = null;
     StickerAdapter adapter;
     LinkedList<AdItem> ads;
     int randomInt = 0;
 
+    IabHelper mHelper;
+    //RecyclerView rvItems;
+    //GridLayoutManager gridLayoutManager;
+    List<StickerItem> items;
+    List<String> skuList;
+    int RC_REQUEST = 10001;
+    Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ads = new LinkedList<>();
-        prefs = this.getSharedPreferences(
-                "sticker_app", Context.MODE_PRIVATE);
+        sharedPref = this.getSharedPreferences("Purchased", Context.MODE_PRIVATE);
+
+        prefs = this.getSharedPreferences("sticker_app", Context.MODE_PRIVATE);
         if(!prefs.getBoolean("FIRST_LAUNCH", false)){
             startActivity(new Intent(StickerActivity.this, StickerFirstTimeActivity.class));
             finish();
@@ -145,8 +161,27 @@ public class StickerActivity extends AppCompatActivity {
             ads.remove(2);
         }
 
+        skuList = Arrays.asList(StickerActivity.this.getString(R.string.purchase_itemId));
+        activity = StickerActivity.this;
+        items = new ArrayList<>();
 
-        setupAdapter();
+        //initStickers static themes
+        //stickers = Sticker.initStickers(this, withExpressions);
+
+        String base64EncodedPublicKey = getResources().getString(R.string.base64);
+        mHelper = new IabHelper(this, base64EncodedPublicKey);
+
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
+                    Toast.makeText(activity, "Problem setting up In-app Billing: " + result, Toast.LENGTH_SHORT).show();
+                } else {
+                    loadProducts();
+                }
+            }
+        });
+
+        //setupAdapter();
         //addAdMobView();
 
 
@@ -188,9 +223,32 @@ public class StickerActivity extends AppCompatActivity {
                         Log.w(TAG, "getDynamicLink:onFailure", e);
                     }
                 });
+
+
+
+
     }
 
     private void setupAdapter() {
+       /* skuList = Arrays.asList(StickerActivity.this.getString(R.string.purchase_itemId));
+        activity = StickerActivity.this;
+        items = new ArrayList<>();
+
+        //initStickers static themes
+        stickers = Sticker.initStickers(this, withExpressions);
+        String base64EncodedPublicKey = getResources().getString(R.string.base64);
+        mHelper = new IabHelper(this, base64EncodedPublicKey);
+
+        //In-app Purchase
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
+                    Toast.makeText(activity, "Problem setting up In-app Billing: " + result, Toast.LENGTH_SHORT).show();
+                } else {
+                    loadProducts();
+                }
+            }
+        });*/
 
         //initStickers static themes
         stickers = Sticker.initStickers(this, withExpressions);
@@ -200,6 +258,7 @@ public class StickerActivity extends AppCompatActivity {
                 randomInt = new Random().nextInt();
                 ad = ads.get(randomInt < 0 ?   (randomInt * -1) % ads.size() : randomInt % ads.size());
                 adapter = new StickerAdapter(this, stickers, ad);
+                //adapter = new StickerAdapter(stickerGridView.getContext(),stickers, mHelper, mPurchaseFinishedListener, items);
                 GridLayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 3, LinearLayout.VERTICAL, false);
                 mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
@@ -242,6 +301,46 @@ public class StickerActivity extends AppCompatActivity {
             }
         } else {
             ((StickerAdapter) stickerGridView.getAdapter()).refill(stickers);
+        }
+    }
+
+    //In-app Purchase classes
+    private void loadProducts() {
+        try {
+            mHelper.queryInventoryAsync(true, skuList, new IabHelper.QueryInventoryFinishedListener() {
+                @Override
+                public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+                    items = new ArrayList<>();
+                    StickerItem item;
+
+                    for (String s : skuList) {
+                        item = new StickerItem();
+                        item.setTitle(inv.getSkuDetails(s).getTitle());
+                        item.setDescription(inv.getSkuDetails(s).getDescription());
+                        item.setPrice(inv.getSkuDetails(s).getPrice());
+                        item.setId(inv.getSkuDetails(s).getSku());
+                        items.add(item);
+
+                        Toast.makeText(activity, item.toString(), Toast.LENGTH_LONG).show();
+
+                    }
+
+                    setupAdapter();
+
+//                    stickerGridView.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            gridLayoutManager = new GridLayoutManager(activity, 3, LinearLayout.VERTICAL, false);
+//                            stickerGridView.setLayoutManager(gridLayoutManager);
+//                            adapter = new StickerAdapter(stickerGridView.getContext(),stickers, mHelper, mPurchaseFinishedListener, items);
+//                            stickerGridView.setAdapter(adapter);
+//                        }
+//                    });
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -358,9 +457,13 @@ public class StickerActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+            // not handled, so handle it ourselves (here's where you'd
+            // perform any handling of activity results not related to in-app
+            // billing...
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
-
 
     private void deleteStickerEmojisOnStorage(Context context) {
         try {
@@ -551,5 +654,66 @@ public class StickerActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        @Override
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
+
+            // if we were disposed of in the meantime, quit.
+            if (mHelper == null) return;
+
+            if (result.isFailure()) {
+                Toast.makeText(activity, "Error purchasing: " + result, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Log.d(TAG, "Purchase successful." + purchase);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean("Purchased", true);
+            editor.commit();
+
+            stickerGridView.post(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+            try {
+                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+        @Override
+        public void onConsumeFinished(Purchase purchase, IabResult result) {
+            Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
+
+            // if we were disposed of in the meantime, quit.
+            if (mHelper == null) return;
+
+            if (result.isSuccess()) {
+                Log.d(TAG, "Consumption successful. Provisioning." + purchase.getSku());
+            } else {
+                Log.d(TAG, "Error while consuming: " + result);
+            }
+            Log.d(TAG, "End consumption flow.");
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mHelper != null) try {
+            mHelper.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mHelper = null;
     }
 }

@@ -1,110 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer-array name="drawables">
-        <item>@drawable/ajebutter</item>
-        <item>@drawable/ajekpako_2</item>
-        <item>@drawable/ajekpako</item>
-        <item>@drawable/amebo</item>
-        <item>@drawable/awoof</item>
         <item>@drawable/baff_up_2</item>
         <item>@drawable/baff_up</item>
-        <item>@drawable/comot_for_there</item>
-
         <item>@drawable/ewoo</item>
         <item>@drawable/eyaa</item>
-        <item>@drawable/gbeja_2</item>
-        <item>@drawable/gbeja</item>
         <item>@drawable/i_don_crush</item>
-        <item>@drawable/i_don_die</item>
         <item>@drawable/i_don_hammer</item>
-        <item>@drawable/i_don_hit</item>
 
         <item>@drawable/kpa</item>
         <item>@drawable/lobaton_female</item>
         <item>@drawable/lobaton</item>
         <item>@drawable/mumu</item>
-        <item>@drawable/oya_relax</item>
         <item>@drawable/oyiwa</item>
         <item>@drawable/troway</item>
         <item>@drawable/waka</item>
         <item>@drawable/woz</item>
         <item>@drawable/you_know_try</item>
-        <item>@drawable/runs_girl</item>
-    </integer-array>
 
-    <integer-array name="drawables_free">
         <item>@drawable/ajebutter</item>
         <item>@drawable/ajekpako_2</item>
         <item>@drawable/ajekpako</item>
         <item>@drawable/amebo</item>
         <item>@drawable/awoof</item>
-        <item>@drawable/baff_up_2</item>
-        <item>@drawable/baff_up</item>
         <item>@drawable/comot_for_there</item>
-
-        <item>@drawable/ewoo</item>
-        <item>@drawable/eyaa</item>
-        <item>@drawable/gbeja_2</item>
         <item>@drawable/gbeja</item>
+        <item>@drawable/gbeja_2</item>
         <item>@drawable/i_don_die</item>
-        <item>@drawable/i_don_hammer</item>
         <item>@drawable/i_don_hit</item>
-
-        <item>@drawable/kpa</item>
-        <item>@drawable/lobaton_female</item>
-        <item>@drawable/lobaton</item>
-        <item>@drawable/mumu</item>
         <item>@drawable/oya_relax</item>
-        <item>@drawable/oyiwa</item>
-        <item>@drawable/troway</item>
-        <item>@drawable/waka</item>
-        <item>@drawable/woz</item>
-        <item>@drawable/you_know_try</item>
         <item>@drawable/runs_girl</item>
     </integer-array>
+
 
     <integer-array name="drawables_paid">
-        <item>@drawable/i_don_crush</item>
-    </integer-array>
+        <item>@drawable/ajebutter</item>
+        <item>@drawable/ajekpako_2</item>
+        <item>@drawable/ajekpako</item>
+        <item>@drawable/amebo</item>
+        <item>@drawable/awoof</item>
+        <item>@drawable/comot_for_there</item>
+        <item>@drawable/gbeja</item>
+        <item>@drawable/gbeja_2</item>
 
-    <integer-array name="drawables_no_expressions_free">
-        <item>@drawable/ajebutter_notxt</item>
-        <item>@drawable/ajekpako_2_notxt</item>
-        <item>@drawable/ajekpako_notxt</item>
-        <item>@drawable/amebo_notxt</item>
-        <item>@drawable/awoof_notxt</item>
-        <item>@drawable/baff_up_2_notxt</item>
-        <item>@drawable/baff_up_notxt</item>
-        <item>@drawable/comot_for_there_notxt</item>
-
-        <item>@drawable/ewoo_notxt</item>
-        <item>@drawable/eyaa_notxt</item>
-        <item>@drawable/gbeja_2_notxt</item>
-        <item>@drawable/gbeja_notxt</item>
-        <item>@drawable/i_don_crush_notxt</item>
-        <item>@drawable/i_don_die_notxt</item>
-        <item>@drawable/i_don_hammer_notxt</item>
+        <item>@drawable/i_don_die</item>
+        <item>@drawable/i_don_hit</item>
         <item>@drawable/i_don_hit_notxt</item>
-
-        <item>@drawable/kpa_notxt</item>
-        <item>@drawable/lobaton_female_notxt</item>
-        <item>@drawable/lobaton_notxt</item>
-        <item>@drawable/mumu_notxt</item>
+        <item>@drawable/oya_relax</item>
         <item>@drawable/oya_relax_notxt</item>
-        <item>@drawable/oyiwa_notxt</item>
-        <item>@drawable/troway_notxt</item>
-        <item>@drawable/waka_notxt</item>
-        <item>@drawable/woz_notxt</item>
-        <item>@drawable/you_no_try_notxt</item>
+        <item>@drawable/runs_girl</item>
     </integer-array>
+
 
     <integer-array name="drawables_no_expressions">
         <item>@drawable/ajebutter_notxt</item>
         <item>@drawable/ajekpako_2_notxt</item>
         <item>@drawable/ajekpako_notxt</item>
         <item>@drawable/amebo_notxt</item>
+        <item>@drawable/oya_relax_notxt</item>
         <item>@drawable/awoof_notxt</item>
         <item>@drawable/baff_up_2_notxt</item>
+        <item>@drawable/i_don_hit_notxt</item>
         <item>@drawable/baff_up_notxt</item>
         <item>@drawable/comot_for_there_notxt</item>
 
@@ -115,13 +71,11 @@
         <item>@drawable/i_don_crush_notxt</item>
         <item>@drawable/i_don_die_notxt</item>
         <item>@drawable/i_don_hammer_notxt</item>
-        <item>@drawable/i_don_hit_notxt</item>
 
         <item>@drawable/kpa_notxt</item>
         <item>@drawable/lobaton_female_notxt</item>
         <item>@drawable/lobaton_notxt</item>
         <item>@drawable/mumu_notxt</item>
-        <item>@drawable/oya_relax_notxt</item>
         <item>@drawable/oyiwa_notxt</item>
         <item>@drawable/troway_notxt</item>
         <item>@drawable/waka_notxt</item>

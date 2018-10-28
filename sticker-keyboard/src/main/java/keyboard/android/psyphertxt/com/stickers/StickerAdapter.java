@@ -34,6 +34,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -53,6 +54,7 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Sticker> stickers;
     List<StickerItem> items;
     SharedPreferences sharedPrefs;
+    List<Integer> paid;
     AdItem ad;
 
 
@@ -84,6 +86,8 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.context = context;
         this.stickers = stickers;
         this.ad = ad;
+        paid = new ArrayList<>();
+        paid = Utility.initArrayList(R.array.drawables_paid, context);
     }
 
     StickerAdapter(Context context, List<Sticker> stickers, IabHelper helper, IabHelper.OnIabPurchaseFinishedListener purchaseFinishedListener, List<StickerItem> items) {
@@ -92,6 +96,8 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.helper = helper;
         this.purchaseFinishedListener = purchaseFinishedListener;
         this.items = items;
+        paid = new ArrayList<>();
+        paid = Utility.initArrayList(R.array.drawables_paid, context);
     }
 
 
@@ -105,7 +111,6 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.sticker_view, parent, false);
             sharedPrefs = context.getSharedPreferences("Purchased", Context.MODE_PRIVATE);
-
             return new ViewHolder(itemView);
         }
 
@@ -171,8 +176,9 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             }
 
-            String stickerName = stickers.get(position).getName();
-            if (!(sharedPrefs.getBoolean("Purchased", false)) ){
+            Sticker sticker = stickers.get(position);
+
+            if (!sharedPrefs.getBoolean("Purchased", false)){
                 ((ViewHolder) holder).imageLock.post(new Runnable() {
                     @Override
                     public void run() {
@@ -180,14 +186,13 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 });
             } else {
-                if (!(stickerName.equals("kpa") || stickerName.equals("mumu") || stickerName.equals("chop_kiss_no_text")
-                || stickerName.equals("baff_up_2_notxt") || stickerName.equals("i_don_die_notxt") || stickerName.equals("congrats"))) {
+                if(paid.contains(sticker.getDrawable())){
                     ((ViewHolder) holder).imageLock.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((ViewHolder) holder).imageLock.setVisibility(View.VISIBLE);
-                        }
-                    });
+                            @Override
+                            public void run() {
+                                ((ViewHolder) holder).imageLock.setVisibility(View.VISIBLE);
+                            }
+                        });
                 } else {
                     ((ViewHolder) holder).imageLock.post(new Runnable() {
                         @Override
@@ -343,7 +348,7 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void processImage(Bitmap bitmap, Sticker sticker) {
 
-        if(sharedPrefs.getBoolean("Purchase",true)){
+        if(!sharedPrefs.getBoolean("Purchase",false)){
             try {
                 // Create new bitmap based on the size and config of the old
                 Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
@@ -356,8 +361,7 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 Log.e("debug_log", exception.toString());
             }
         }else {
-            if(sticker.getName().equals("kpa") || sticker.getName().equals("mumu") || sticker.getName().equals("chop_kiss_no_text")
-                    || sticker.getName().equals("baff_up_2_notxt") || sticker.getName().equals("i_don_die_notxt") || sticker.getName().equals("congrats")){
+            if(!paid.contains(sticker.getDrawable())){
                 try {
                     // Create new bitmap based on the size and config of the old
                     Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
@@ -369,10 +373,9 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 } catch (Exception exception) {
                     Log.e("debug_log", exception.toString());
                 }
-            }else
-            {
-                helper.launchPurchaseFlow((Activity) context, context.getString(R.string.purchase_itemId),1001, purchaseFinishedListener);
-            }
+            }else {
+                    helper.launchPurchaseFlow((Activity) context, context.getString(R.string.purchase_itemId),1001, purchaseFinishedListener);
+                }
         }
     }
 

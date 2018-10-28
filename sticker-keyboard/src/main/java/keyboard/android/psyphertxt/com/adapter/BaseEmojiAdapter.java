@@ -5,13 +5,13 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.AnyRes;
@@ -29,13 +29,11 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 import keyboard.android.psyphertxt.com.EmojiKeyboardService;
-import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.Utility;
 
 
@@ -45,6 +43,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
     protected LinkedList<String> emojiTexts;
     protected LinkedList<Integer> iconIds;
     public static EditorInfo info;
+    SharedPreferences sharedPrefs;
     private static final String TAG = BaseEmojiAdapter.class.getSimpleName();
 
     public BaseEmojiAdapter(EmojiKeyboardService emojiKeyboardService) {
@@ -60,6 +59,7 @@ public abstract class BaseEmojiAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, final View convertView, ViewGroup parent) {
         final ImageView imageView;
+        sharedPrefs = parent.getContext().getSharedPreferences("Purchased", Context.MODE_PRIVATE);
         if (convertView == null) {
             imageView = new ImageView(emojiKeyboardService);
             int scale = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, emojiKeyboardService.getResources().getDisplayMetrics());

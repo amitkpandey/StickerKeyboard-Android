@@ -1,19 +1,17 @@
 package keyboard.android.psyphertxt.com.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import keyboard.android.psyphertxt.com.constants.EmojiIcons;
 import keyboard.android.psyphertxt.com.constants.Sticker_EmojiIcons;
 import keyboard.android.psyphertxt.com.view.KeyboardSinglePageView;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class EmojiPagerAdapter extends PagerAdapter {
 

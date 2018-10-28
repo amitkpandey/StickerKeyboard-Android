@@ -37,8 +37,7 @@ public class PurchaseStickerActivity extends AppCompatActivity {
 
     // AdItem ad;
 
-    List<String> skuList = Arrays.asList(getString(R.string.purchase_itemId));
-
+    List<String> skuList;
     int RC_REQUEST = 10001;
     Activity activity;
 
@@ -46,9 +45,11 @@ public class PurchaseStickerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_sticker);
+        skuList = Arrays.asList(PurchaseStickerActivity.this.getString(R.string.purchase_itemId));
+
+
 
         activity = PurchaseStickerActivity.this;
-//        purchaseSticker = findViewById(R.id.btn_buy);
         rvItems = findViewById(R.id.rv_Stickers);
         items = new ArrayList<>();
         //initStickers static themes
