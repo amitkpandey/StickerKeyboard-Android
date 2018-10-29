@@ -1,3 +1,4 @@
+/*
 package keyboard.android.psyphertxt.com.stickers;
 
 import android.app.Activity;
@@ -33,10 +34,8 @@ public class PurchaseStickerActivity extends AppCompatActivity {
     List<Sticker> stickers;
     boolean withExpressions = true;
     List<StickerItem> items;
+    AdItem ad = null;
     SharedPreferences prefs;
-
-    // AdItem ad;
-
     List<String> skuList;
     int RC_REQUEST = 10001;
     Activity activity;
@@ -107,12 +106,13 @@ public class PurchaseStickerActivity extends AppCompatActivity {
                         public void run() {
                             gridLayoutManager = new GridLayoutManager(activity, 3, LinearLayout.VERTICAL, false);
                             rvItems.setLayoutManager(gridLayoutManager);
-                            adapter = new StickerAdapter(rvItems.getContext(),stickers, mHelper, mPurchaseFinishedListener, items);
+                            adapter = new StickerAdapter(rvItems.getContext(),stickers, mHelper, mPurchaseFinishedListener, items, ad);
                             rvItems.setAdapter(adapter);
                         }
                     });
 
-                   /* if (items.isEmpty()) {
+                   */
+/* if (items.isEmpty()) {
                         rvItems.setVisibility(View.GONE);
                         llEmptyList.setVisibility(View.VISIBLE);
                     } else {
@@ -124,7 +124,8 @@ public class PurchaseStickerActivity extends AppCompatActivity {
 
                         adapter = new ItemAdapter(activity, items);
                         rvItems.setAdapter(adapter);
-                    }*/
+                    }*//*
+
                 }
             });
         } catch (Exception e) {
@@ -142,7 +143,8 @@ public class PurchaseStickerActivity extends AppCompatActivity {
         }
     }
 
-  /*  @OnClick(R.id.btnContinue)
+  */
+/*  @OnClick(R.id.btnContinue)
     public void clickContinue(View v) {
         PurchaseItem item = adapter.getSelected();
 
@@ -151,7 +153,8 @@ public class PurchaseStickerActivity extends AppCompatActivity {
         } catch (IabHelper.IabAsyncInProgressException e) {
             Log.d(TAG, "onProductClick: " + e.getMessage());
         }
-    }*/
+    }*//*
+
 
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         @Override
@@ -214,3 +217,4 @@ public class PurchaseStickerActivity extends AppCompatActivity {
         mHelper = null;
     }
 }
+*/

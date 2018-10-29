@@ -79,10 +79,7 @@ public class StickerActivity extends AppCompatActivity {
     StickerAdapter adapter;
     LinkedList<AdItem> ads;
     int randomInt = 0;
-
     IabHelper mHelper;
-    //RecyclerView rvItems;
-    //GridLayoutManager gridLayoutManager;
     List<StickerItem> items;
     List<String> skuList;
     int RC_REQUEST = 10001;
@@ -257,8 +254,8 @@ public class StickerActivity extends AppCompatActivity {
             if(stickers != null) {
                 randomInt = new Random().nextInt();
                 ad = ads.get(randomInt < 0 ?   (randomInt * -1) % ads.size() : randomInt % ads.size());
-                adapter = new StickerAdapter(this, stickers, ad);
-                //adapter = new StickerAdapter(stickerGridView.getContext(),stickers, mHelper, mPurchaseFinishedListener, items);
+                //adapter = new StickerAdapter(this, stickers, ad);
+                adapter = new StickerAdapter(this,stickers, mHelper, mPurchaseFinishedListener, items, ad);
                 GridLayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 3, LinearLayout.VERTICAL, false);
                 mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
@@ -370,7 +367,8 @@ public class StickerActivity extends AppCompatActivity {
                     prefs.edit().putBoolean("icons_with_text", withExpressions).apply();
                     switchMenuItem.setIcon(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
                     stickers = Sticker.initStickers(StickerActivity.this, withExpressions);
-                    adapter = new StickerAdapter(this, stickers, ad);
+                    //adapter = new StickerAdapter(this,stickers,ad)
+                    adapter = new StickerAdapter(this,stickers, mHelper, mPurchaseFinishedListener, items, ad);
                     stickerGridView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                 }

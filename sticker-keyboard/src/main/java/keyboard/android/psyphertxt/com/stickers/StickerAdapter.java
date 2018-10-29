@@ -90,9 +90,10 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         paid = Utility.initArrayList(R.array.drawables_paid, context);
     }
 
-    StickerAdapter(Context context, List<Sticker> stickers, IabHelper helper, IabHelper.OnIabPurchaseFinishedListener purchaseFinishedListener, List<StickerItem> items) {
+    StickerAdapter(Context context, List<Sticker> stickers, IabHelper helper, IabHelper.OnIabPurchaseFinishedListener purchaseFinishedListener, List<StickerItem> items, AdItem ad) {
         this.context = context;
         this.stickers = stickers;
+        this.ad = ad;
         this.helper = helper;
         this.purchaseFinishedListener = purchaseFinishedListener;
         this.items = items;
