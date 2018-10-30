@@ -179,7 +179,7 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             Sticker sticker = stickers.get(position);
 
-            if (!sharedPrefs.getBoolean("Purchased", false)){
+            if (sharedPrefs.getBoolean("Purchased", false)){
                 ((ViewHolder) holder).imageLock.post(new Runnable() {
                     @Override
                     public void run() {
@@ -349,7 +349,7 @@ class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void processImage(Bitmap bitmap, Sticker sticker) {
 
-        if(!sharedPrefs.getBoolean("Purchase",false)){
+        if(sharedPrefs.getBoolean("Purchase",false)){
             try {
                 // Create new bitmap based on the size and config of the old
                 Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());

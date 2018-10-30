@@ -65,7 +65,7 @@ public class EmojiPagerAdapter extends PagerAdapter {
     }
 
     private EmojiIcons getPreferedIconSet() {
-         return new Sticker_EmojiIcons(mContext, withExpression);
+         return new Sticker_EmojiIcons(mContext, withExpression, false);
     }
 
     private CharSequence setTitlePage(){

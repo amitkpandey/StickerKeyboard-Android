@@ -8,8 +8,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -111,7 +113,7 @@ public class PurchaseStickerActivity extends AppCompatActivity {
                         }
                     });
 
-                   */
+*/
 /* if (items.isEmpty()) {
                         rvItems.setVisibility(View.GONE);
                         llEmptyList.setVisibility(View.VISIBLE);
@@ -125,6 +127,7 @@ public class PurchaseStickerActivity extends AppCompatActivity {
                         adapter = new ItemAdapter(activity, items);
                         rvItems.setAdapter(adapter);
                     }*//*
+
 
                 }
             });
@@ -143,8 +146,8 @@ public class PurchaseStickerActivity extends AppCompatActivity {
         }
     }
 
-  */
-/*  @OnClick(R.id.btnContinue)
+ */
+/* @OnClick(R.id.btnContinue)
     public void clickContinue(View v) {
         PurchaseItem item = adapter.getSelected();
 
@@ -154,6 +157,7 @@ public class PurchaseStickerActivity extends AppCompatActivity {
             Log.d(TAG, "onProductClick: " + e.getMessage());
         }
     }*//*
+
 
 
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {

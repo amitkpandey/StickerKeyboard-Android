@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -84,6 +85,7 @@ public class StickerActivity extends AppCompatActivity {
     List<String> skuList;
     int RC_REQUEST = 10001;
     Activity activity;
+    ProgressBar prog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,33 +98,8 @@ public class StickerActivity extends AppCompatActivity {
             startActivity(new Intent(StickerActivity.this, StickerFirstTimeActivity.class));
             finish();
         }
-//        if(!prefs.getBoolean("USER_SIGNED_IN", false)){
-//            FirebaseAuth.getInstance()
-//                    .signInAnonymously()
-//                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//                        @Override
-//                        public void onSuccess(AuthResult authResult) {
-//                            System.out.println(">>>>>>>>"+authResult.toString());
-//                            prefs.edit().putBoolean("USER_SIGNED_IN", true).commit();
-//                            // Keep track of the referrer in the RTDB. Database calls
-//                            // will depend on the structure of your app's RTDB.
-//                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-////                            DatabaseReference userRecord =
-////                                    FirebaseDatabase.getInstance().getReference()
-////                                            .child("users")
-////                                            .child(user.getUid());
-////                            userRecord.child("referred_by").setValue(referrerUid);
-//                        }
-//
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//        }
         setContentView(R.layout.activity_sticker);
+        prog = findViewById(R.id.prog);
 
         deleteStickerEmojisOnStorage(StickerActivity.this);
 
@@ -162,25 +139,23 @@ public class StickerActivity extends AppCompatActivity {
         activity = StickerActivity.this;
         items = new ArrayList<>();
 
-        //initStickers static themes
-        //stickers = Sticker.initStickers(this, withExpressions);
-
         String base64EncodedPublicKey = getResources().getString(R.string.base64);
-        mHelper = new IabHelper(this, base64EncodedPublicKey);
+        if (!sharedPref.getBoolean("Purchased", false)) {
+            mHelper = new IabHelper(this, base64EncodedPublicKey);
 
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                if (!result.isSuccess()) {
-                    Toast.makeText(activity, "Problem setting up In-app Billing: " + result, Toast.LENGTH_SHORT).show();
-                } else {
-                    loadProducts();
+            mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                public void onIabSetupFinished(IabResult result) {
+                    if (!result.isSuccess()) {
+                       // Toast.makeText(activity, "Problem setting up In-app Billing", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, String.valueOf(result));
+                    } else {
+                        loadProducts();
+                    }
                 }
-            }
-        });
-
-        //setupAdapter();
-        //addAdMobView();
-
+            });
+        }else{
+            setupAdapter(true);
+        }
 
         if(!BuildConfig.APPLICATION_ID.contains("gkeyboard") && !BuildConfig.APPLICATION_ID.contains("lovetok")){
             try {
@@ -226,36 +201,19 @@ public class StickerActivity extends AppCompatActivity {
 
     }
 
-    private void setupAdapter() {
-       /* skuList = Arrays.asList(StickerActivity.this.getString(R.string.purchase_itemId));
-        activity = StickerActivity.this;
-        items = new ArrayList<>();
-
+    private void setupAdapter(boolean boughtPack) {
         //initStickers static themes
-        stickers = Sticker.initStickers(this, withExpressions);
-        String base64EncodedPublicKey = getResources().getString(R.string.base64);
-        mHelper = new IabHelper(this, base64EncodedPublicKey);
-
-        //In-app Purchase
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                if (!result.isSuccess()) {
-                    Toast.makeText(activity, "Problem setting up In-app Billing: " + result, Toast.LENGTH_SHORT).show();
-                } else {
-                    loadProducts();
-                }
-            }
-        });*/
-
-        //initStickers static themes
-        stickers = Sticker.initStickers(this, withExpressions);
-
+        stickers = Sticker.initStickers(this, withExpressions, true);
+        prog.setVisibility(View.GONE);
         if (stickerGridView.getAdapter() == null) {
             if(stickers != null) {
                 randomInt = new Random().nextInt();
                 ad = ads.get(randomInt < 0 ?   (randomInt * -1) % ads.size() : randomInt % ads.size());
-                //adapter = new StickerAdapter(this, stickers, ad);
-                adapter = new StickerAdapter(this,stickers, mHelper, mPurchaseFinishedListener, items, ad);
+                if(boughtPack){
+                    adapter = new StickerAdapter(this, stickers, ad);
+                }else {
+                    adapter = new StickerAdapter(this, stickers, mHelper, mPurchaseFinishedListener, items, ad);
+                }
                 GridLayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 3, LinearLayout.VERTICAL, false);
                 mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
@@ -318,11 +276,12 @@ public class StickerActivity extends AppCompatActivity {
                         item.setId(inv.getSkuDetails(s).getSku());
                         items.add(item);
 
-                        Toast.makeText(activity, item.toString(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(activity, item.toString(), Toast.LENGTH_LONG).show();
+                        Log.i(TAG, item.toString());
 
                     }
 
-                    setupAdapter();
+                    setupAdapter(false);
 
 //                    stickerGridView.post(new Runnable() {
 //                        @Override
@@ -366,7 +325,7 @@ public class StickerActivity extends AppCompatActivity {
                     withExpressions = withExpressions == false ? true : false;
                     prefs.edit().putBoolean("icons_with_text", withExpressions).apply();
                     switchMenuItem.setIcon(withExpressions == false ? R.drawable.shape_trans : R.drawable.shape);
-                    stickers = Sticker.initStickers(StickerActivity.this, withExpressions);
+                    stickers = Sticker.initStickers(StickerActivity.this, withExpressions, true);
                     //adapter = new StickerAdapter(this,stickers,ad)
                     adapter = new StickerAdapter(this,stickers, mHelper, mPurchaseFinishedListener, items, ad);
                     stickerGridView.setAdapter(adapter);
@@ -663,7 +622,8 @@ public class StickerActivity extends AppCompatActivity {
             if (mHelper == null) return;
 
             if (result.isFailure()) {
-                Toast.makeText(activity, "Error purchasing: " + result, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(activity, "Error purchasing", Toast.LENGTH_SHORT).show();
+                Log.d(TAG,"Error purchasing" + result);
                 return;
             }
 

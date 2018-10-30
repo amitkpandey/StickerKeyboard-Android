@@ -31,9 +31,9 @@ class Sticker {
         this.name = name;
     }
 
-    static List<Sticker> initStickers(Context context, boolean withExpressions) {
+    static List<Sticker> initStickers(Context context, boolean withExpressions, boolean overrideRemove) {
 
-        EmojiIcons icons = getPreferedIconSet(context, withExpressions);
+        EmojiIcons icons = getPreferedIconSet(context, withExpressions, overrideRemove);
 
         List<Sticker> stickers = new ArrayList<>();
 
@@ -79,8 +79,8 @@ class Sticker {
         return name;
     }
 
-    private static EmojiIcons getPreferedIconSet(Context context, boolean withExpressions) {
-        return new Sticker_EmojiIcons(context, withExpressions);
+    private static EmojiIcons getPreferedIconSet(Context context, boolean withExpressions, boolean overrideRemove) {
+        return new Sticker_EmojiIcons(context, withExpressions, overrideRemove);
     }
 
 }
