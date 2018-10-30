@@ -24,10 +24,7 @@
     <string name="install_keyboard_later">Install Keyboard Later</string>
     <string name="view_privacy_policy">VIEW PRIVACY POLICY</string>
     <string name="ghanatok_was_produced">&appname; was produced by G-Stickers. Follow G-Stickers on</string>
-    <string name="base64">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAog5UBick2q8LrAJ/1TOamNwkhjh8gi9ETazJ0Wj/8lV0/qPwAmIK0DvAeeaKzYQ+I+lM2qQnkFjP7G9Ql1SLKh9der0REB1Jj6gW5emTeO1dbIwduYIcgj9HS4PUyQqWPo4ZVFlXjtLPOwIJCSMS3jBnmbzr4XmAsoNIJjWINq45c4pJ5n4HsPTC3MV3gW4pY0S1mTlbP31HIsUmIi5TeHapkEEvrUzYF6YmWW19euMigv/ZIk4GhzgVvS9+7QS1v9CZLYA8YUDr1VPsmrl9pKT694FydN/2H3TMzJWYlMKDawdvavqzJvzpHr14Ih54tt2vOBHqjo/+h5jRH/fnkQIDAQAB
+    <string name="base64">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAog5UBick2q8LrAJ/1TOamNwkhjh8gi9ETazJ0Wj/8lV0/qPwAmIK0DvAeeaKzYQ+I+lM2qQnkFjP7G9Ql1SLKh9der0REB1Jj6gW5emTeO1dbIwduYIcgj9HS4PUyQqWPo4ZVFlXjtLPOwIJCSMS3jBnmbzr4XmAsoNIJjWINq45c4pJ5n4HsPTC3MV3gW4pY0S1mTlbP31HIsUmIi5TeHapkEEvrUzYF6YmWW19euMigv/ZIk4GhzgVvS9+7QS1v9CZLYA8YUDr1VPsmrl9pKT694FydN/2H3TMzJWYlMKDawdvavqzJvzpHr14Ih54tt2vOBHqjo/+h5jRH/fnkQIDAQAB</string>
     <string name="purchase_itemId">1029_gstickers_2018</string>
-
-</string>
-
 
 </resources>
