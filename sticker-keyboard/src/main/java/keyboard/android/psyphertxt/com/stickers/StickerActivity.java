@@ -58,10 +58,13 @@ import butterknife.ButterKnife;
 import keyboard.android.psyphertxt.com.BuildConfig;
 import keyboard.android.psyphertxt.com.R;
 import keyboard.android.psyphertxt.com.Utility;
+import keyboard.android.psyphertxt.com.products.IabException;
 import keyboard.android.psyphertxt.com.products.IabHelper;
 import keyboard.android.psyphertxt.com.products.IabResult;
 import keyboard.android.psyphertxt.com.products.Inventory;
 import keyboard.android.psyphertxt.com.products.Purchase;
+
+import static keyboard.android.psyphertxt.com.products.IabHelper.IABHELPER_UNKNOWN_ERROR;
 
 
 public class StickerActivity extends AppCompatActivity {
@@ -144,7 +147,7 @@ public class StickerActivity extends AppCompatActivity {
             mHelper = new IabHelper(this, base64EncodedPublicKey);
 
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                public void onIabSetupFinished(IabResult result) {
+                public void onIabSetupFinished(IabResult result) throws IabException {
                     if (!result.isSuccess()) {
                        // Toast.makeText(activity, "Problem setting up In-app Billing", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, String.valueOf(result));
@@ -260,7 +263,7 @@ public class StickerActivity extends AppCompatActivity {
     }
 
     //In-app Purchase classes
-    private void loadProducts() {
+    private void loadProducts() throws IabException {
         try {
             mHelper.queryInventoryAsync(true, skuList, new IabHelper.QueryInventoryFinishedListener() {
                 @Override
@@ -280,21 +283,11 @@ public class StickerActivity extends AppCompatActivity {
                         Log.i(TAG, item.toString());
 
                     }
-
                     setupAdapter(false);
-
-//                    stickerGridView.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            gridLayoutManager = new GridLayoutManager(activity, 3, LinearLayout.VERTICAL, false);
-//                            stickerGridView.setLayoutManager(gridLayoutManager);
-//                            adapter = new StickerAdapter(stickerGridView.getContext(),stickers, mHelper, mPurchaseFinishedListener, items);
-//                            stickerGridView.setAdapter(adapter);
-//                        }
-//                    });
-
                 }
             });
+        } catch (NullPointerException e) {
+            throw new IabException(IABHELPER_UNKNOWN_ERROR, "NullPointer while refreshing inventory.", e);
         } catch (Exception e) {
             e.printStackTrace();
         }

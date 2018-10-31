@@ -2,32 +2,25 @@ package keyboard.android.psyphertxt.com.stickers;
 
 public class StickerItem {
 
-    String id;
-    int apiVersion;
-    String packageName;
-    String skusBundle;
-    String productId;
-    String price;
-    String price_amount_micro;
-    String price_currency_code;
-    String title;
-    String description ;
-    String subscriptionPeriod;
-    String freeTrialPeriod;
+    private String id;
+    private int apiVersion;
+    private String packageName;
+    private String skusBundle;
+    private String productId;
+    private String price;
+    private String price_amount_micro;
+    private String price_currency_code;
+    private String title;
+    private String description ;
+    private String subscriptionPeriod;
+    private String freeTrialPeriod;
 
     public StickerItem() {
         this.id = id;
-        this.apiVersion = apiVersion;
-        this.packageName = packageName;
-        this.skusBundle = skusBundle;
         this.productId = productId;
         this.price = price;
-        this.price_amount_micro = price_amount_micro;
-        this.price_currency_code = price_currency_code;
         this.title = title;
         this.description = description;
-        this.subscriptionPeriod = subscriptionPeriod;
-        this.freeTrialPeriod = freeTrialPeriod;
     }
 
     public String getId() {

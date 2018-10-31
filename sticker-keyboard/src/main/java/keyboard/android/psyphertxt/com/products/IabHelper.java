@@ -193,7 +193,7 @@ public class IabHelper {
          *
          * @param result The result of the setup process.
          */
-        void onIabSetupFinished(IabResult result);
+        void onIabSetupFinished(IabResult result) throws IabException;
     }
 
     /**
@@ -229,8 +229,14 @@ public class IabHelper {
                     // check for in-app billing v3 support
                     int response = mService.isBillingSupported(3, packageName, ITEM_TYPE_INAPP);
                     if (response != BILLING_RESPONSE_RESULT_OK) {
-                        if (listener != null) listener.onIabSetupFinished(new IabResult(response,
-                                "Error checking for billing v3 support."));
+                        if (listener != null) {
+                            try {
+                                listener.onIabSetupFinished(new IabResult(response,
+                                        "Error checking for billing v3 support."));
+                            } catch (IabException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
                         // if in-app purchases aren't supported, neither are subscriptions
                         mSubscriptionsSupported = false;
@@ -270,15 +276,23 @@ public class IabHelper {
                 }
                 catch (RemoteException e) {
                     if (listener != null) {
-                        listener.onIabSetupFinished(new IabResult(IABHELPER_REMOTE_EXCEPTION,
-                                "RemoteException while setting up in-app billing."));
+                        try {
+                            listener.onIabSetupFinished(new IabResult(IABHELPER_REMOTE_EXCEPTION,
+                                    "RemoteException while setting up in-app billing."));
+                        } catch (IabException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     e.printStackTrace();
                     return;
                 }
 
                 if (listener != null) {
-                    listener.onIabSetupFinished(new IabResult(BILLING_RESPONSE_RESULT_OK, "Setup successful."));
+                    try {
+                        listener.onIabSetupFinished(new IabResult(BILLING_RESPONSE_RESULT_OK, "Setup successful."));
+                    } catch (IabException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
@@ -292,9 +306,13 @@ public class IabHelper {
         else {
             // no service available to handle that Intent
             if (listener != null) {
-                listener.onIabSetupFinished(
-                        new IabResult(BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE,
-                                "Billing service unavailable on device."));
+                try {
+                    listener.onIabSetupFinished(
+                            new IabResult(BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE,
+                                    "Billing service unavailable on device."));
+                } catch (IabException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -586,9 +604,13 @@ public class IabHelper {
             }
 
             if (querySkuDetails) {
-                r = querySkuDetails(ITEM_TYPE_INAPP, inv, moreItemSkus);
-                if (r != BILLING_RESPONSE_RESULT_OK) {
-                    throw new IabException(r, "Error refreshing inventory (querying prices of items).");
+                try {
+                    r = querySkuDetails(ITEM_TYPE_INAPP, inv, moreItemSkus);
+                    if (r != BILLING_RESPONSE_RESULT_OK) {
+                        throw new IabException(r, "Error refreshing inventory (querying prices of items).");
+                    }
+                }catch (NullPointerException e) {
+                    throw new IabException(IABHELPER_UNKNOWN_ERROR, "NPE while refreshing inventory.", e);
                 }
             }
 
@@ -600,9 +622,13 @@ public class IabHelper {
                 }
 
                 if (querySkuDetails) {
-                    r = querySkuDetails(ITEM_TYPE_SUBS, inv, moreItemSkus);
-                    if (r != BILLING_RESPONSE_RESULT_OK) {
-                        throw new IabException(r, "Error refreshing inventory (querying prices of subscriptions).");
+                    try {
+                        r = querySkuDetails(ITEM_TYPE_SUBS, inv, moreItemSkus);
+                        if (r != BILLING_RESPONSE_RESULT_OK) {
+                            throw new IabException(r, "Error refreshing inventory (querying prices of subscriptions).");
+                        }
+                    }catch (NullPointerException e) {
+                        throw new IabException(IABHELPER_UNKNOWN_ERROR, "NPE while refreshing inventory.", e);
                     }
                 }
             }
@@ -870,8 +896,8 @@ public class IabHelper {
 
     int queryPurchases(Inventory inv, String itemType) throws JSONException, RemoteException {
         // Query purchases
-        logDebug("Querying owned items, item type: " + itemType);
-        logDebug("Package name: " + mContext.getPackageName());
+            logDebug("Querying owned items, item type: " + itemType);
+            logDebug("Package name: " + mContext.getPackageName());
         boolean verificationFailed = false;
         String continueToken = null;
 
