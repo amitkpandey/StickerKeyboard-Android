@@ -16,8 +16,8 @@
         <item>@drawable/forgeti_obia</item>
         <item>@drawable/forgetti_obiaa_female</item>
         <item>@drawable/girls_abr3</item>
-        <item>@drawable/gye_wo_two</item>
-        <item>@drawable/gye_wu_twoo</item>
+        <item>@drawable/gye_wo_two_female</item>
+        <item>@drawable/gye_wu_two</item>
         <item>@drawable/i_cant_think_madness</item>
         <item>@drawable/i_laugh_enter</item>
         <item>@drawable/imu</item>
@@ -57,7 +57,7 @@
         <item>@drawable/enko_yiee</item>
         <item>@drawable/forgetti_obiaa_female</item>
         <item>@drawable/girls_abr3</item>
-        <item>@drawable/gye_wu_twoo</item>
+        <item>@drawable/gye_wu_two</item>
         <item>@drawable/i_cant_think_madness</item>
         <item>@drawable/imu</item>
         <item>@drawable/ma_da_koraa</item>
@@ -76,6 +76,27 @@
         <item>@drawable/y3_wo_krom_female</item>
         <item>@drawable/you_dat</item>
 
+        <item>@drawable/abi_you_know_no_text</item>
+        <item>@drawable/abin_dada_no_text</item>
+        <item>@drawable/ashe_wu_roff_female_no_text</item>
+        <item>@drawable/cant_think_far_no_text</item>
+        <item>@drawable/comot_for_there_no_text</item>
+        <item>@drawable/e_go_bee_no_text</item>
+        <item>@drawable/enko_yie_no_text</item>
+        <item>@drawable/enko_yiee_no_text</item>
+        <item>@drawable/forgetti_obiaa_female_no_text</item>
+        <item>@drawable/girls_abr3_no_text</item>
+        <item>@drawable/gye_wu_two_no_text</item>
+        <item>@drawable/i_cant_think_madness_no_text</item>
+        <item>@drawable/imu_no_text</item>
+        <item>@drawable/ma_da_koraa_no_text</item>
+        <item>@drawable/mans_not_hot_no_text</item>
+        <item>@drawable/medo_wo_no_text</item>
+        <item>@drawable/mtchewww_no_text</item>
+        <item>@drawable/no_ko_fioo_no_text</item>
+        <item>@drawable/say_fi_no_text</item>
+        <item>@drawable/see_your_life_no_text</item>
+        <item>@drawable/u_pap_no_text</item>
     </integer-array>
 
     <integer-array name="drawables_no_expressions">
@@ -92,8 +113,8 @@
         <item>@drawable/forgeti_obia_no_text</item>
         <item>@drawable/forgetti_obiaa_female_no_text</item>
         <item>@drawable/girls_abr3_no_text</item>
-        <item>@drawable/gye_wo_two_no_text</item>
-        <item>@drawable/gye_wu_twoo_no_text</item>
+        <item>@drawable/gye_wo_two_female_no_text</item>
+        <item>@drawable/gye_wu_two_no_text</item>
         <item>@drawable/i_cant_think_madness_no_text</item>
         <item>@drawable/i_laugh_enter_no_text</item>
         <item>@drawable/imu_no_text</item>

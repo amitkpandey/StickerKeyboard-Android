@@ -1,86 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer-array name="drawables">
-        <item>@drawable/baff_up_2</item>
-        <item>@drawable/baff_up</item>
-        <item>@drawable/ewoo</item>
-        <item>@drawable/eyaa</item>
-        <item>@drawable/i_don_crush</item>
-        <item>@drawable/i_don_hammer</item>
-
-        <item>@drawable/kpa</item>
-        <item>@drawable/lobaton_female</item>
-        <item>@drawable/lobaton</item>
-        <item>@drawable/mumu</item>
-        <item>@drawable/oyiwa</item>
-        <item>@drawable/troway</item>
-        <item>@drawable/waka</item>
-        <item>@drawable/woz</item>
-        <item>@drawable/you_know_try</item>
-
         <item>@drawable/ajebutter</item>
-        <item>@drawable/ajekpako_2</item>
-        <item>@drawable/ajekpako</item>
-        <item>@drawable/amebo</item>
-        <item>@drawable/awoof</item>
-        <item>@drawable/comot_for_there</item>
-        <item>@drawable/gbeja</item>
-        <item>@drawable/gbeja_2</item>
+        <item>@drawable/ajekpakpo</item>
+        <item>@drawable/ajekpakpo_female</item>
+        <item>@drawable/ameebo</item>
+        <item>@drawable/bad_belle</item>
+        <item>@drawable/booze</item>
+        <item>@drawable/buff_up_female</item>
+        <item>@drawable/collabo</item>
+        <item>@drawable/come_chop</item>
+        <item>@drawable/commot</item>
+
+        <item>@drawable/craze</item>
+        <item>@drawable/crush_male</item>
+        <item>@drawable/dash_somtin</item>
+        <item>@drawable/dulling</item>
+        <item>@drawable/eyaa</item>
+        <item>@drawable/gbeja_female</item>
+        <item>@drawable/gist_me</item>
+        <item>@drawable/high</item>
+        <item>@drawable/i_don_crush</item>
         <item>@drawable/i_don_die</item>
+
+        <item>@drawable/i_don_die_male</item>
+        <item>@drawable/i_don_get_belle</item>
+        <item>@drawable/i_don_hammer</item>
         <item>@drawable/i_don_hit</item>
-        <item>@drawable/oya_relax</item>
-        <item>@drawable/runs_girl</item>
+        <item>@drawable/i_no_well</item>
+        <item>@drawable/joor</item>
+        <item>@drawable/kai</item>
+        <item>@drawable/kpaiii</item>
+        <item>@drawable/lobaton</item>
+        <item>@drawable/lobaton_female</item>
+
+        <item>@drawable/maintain</item>
+        <item>@drawable/oyiwaa</item>
+        <item>@drawable/relax</item>
+        <item>@drawable/relax_female</item>
+        <item>@drawable/shake</item>
+        <item>@drawable/shaku</item>
+        <item>@drawable/slap</item>
+        <item>@drawable/waka</item>
+        <item>@drawable/waka_female</item>
+        <item>@drawable/woz</item>
     </integer-array>
 
 
     <integer-array name="drawables_paid">
-        <item>@drawable/ajebutter</item>
-        <item>@drawable/ajekpako_2</item>
-        <item>@drawable/ajekpako</item>
-        <item>@drawable/amebo</item>
-        <item>@drawable/awoof</item>
-        <item>@drawable/comot_for_there</item>
-        <item>@drawable/gbeja</item>
-        <item>@drawable/gbeja_2</item>
+        <item>@drawable/ajekpakpo</item>
+        <item>@drawable/ajekpakpo_female</item>
+        <item>@drawable/bad_belle</item>
+        <item>@drawable/collabo</item>
+        <item>@drawable/commot</item>
+        <item>@drawable/craze</item>
+        <item>@drawable/crush_male</item>
+        <item>@drawable/dash_somtin</item>
+        <item>@drawable/dulling</item>
+        <item>@drawable/gbeja_female</item>
 
+        <item>@drawable/gist_me</item>
+        <item>@drawable/high</item>
+        <item>@drawable/i_don_crush</item>
         <item>@drawable/i_don_die</item>
+        <item>@drawable/i_don_die_male</item>
+        <item>@drawable/i_don_get_belle</item>
+        <item>@drawable/i_don_hammer</item>
         <item>@drawable/i_don_hit</item>
-        <item>@drawable/i_don_hit_notxt</item>
-        <item>@drawable/oya_relax</item>
-        <item>@drawable/oya_relax_notxt</item>
-        <item>@drawable/runs_girl</item>
+        <item>@drawable/i_no_well</item>
+        <item>@drawable/joor</item>
+
+        <item>@drawable/kai</item>
+        <item>@drawable/kpaiii</item>
+        <item>@drawable/lobaton</item>
+        <item>@drawable/oyiwaa</item>
+        <item>@drawable/relax_female</item>
+        <item>@drawable/shake</item>
+        <item>@drawable/shaku</item>
+        <item>@drawable/slap</item>
+        <item>@drawable/waka</item>
+        <item>@drawable/waka_female</item>
+
+
+        <item>@drawable/ajekpakpo_female_nt</item>
+        <item>@drawable/ajekpakpo_nt</item>
+        <item>@drawable/bad_belle_nt</item>
+        <item>@drawable/collabo_nt</item>
+        <item>@drawable/commot_nt</item>
+        <item>@drawable/craze_nt</item>
+        <item>@drawable/crush_male_nt</item>
+        <item>@drawable/dash_somtin_nt</item>
+        <item>@drawable/dulling_nt</item>
+        <item>@drawable/gbeja_female_nt</item>
+
+        <item>@drawable/gist_me_nt</item>
+        <item>@drawable/high_nt</item>
+        <item>@drawable/i_don_crush_nt</item>
+        <item>@drawable/i_don_die_nt</item>
+        <item>@drawable/i_don_die_male_nt</item>
+        <item>@drawable/i_don_get_belle_nt</item>
+        <item>@drawable/i_don_hammer_nt</item>
+        <item>@drawable/i_don_hit_nt</item>
+        <item>@drawable/i_no_well_nt</item>
+        <item>@drawable/joor_nt</item>
+
+        <item>@drawable/kai_nt</item>
+        <item>@drawable/kpaiii_nt</item>
+        <item>@drawable/lobaton_nt</item>
+        <item>@drawable/oyiwaa_nt</item>
+        <item>@drawable/relax_female_nt</item>
+        <item>@drawable/shake_nt</item>
+        <item>@drawable/shaku_nt</item>
+        <item>@drawable/slap_nt</item>
+        <item>@drawable/waka_nt</item>
+        <item>@drawable/waka_female_nt</item>
     </integer-array>
 
 
     <integer-array name="drawables_no_expressions">
-        <item>@drawable/ajebutter_notxt</item>
-        <item>@drawable/ajekpako_2_notxt</item>
-        <item>@drawable/ajekpako_notxt</item>
-        <item>@drawable/amebo_notxt</item>
-        <item>@drawable/oya_relax_notxt</item>
-        <item>@drawable/awoof_notxt</item>
-        <item>@drawable/baff_up_2_notxt</item>
-        <item>@drawable/i_don_hit_notxt</item>
-        <item>@drawable/baff_up_notxt</item>
-        <item>@drawable/comot_for_there_notxt</item>
+        <item>@drawable/ajebutter_nt</item>
+        <item>@drawable/ajekpakpo_female_nt</item>
+        <item>@drawable/ajekpakpo_nt</item>
+        <item>@drawable/ameebo_nt</item>
+        <item>@drawable/bad_belle_nt</item>
+        <item>@drawable/booze_nt</item>
+        <item>@drawable/buff_up_female_nt</item>
+        <item>@drawable/collabo_nt</item>
+        <item>@drawable/come_chop_nt</item>
+        <item>@drawable/commot_nt</item>
 
-        <item>@drawable/ewoo_notxt</item>
-        <item>@drawable/eyaa_notxt</item>
-        <item>@drawable/gbeja_2_notxt</item>
-        <item>@drawable/gbeja_notxt</item>
-        <item>@drawable/i_don_crush_notxt</item>
-        <item>@drawable/i_don_die_notxt</item>
-        <item>@drawable/i_don_hammer_notxt</item>
+        <item>@drawable/craze_nt</item>
+        <item>@drawable/crush_male_nt</item>
+        <item>@drawable/dash_somtin_nt</item>
+        <item>@drawable/dulling_nt</item>
+        <item>@drawable/eyaa_nt</item>
+        <item>@drawable/gbeja_female_nt</item>
+        <item>@drawable/gist_me_nt</item>
+        <item>@drawable/high_nt</item>
+        <item>@drawable/i_don_crush_nt</item>
+        <item>@drawable/i_don_die_nt</item>
 
-        <item>@drawable/kpa_notxt</item>
-        <item>@drawable/lobaton_female_notxt</item>
-        <item>@drawable/lobaton_notxt</item>
-        <item>@drawable/mumu_notxt</item>
-        <item>@drawable/oyiwa_notxt</item>
-        <item>@drawable/troway_notxt</item>
-        <item>@drawable/waka_notxt</item>
-        <item>@drawable/woz_notxt</item>
-        <item>@drawable/you_no_try_notxt</item>
+        <item>@drawable/i_don_die_male_nt</item>
+        <item>@drawable/i_don_get_belle_nt</item>
+        <item>@drawable/i_don_hammer_nt</item>
+        <item>@drawable/i_don_hit_nt</item>
+        <item>@drawable/i_no_well_nt</item>
+        <item>@drawable/joor_nt</item>
+        <item>@drawable/kai_nt</item>
+        <item>@drawable/kpaiii_nt</item>
+        <item>@drawable/lobaton_female_nt</item>
+        <item>@drawable/lobaton_nt</item>
+
+        <item>@drawable/maintain_nt</item>
+        <item>@drawable/oyiwaa_nt</item>
+        <item>@drawable/relax_female_nt</item>
+        <item>@drawable/relax_nt</item>
+        <item>@drawable/shake_nt</item>
+        <item>@drawable/shaku_nt</item>
+        <item>@drawable/slap_nt</item>
+        <item>@drawable/waka_nt</item>
+        <item>@drawable/waka_female_nt</item>
+        <item>@drawable/woz_nt</item>
     </integer-array>
 
 </resources>
